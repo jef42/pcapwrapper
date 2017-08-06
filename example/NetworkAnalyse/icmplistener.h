@@ -9,13 +9,17 @@
 
 class ICMPListener : public PCAP::PackageListener<PCAP::ICMPPackage>, public Listener {
 public:
-    ICMPListener(const PCAP::IpAddress& ip)
-        : Listener{ip}
+    ICMPListener(const PCAP::IpAddress& netmask)
+        : Listener{netmask}
     {}
 
     virtual void receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package) override {
-        if (package->getSrcIp() == m_ip || package->getDstIp() == m_ip)
-            inc_count();
+        if ((package->getSrcIp() & m_netmask) == m_netmask) {
+            inc_count(package->getSrcIp());
+        }
+        if ((package->getDstIp() & m_netmask) == m_netmask) {
+            inc_count(package->getDstIp());
+        }
     }
 };
 

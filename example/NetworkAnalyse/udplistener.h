@@ -8,13 +8,17 @@
 
 class UDPListener : public PCAP::PackageListener<PCAP::UDPPackage>, public Listener {
 public:
-    UDPListener(const PCAP::IpAddress& ip)
-        : Listener{ip}
+    UDPListener(const PCAP::IpAddress& netmask)
+        : Listener{netmask}
     {}
 
     virtual void receivedPackage(std::unique_ptr<PCAP::UDPPackage> package) override {
-        if (package->getSrcIp() == m_ip || package->getDstIp() == m_ip)
-            inc_count();
+        if ((package->getSrcIp() & m_netmask) == m_netmask) {
+            inc_count(package->getSrcIp());
+        }
+        if ((package->getDstIp() & m_netmask) == m_netmask) {
+            inc_count(package->getDstIp());
+        }
     }
 };
 

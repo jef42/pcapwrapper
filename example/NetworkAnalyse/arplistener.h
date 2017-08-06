@@ -9,13 +9,16 @@
 
 class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>, public Listener {
 public:
-    ARPListener(PCAP::IpAddress ip)
-        : Listener{ip}
+    ARPListener(PCAP::IpAddress netmask)
+        : Listener{netmask}
     {}
 
     virtual void receivedPackage(std::unique_ptr<PCAP::ARPPackage> package) override {
-        if (package->getSrcIp() == m_ip || package->getDstIp() == m_ip) {
-            inc_count();
+        if ((package->getSrcIp() & m_netmask) == m_netmask) {
+            inc_count(package->getSrcIp());
+        }
+        if ((package->getDstIp() & m_netmask) == m_netmask) {
+            inc_count(package->getDstIp());
         }
     }
 };
