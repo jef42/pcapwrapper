@@ -7,10 +7,9 @@
 *.includes
 *.pro.user
 *.creator
-/build
-/example/builds/*
-/example/HelperScripts
-/build*
+build/
+example/builds/
+example/HelperScripts/
 *.dll
 *.so
 *.exe
