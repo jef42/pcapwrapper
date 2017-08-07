@@ -26,7 +26,7 @@ public:
     unsigned long to_long() const;
     const unsigned char* data() const;
 private:
-    std::array<unsigned char, IP_ADDR_LEN> m_ip;
+    std::array<unsigned char, ip_addr_len> m_ip;
 };
 
 }

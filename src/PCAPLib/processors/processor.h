@@ -15,18 +15,18 @@ namespace PCAP {
 
 class Processor : public ProcessorPolicy {
   public:
-    void addListener(std::shared_ptr<PackageListener<TCPPackage>> listener);
-    void addListener(std::shared_ptr<PackageListener<ICMPPackage>> listener);
-    void addListener(std::shared_ptr<PackageListener<UDPPackage>> listener);
-    void addListener(std::shared_ptr<PackageListener<ARPPackage>> listener);
+    void addListener(const std::shared_ptr<PackageListener<TCPPackage>> &listener);
+    void addListener(const std::shared_ptr<PackageListener<ICMPPackage>> &listener);
+    void addListener(const std::shared_ptr<PackageListener<UDPPackage>> &listener);
+    void addListener(const std::shared_ptr<PackageListener<ARPPackage>> &listener);
 
-    void removeListener(std::shared_ptr<PackageListener<TCPPackage>> listener);
-    void removeListener(std::shared_ptr<PackageListener<ICMPPackage>> listener);
-    void removeListener(std::shared_ptr<PackageListener<UDPPackage>> listener);
-    void removeListener(std::shared_ptr<PackageListener<ARPPackage>> listener);
+    void removeListener(const std::shared_ptr<PackageListener<TCPPackage>> &listener);
+    void removeListener(const std::shared_ptr<PackageListener<ICMPPackage>> &listener);
+    void removeListener(const std::shared_ptr<PackageListener<UDPPackage>> &listener);
+    void removeListener(const std::shared_ptr<PackageListener<ARPPackage>> &listener);
 
-    void addSessionController(std::shared_ptr<SessionController> controller);
-    void removeSessionController(std::shared_ptr<SessionController> controller);
+    void addSessionController(const std::shared_ptr<SessionController> &controller);
+    void removeSessionController(const std::shared_ptr<SessionController> &controller);
 
     void clearAllListeners();
 
@@ -39,7 +39,7 @@ class Processor : public ProcessorPolicy {
     IT removeWeakPtr(IT begin, IT end);
 
     template <typename T, typename IT>
-    IT removeWeakPtr(IT begin, IT end, std::shared_ptr<PackageListener<T>> listener);
+    IT removeWeakPtr(IT begin, IT end, const std::shared_ptr<PackageListener<T>> &listener);
 
   protected:
     void callback_impl(const unsigned char *package, const pcap_pkthdr &header);

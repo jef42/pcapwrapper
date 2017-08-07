@@ -9,12 +9,12 @@ namespace PCAP {
 
 TCPPackage::TCPPackage(const unsigned char *p, unsigned int l)
     : IPPackage{p, l} {
-    m_tcp = (struct snifftcp*)(m_package + SIZE_ETHERNET + 5*4);
+    m_tcp = (struct snifftcp*)(m_package + size_ethernet + 5*4);
     if (TH_OFF(m_tcp) > 5) { //if there is optional data
-        m_tcp_opt = (struct snifftcpopt*)(m_package + SIZE_ETHERNET + 5 * 4 + sizeof(*m_tcp)); //tcp_opt can be also over the data, is it max 40
-        m_data = m_package + SIZE_ETHERNET + 5 * 4 + sizeof(*m_tcp) + TH_OFF(m_tcp) * 4 - 20; //
+        m_tcp_opt = (struct snifftcpopt*)(m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp)); //tcp_opt can be also over the data, is it max 40
+        m_data = m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp) + TH_OFF(m_tcp) * 4 - 20; //
     } else {
-        m_data = m_package + SIZE_ETHERNET + 5 * 4 + sizeof(*m_tcp);
+        m_data = m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp);
     }
 }
 

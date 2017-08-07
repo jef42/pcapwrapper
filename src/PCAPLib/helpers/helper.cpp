@@ -48,8 +48,8 @@ void setTCPChecksum(sniffip *ip, snifftcp *tcp, snifftcpopt *tcp_opt, unsigned c
     tcp->m_th_sum = 0x0000;
 
     pseudo_header pseudo_h;
-    memcpy(&pseudo_h.s_addr, &ip->m_ip_src, IP_ADDR_LEN);
-    memcpy(&pseudo_h.d_addr, &ip->m_ip_dst, IP_ADDR_LEN);
+    memcpy(&pseudo_h.s_addr, &ip->m_ip_src, ip_addr_len);
+    memcpy(&pseudo_h.d_addr, &ip->m_ip_dst, ip_addr_len);
     pseudo_h.reserved = 0x00;
     pseudo_h.protocol = ip->m_ip_p;
     pseudo_h.length = htons(ntohs(ip->m_ip_len) - (IP_HL(ip) * 4));
@@ -70,8 +70,8 @@ void setUDPChecksum(sniffip* ip, sniffudp *udp, unsigned char* data) {
 
     pseudo_header pseudo_h;
     memset(&pseudo_h, '\0', sizeof(pseudo_h));
-    memcpy(&pseudo_h.s_addr, &ip->m_ip_src, IP_ADDR_LEN);
-    memcpy(&pseudo_h.d_addr, &ip->m_ip_dst, IP_ADDR_LEN);
+    memcpy(&pseudo_h.s_addr, &ip->m_ip_src, ip_addr_len);
+    memcpy(&pseudo_h.d_addr, &ip->m_ip_dst, ip_addr_len);
     pseudo_h.protocol = ip->m_ip_p;
     pseudo_h.reserved = 0x00;
     pseudo_h.length = htons(ntohs(ip->m_ip_len) - (IP_HL(ip) * 4));
@@ -160,7 +160,7 @@ PCAP::IpAddress getRouterIp(const std::string& interface) {
     unsigned long ip = getIp(interface).to_long();
     unsigned long mask = getMask(interface).to_long();
     unsigned long tmp = ip & mask;
-    return PCAP::IpAddress(++tmp);
+    return PCAP::IpAddress(tmp + 1);
 }
 
 PCAP::IpAddress getBroadcastIp(const std::string& interface) {
@@ -180,11 +180,11 @@ PCAP::MacAddress getMac(const PCAP::IpAddress& target_ip, const std::string& int
 
     bool run_flag = true;
     auto f = std::async(std::launch::async, [&run_flag, &controller, local_ip, target_ip, local_mac](){
-        unsigned char package_buffer[SNAP_LEN];
-        memset(package_buffer, '\0', SNAP_LEN);
+        unsigned char package_buffer[snap_len];
+        memset(package_buffer, '\0', snap_len);
 
         while (run_flag) {
-            PCAP::ARPPackage package(package_buffer, (unsigned int)SNAP_LEN);
+            PCAP::ARPPackage package(package_buffer, (unsigned int)snap_len);
             package.setSrcMac(local_mac);
             package.setDstMac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
             package.setEtherType(0x0806);
@@ -214,20 +214,6 @@ PCAP::MacAddress getMac(const PCAP::IpAddress& target_ip, const std::string& int
     return mac_result;
 
 }
-
-/*bool is_valid_ip(const std::string& ip, int base) {
-    std::array<unsigned char, IP_ADDR_LEN> array;
-    return split_string<unsigned char, IP_ADDR_LEN>(ip, '.', array, base);
-}
-
-bool is_valid_mac(const std::string& mac, int base) {
-    std::array<unsigned char, ETHER_ADDR_LEN> array;
-    return split_string<unsigned char,ETHER_ADDR_LEN>(mac, ':', array, base);
-}
-
-bool valid_byte(int b) {
-    return b >= 0 && b <= 255;
-}*/
 
 }
 }

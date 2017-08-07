@@ -12,7 +12,7 @@
 
 class IsUp {
 public:
-    IsUp(std::shared_ptr<ForwardPackage> forward_package, PCAP::IpAddress local_ip, PCAP::MacAddress local_mac, const std::string& interface);
+    IsUp(const std::shared_ptr<ForwardPackage>& forward_package, PCAP::IpAddress local_ip, PCAP::MacAddress local_mac, const std::string& interface);
     ~IsUp();
 
     void addTarget(PCAP::IpAddress ip, PCAP::MacAddress mac);

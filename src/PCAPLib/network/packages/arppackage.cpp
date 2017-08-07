@@ -9,7 +9,7 @@ namespace PCAP {
 
 ARPPackage::ARPPackage(const unsigned char *p, unsigned int l)
     : EthernetPackage{p, l} {
-    m_arp = (struct sniffarp*)(m_package + SIZE_ETHERNET);
+    m_arp = (struct sniffarp*)(m_package + size_ethernet);
 }
 
 IpAddress ARPPackage::getSrcIp() const {
@@ -29,19 +29,19 @@ MacAddress ARPPackage::getDstArpMac() const {
 }
 
 void ARPPackage::setSrcIp(IpAddress ip) {
-    memcpy(m_arp->m_sender_ip_address, ip.data(), IP_ADDR_LEN);
+    memcpy(m_arp->m_sender_ip_address, ip.data(), ip_addr_len);
 }
 
 void ARPPackage::setDstIp(IpAddress ip) {
-    memcpy(m_arp->m_target_ip_address, ip.data(), IP_ADDR_LEN);
+    memcpy(m_arp->m_target_ip_address, ip.data(), ip_addr_len);
 }
 
 void ARPPackage::setSrcArpMac(MacAddress mac) {
-    memcpy(m_arp->m_sender_hardware_address, mac.data(), ETHER_ADDR_LEN);
+    memcpy(m_arp->m_sender_hardware_address, mac.data(), ethernet_addr_len);
 }
 
 void ARPPackage::setDstArpMac(MacAddress mac) {
-    memcpy(m_arp->m_target_harware_address, mac.data(), ETHER_ADDR_LEN);
+    memcpy(m_arp->m_target_harware_address, mac.data(), ethernet_addr_len);
 }
 
 void ARPPackage::setHardwareType(unsigned short type) {

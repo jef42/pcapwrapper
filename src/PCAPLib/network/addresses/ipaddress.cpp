@@ -7,11 +7,11 @@
 namespace PCAP {
 
 IpAddress::IpAddress(const std::string& ip) {
-    PCAP::PCAPHelper::split_string<unsigned char, IP_ADDR_LEN>(ip, '.', m_ip, 10);
+    PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip, '.', m_ip, 10);
 }
 
 IpAddress::IpAddress(unsigned char *data) {
-    memcpy(m_ip.data(), data, IP_ADDR_LEN);
+    memcpy(m_ip.data(), data, ip_addr_len);
 }
 
 IpAddress::IpAddress(unsigned long ip) {
@@ -22,7 +22,7 @@ IpAddress::IpAddress(unsigned long ip) {
 }
 
 IpAddress::IpAddress() {
-    memset(m_ip.data(), 0xFF, IP_ADDR_LEN);
+    memset(m_ip.data(), 0xFF, ip_addr_len);
 }
 
 bool operator==(const IpAddress& lhs, const IpAddress& rhs) {
@@ -51,9 +51,9 @@ IpAddress operator&(const IpAddress& lhs, const IpAddress& rhs) {
 
 std::string IpAddress::to_string() const {
     std::string result = "";
-    for (int i = 0; i < IP_ADDR_LEN; ++i) {
+    for (size_t i = 0; i < ip_addr_len; ++i) {
         result.append(std::to_string(int(m_ip[i])));
-        if (i != IP_ADDR_LEN - 1)
+        if (i != ip_addr_len - 1)
             result.append(".");
     }
     return result;

@@ -35,7 +35,7 @@ public:
     unsigned char* getPackage() const;
     unsigned int getLength() const;
 private:
-    unsigned char m_package[SNAP_LEN];
+    unsigned char m_package[snap_len];
     unsigned int m_index;
     PCAP::sniffethernet *m_ethernet;
     PCAP::sniffip *m_ip;

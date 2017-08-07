@@ -8,7 +8,7 @@ namespace PCAP {
 IPPackage::IPPackage(const unsigned char* p, unsigned int l)
     : EthernetPackage{p, l}
 {
-    m_ip = (sniffip*)(m_package + SIZE_ETHERNET);
+    m_ip = (sniffip*)(m_package + size_ethernet);
 }
 
 IpAddress IPPackage::getSrcIp() const {
@@ -52,11 +52,11 @@ unsigned char IPPackage::getProtocol() const {
 }
 
 void IPPackage::setDstIp(IpAddress ip) {
-    memcpy(m_ip->m_ip_dst, ip.data(), IP_ADDR_LEN);
+    memcpy(m_ip->m_ip_dst, ip.data(), ip_addr_len);
 }
 
 void IPPackage::setSrcIp(IpAddress ip) {
-    memcpy(m_ip->m_ip_src, ip.data(), IP_ADDR_LEN);
+    memcpy(m_ip->m_ip_src, ip.data(), ip_addr_len);
 }
 
 void IPPackage::setVHL(unsigned char value) {

@@ -9,7 +9,7 @@
 DHCPBuilder::DHCPBuilder() 
     : m_index{0} 
 {
-    memset(m_package, '\0', SNAP_LEN);
+    memset(m_package, '\0', snap_len);
     m_ethernet = (PCAP::sniffethernet*)&m_package[m_index];
 }
 

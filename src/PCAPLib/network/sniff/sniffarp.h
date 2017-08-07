@@ -11,10 +11,10 @@ struct sniffarp {
     unsigned char m_hardware_address_length;
     unsigned char m_protocol_address_length;
     unsigned short m_opcode;
-    unsigned char m_sender_hardware_address[ETHER_ADDR_LEN];
-    unsigned char m_sender_ip_address[IP_ADDR_LEN];
-    unsigned char m_target_harware_address[ETHER_ADDR_LEN];
-    unsigned char m_target_ip_address[IP_ADDR_LEN];
+    unsigned char m_sender_hardware_address[ethernet_addr_len];
+    unsigned char m_sender_ip_address[ip_addr_len];
+    unsigned char m_target_harware_address[ethernet_addr_len];
+    unsigned char m_target_ip_address[ip_addr_len];
 };
 
 }

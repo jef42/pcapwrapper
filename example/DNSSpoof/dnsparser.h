@@ -19,7 +19,7 @@ public:
     unsigned int getLength() const;
 
 private:
-    unsigned char m_package[SNAP_LEN];
+    unsigned char m_package[snap_len];
     int m_index;
 
 public:

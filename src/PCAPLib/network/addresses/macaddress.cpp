@@ -9,15 +9,15 @@
 namespace PCAP {
 
 MacAddress::MacAddress(const std::string& mac) {
-    PCAP::PCAPHelper::split_string<unsigned char, ETHER_ADDR_LEN>(mac, ':', m_mac, 16);
+    PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(mac, ':', m_mac, 16);
 }
 
 MacAddress::MacAddress(unsigned char *data) {
-    memcpy(m_mac.data(), data, ETHER_ADDR_LEN);
+    memcpy(m_mac.data(), data, ethernet_addr_len);
 }
 
 MacAddress::MacAddress() {
-    memset(m_mac.data(), 0xFF, ETHER_ADDR_LEN);
+    memset(m_mac.data(), 0xFF, ethernet_addr_len);
 }
 
 bool operator==(const MacAddress& lhs, const MacAddress& rhs) {
@@ -31,9 +31,9 @@ std::ostream& operator<<(std::ostream& stream, const MacAddress& rhs) {
 
 std::string MacAddress::to_string() const {
     std::stringstream stream;
-    for (int i = 0; i < ETHER_ADDR_LEN; ++i) {
+    for (size_t i = 0; i < ethernet_addr_len; ++i) {
         stream << std::hex << std::uppercase << int(m_mac[i]);
-        if (i != ETHER_ADDR_LEN - 1)
+        if (i != ethernet_addr_len - 1)
             stream << ":";
     }
     return stream.str();

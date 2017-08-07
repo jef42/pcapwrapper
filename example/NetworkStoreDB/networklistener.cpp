@@ -4,7 +4,7 @@
 
 #include "insertcommand.h"
 
-NetworkListener::NetworkListener(std::shared_ptr<DBConnection>& db_connection)
+NetworkListener::NetworkListener(const std::shared_ptr<DBConnection>& db_connection)
     : m_db_connection{db_connection}
 {
 

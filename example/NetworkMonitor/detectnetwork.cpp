@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-DetectNetwork::DetectNetwork(std::shared_ptr<ForwardPackage> forward_package, std::shared_ptr<IsUp> is_up, std::vector<PCAP::IpAddress> &&ignore_ips)
+DetectNetwork::DetectNetwork(const std::shared_ptr<ForwardPackage> &forward_package, 
+                             const std::shared_ptr<IsUp> &is_up, std::vector<PCAP::IpAddress> &&ignore_ips)
   : m_forward_package{forward_package}
   , m_is_up{is_up}
   , m_ignore_ips{ignore_ips}

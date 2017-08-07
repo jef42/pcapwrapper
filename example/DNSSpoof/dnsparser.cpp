@@ -8,7 +8,7 @@
 #include <pcapwrapper/helpers/helper.h>
 
 DNSParser::DNSParser(const unsigned char *package, int length) {
-    memset(m_package, '\0', SNAP_LEN);
+    memset(m_package, '\0', snap_len);
     memcpy(m_package, package, length);
     m_ethernet = (PCAP::sniffethernet*)&m_package[0];
     m_index    = sizeof(*m_ethernet);
@@ -30,5 +30,5 @@ unsigned char* DNSParser::getPackage() const {
 }
 
 unsigned int DNSParser::getLength() const {
-    return ntohs(m_ip->m_ip_len) + SIZE_ETHERNET;
+    return ntohs(m_ip->m_ip_len) + size_ethernet;
 }

@@ -21,7 +21,7 @@ public:
     std::string to_string() const;
     const unsigned char* data() const;
 private:
-    std::array<unsigned char, ETHER_ADDR_LEN> m_mac;
+    std::array<unsigned char, ethernet_addr_len> m_mac;
 };
 
 }

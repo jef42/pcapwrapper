@@ -12,7 +12,8 @@
 class DetectNetwork : public PCAP::PackageListener<PCAP::ARPPackage>
 {
 public:
-    DetectNetwork(std::shared_ptr<ForwardPackage> forward_package, std::shared_ptr<IsUp> is_up, std::vector<PCAP::IpAddress>&& ignore_ips);
+    DetectNetwork(const std::shared_ptr<ForwardPackage> &forward_package, 
+                  const std::shared_ptr<IsUp> &is_up, std::vector<PCAP::IpAddress>&& ignore_ips);
 
     virtual void receivedPackage(std::unique_ptr<PCAP::ARPPackage> package) override;
 private:

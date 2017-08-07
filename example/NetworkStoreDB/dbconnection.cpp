@@ -43,7 +43,7 @@ bool DBConnection::create_tables()
             , nullptr, nullptr, &errMsg) == SQLITE_OK;
 }
 
-bool DBConnection::execute(const std::shared_ptr<DBCommand> command)
+bool DBConnection::execute(const std::shared_ptr<DBCommand> &command)
 {
     return command->execute();
 }

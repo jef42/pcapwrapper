@@ -30,7 +30,7 @@ void Processor::callback_impl(const unsigned char * package, const pcap_pkthdr& 
     }
 
     /* define/compute ip header offset */
-    sniffip* ip = (struct sniffip*)(package + SIZE_ETHERNET);
+    sniffip* ip = (struct sniffip*)(package + size_ethernet);
     int size_ip = IP_HL(ip)*4;
     if (size_ip < 20) {
         return;
@@ -66,38 +66,38 @@ void Processor::notifyListeners(IT begin, IT end, const unsigned char* sniff_pac
     });
 }
 
-void Processor::addListener(std::shared_ptr<PackageListener<TCPPackage> > listener) {
+void Processor::addListener(const std::shared_ptr<PackageListener<TCPPackage>> &listener) {
     m_tcp_listeners.emplace_back(listener);
 }
-void Processor::addListener(std::shared_ptr<PackageListener<ICMPPackage> > listener) {
+void Processor::addListener(const std::shared_ptr<PackageListener<ICMPPackage>> &listener) {
     m_icmp_listeners.emplace_back(listener);
 }
-void Processor::addListener(std::shared_ptr<PackageListener<UDPPackage> > listener) {
+void Processor::addListener(const std::shared_ptr<PackageListener<UDPPackage>> &listener) {
     m_udp_listeners.emplace_back(listener);
 }
-void Processor::addListener(std::shared_ptr<PackageListener<ARPPackage> > listener) {
+void Processor::addListener(const std::shared_ptr<PackageListener<ARPPackage>> &listener) {
     m_arp_listeners.emplace_back(listener);
 }
 
-void Processor::addSessionController(std::shared_ptr<SessionController> controller) {
+void Processor::addSessionController(const std::shared_ptr<SessionController> &controller) {
     m_tcp_listeners.emplace_back(static_cast<std::shared_ptr<PackageListener<TCPPackage>>>(controller));
     m_udp_listeners.emplace_back(static_cast<std::shared_ptr<PackageListener<UDPPackage>>>(controller));
 }
 
-void Processor::removeListener(std::shared_ptr<PackageListener<TCPPackage>> listener) {
+void Processor::removeListener(const std::shared_ptr<PackageListener<TCPPackage>> &listener) {
     m_tcp_listeners.erase(removeWeakPtr(m_tcp_listeners.begin(), m_tcp_listeners.end(), listener), m_tcp_listeners.end());
 }
-void Processor::removeListener(std::shared_ptr<PackageListener<ICMPPackage>> listener) {
+void Processor::removeListener(const std::shared_ptr<PackageListener<ICMPPackage>> &listener) {
     m_icmp_listeners.erase(removeWeakPtr(m_icmp_listeners.begin(), m_icmp_listeners.end(), listener), m_icmp_listeners.end());
 }
-void Processor::removeListener(std::shared_ptr<PackageListener<UDPPackage>> listener) {
+void Processor::removeListener(const std::shared_ptr<PackageListener<UDPPackage>> &listener) {
     m_udp_listeners.erase(removeWeakPtr(m_udp_listeners.begin(), m_udp_listeners.end(), listener), m_udp_listeners.end());
 }
-void Processor::removeListener(std::shared_ptr<PackageListener<ARPPackage>> listener) {
+void Processor::removeListener(const std::shared_ptr<PackageListener<ARPPackage>> &listener) {
     m_arp_listeners.erase(removeWeakPtr(m_arp_listeners.begin(), m_arp_listeners.end(), listener), m_arp_listeners.end());
 }
 
-void Processor::removeSessionController(std::shared_ptr<SessionController> controller) {
+void Processor::removeSessionController(const std::shared_ptr<SessionController> &controller) {
     m_tcp_listeners.erase(removeWeakPtr(m_tcp_listeners.begin(), m_tcp_listeners.end(), 
         static_cast<std::shared_ptr<PackageListener<TCPPackage>>>(controller)), m_tcp_listeners.end());
     m_udp_listeners.erase(removeWeakPtr(m_udp_listeners.begin(), m_udp_listeners.end(), 
@@ -119,7 +119,7 @@ IT Processor::removeWeakPtr(IT begin, IT end) {
 }
 
 template <typename T, typename IT>
-IT Processor::removeWeakPtr(IT begin, IT end, std::shared_ptr<PackageListener<T>> listener) {
+IT Processor::removeWeakPtr(IT begin, IT end, const std::shared_ptr<PackageListener<T>> &listener) {
     return std::remove_if(begin, end, [&listener](std::weak_ptr<PackageListener<T>> p) {
         return p.lock() == listener;
     });

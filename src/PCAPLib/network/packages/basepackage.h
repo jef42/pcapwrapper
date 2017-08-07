@@ -23,7 +23,7 @@ class BasePackage {
   protected:
     virtual ~BasePackage();
 
-    unsigned char m_package[SNAP_LEN];
+    unsigned char m_package[snap_len];
     unsigned int m_length;
 };
 

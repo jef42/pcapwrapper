@@ -19,15 +19,14 @@ namespace PCAP {
 template <typename I, typename P>
 class Controller : private I, public P {
   public:
-    static std::shared_ptr<Controller> getController(const std::string& interface) {
+    static std::shared_ptr<Controller>& getController(const std::string& interface) {
         static std::map<std::string, std::shared_ptr<Controller<I,P>>> controllers;
         typename std::map<std::string, std::shared_ptr<Controller<I,P>>>::iterator it = controllers.find(interface);
         if (it != controllers.end())
             return it->second;
         else {
-            std::shared_ptr<Controller<I,P>> controller = std::shared_ptr<Controller<I,P>>(new Controller<I,P>(interface));
-            controllers[interface] = controller;
-            return controller;
+            controllers[interface] = std::shared_ptr<Controller<I,P>>(new Controller<I,P>(interface));
+            return controllers[interface];
         }
     }
 

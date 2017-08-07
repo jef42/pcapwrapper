@@ -7,19 +7,19 @@
 #include <pcapwrapper/helpers/helper.h>
 
 bool setIp(unsigned char* ip, const std::string& ip_value, int base) {
-    std::array<unsigned char, IP_ADDR_LEN> array;
-    bool successful = PCAP::PCAPHelper::split_string<unsigned char, IP_ADDR_LEN>(ip_value, '.', array, base);
+    std::array<unsigned char, ip_addr_len> array;
+    bool successful = PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip_value, '.', array, base);
     if (successful) {
-        memcpy(ip, array.data(), IP_ADDR_LEN);
+        memcpy(ip, array.data(), ip_addr_len);
     }
     return successful;
 }
 
 bool setMac(unsigned char* addr, const std::string& ethernet_value, int base) {
-    std::array<unsigned char, ETHER_ADDR_LEN> array;
-    bool sucessful = PCAP::PCAPHelper::split_string<unsigned char,ETHER_ADDR_LEN>(ethernet_value, ':', array, base);
+    std::array<unsigned char, ethernet_addr_len> array;
+    bool sucessful = PCAP::PCAPHelper::split_string<unsigned char,ethernet_addr_len>(ethernet_value, ':', array, base);
     if (sucessful) {
-        memcpy(addr, array.data(), ETHER_ADDR_LEN);
+        memcpy(addr, array.data(), ethernet_addr_len);
     }
     return sucessful;
 }
@@ -27,7 +27,7 @@ bool setMac(unsigned char* addr, const std::string& ethernet_value, int base) {
 DNSBuilder::DNSBuilder()
     : m_index{0}
 {
-    memset(m_package, '\0', SNAP_LEN);
+    memset(m_package, '\0', snap_len);
 }
 
 void DNSBuilder::operator << (PCAP::sniffethernet ethernet) {

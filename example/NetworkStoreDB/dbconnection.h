@@ -15,7 +15,7 @@ public:
     DBConnection(const std::string& db_name, const bool new_db = {true});
     ~DBConnection();
 
-    bool execute(const std::shared_ptr<DBCommand> command);
+    bool execute(const std::shared_ptr<DBCommand> &command);
 private:
     bool open(const std::string& db_name);
     bool create_tables();

@@ -3,7 +3,10 @@
 #include <algorithm>
 #include <iostream>
 
-IsUp::IsUp(std::shared_ptr<ForwardPackage> forward_package, PCAP::IpAddress local_ip, PCAP::MacAddress local_mac, const std::string &interface)
+IsUp::IsUp(const std::shared_ptr<ForwardPackage>& forward_package, 
+           PCAP::IpAddress local_ip, 
+           PCAP::MacAddress local_mac, 
+           const std::string &interface)
  : m_forward_package{forward_package}
  , m_local_ip{local_ip}
  , m_local_mac{local_mac}

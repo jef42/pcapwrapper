@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::UDPPackage>& package)
+InsertCommand::InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::UDPPackage>& package)
     : m_stmt{nullptr},
     m_db{db}
 {
@@ -15,7 +15,7 @@ InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<
     sqlite3_bind_blob(m_stmt, 1, package->getPackage(), package->getLength(), SQLITE_STATIC);
 }
 
-InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::TCPPackage>& package)
+InsertCommand::InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::TCPPackage>& package)
 {
     const std::string command = "INSERT INTO TCP VALUES(" + std::to_string(get_real_time()) + ", \"" +
         package->getSrcIp().to_string() + "\", \"" + package->getDstIp().to_string() + "\", " +
@@ -26,7 +26,7 @@ InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<
     sqlite3_bind_blob(m_stmt, 1, package->getPackage(), package->getLength(), SQLITE_STATIC);
 }
 
-InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::ICMPPackage>& package)
+InsertCommand::InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::ICMPPackage>& package)
 {
     const std::string command = "INSERT INTO ICMP VALUES(" + std::to_string(get_real_time()) + ", \"" +
         package->getSrcIp().to_string() + "\", \"" + package->getDstIp().to_string() + "\", "
@@ -35,7 +35,7 @@ InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<
     sqlite3_bind_blob(m_stmt, 1, package->getPackage(), package->getLength(), SQLITE_STATIC);
 }
 
-InsertCommand::InsertCommand(std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::ARPPackage>& package)
+InsertCommand::InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::ARPPackage>& package)
 {
     const std::string command = "INSERT INTO ARP VALUES(" + std::to_string(get_real_time()) + ", \"" +
         package->getSrcMac().to_string() + "\", \"" + package->getSrcIp().to_string() +"\",  \"" + package->getDstIp().to_string() + "\", " +

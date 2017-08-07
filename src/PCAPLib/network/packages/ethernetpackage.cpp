@@ -25,11 +25,11 @@ unsigned short EthernetPackage::getEtherType() const {
 }
 
 void EthernetPackage::setSrcMac(MacAddress mac) {
-    memcpy(m_ethernet->m_ether_shost, mac.data(), ETHER_ADDR_LEN);
+    memcpy(m_ethernet->m_ether_shost, mac.data(), ethernet_addr_len);
 }
 
 void EthernetPackage::setDstMac(MacAddress mac) {
-    memcpy(m_ethernet->m_ether_dhost, mac.data(), ETHER_ADDR_LEN);
+    memcpy(m_ethernet->m_ether_dhost, mac.data(), ethernet_addr_len);
 }
 
 void EthernetPackage::setEtherType(unsigned short type) {

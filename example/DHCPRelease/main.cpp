@@ -20,20 +20,20 @@
 
 template <typename T>
 bool setIp(unsigned char* ip, const T& ip_value, int base) {
-    std::array<unsigned char, IP_ADDR_LEN> array;
-    bool successful = PCAP::PCAPHelper::split_string<unsigned char, IP_ADDR_LEN>(ip_value, '.', array, base);
+    std::array<unsigned char, ip_addr_len> array;
+    bool successful = PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip_value, '.', array, base);
     if (successful) {
-        memcpy(ip, array.data(), IP_ADDR_LEN);
+        memcpy(ip, array.data(), ip_addr_len);
     }
     return successful;
 }
 
 template <typename T>
 bool setMac(unsigned char* addr, const T& ethernet_value, int base) {
-    std::array<unsigned char, ETHER_ADDR_LEN> array;
-    bool sucessful = PCAP::PCAPHelper::split_string<unsigned char,ETHER_ADDR_LEN>(ethernet_value, ':', array, base);
+    std::array<unsigned char, ethernet_addr_len> array;
+    bool sucessful = PCAP::PCAPHelper::split_string<unsigned char,ethernet_addr_len>(ethernet_value, ':', array, base);
     if (sucessful) {
-        memcpy(addr, array.data(), ETHER_ADDR_LEN);
+        memcpy(addr, array.data(), ethernet_addr_len);
     }
     return sucessful;
 }
