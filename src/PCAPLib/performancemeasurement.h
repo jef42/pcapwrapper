@@ -33,7 +33,7 @@ struct TO_LOG
     static const bool result = current_level <= level ? true : false;
 };
 
-unsigned long get_time();
+std::chrono::milliseconds::rep get_time();
 
 template <typename T>
 static void log_print(T arg)
