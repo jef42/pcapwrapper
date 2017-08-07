@@ -14,27 +14,11 @@ Session::Session(IpAddress ip_host, IpAddress ip_dest,
 
 }
 
-Session::Session(const Session& rhs)
-    : m_ip_host{rhs.m_ip_host}
-    , m_ip_dest{rhs.m_ip_dest}
-    , m_port_host{rhs.m_port_host}
-    , m_port_dest{rhs.m_port_dest}
-{
-
-}
-
-Session::Session(Session&& rhs) noexcept{
-    std::swap(m_ip_host, rhs.m_ip_host);
-    std::swap(m_ip_dest, rhs.m_ip_dest);
-    std::swap(m_port_host, rhs.m_port_host);
-    std::swap(m_port_dest, rhs.m_port_dest);
-}
-
-auto Session::get_ips() const {
+std::tuple<IpAddress, IpAddress> Session::get_ips() const {
     return std::make_tuple(m_ip_host, m_ip_dest);
 }
 
-auto Session::get_ports() const {
+std::tuple<unsigned short, unsigned short> Session::get_ports() const {
     return std::make_tuple(m_port_host, m_port_dest);
 }
 

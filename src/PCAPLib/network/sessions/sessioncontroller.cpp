@@ -4,8 +4,6 @@
 
 namespace PCAP {
 
-SessionController::~SessionController(){}
-
 void SessionController::receivedPackage(std::unique_ptr<TCPPackage> package) {
     const Session session(package->getSrcIp(), package->getDstIp(), package->getSrcPort(), package->getDstPort());
     bool is_finished = package->getFlags() & 0x01;

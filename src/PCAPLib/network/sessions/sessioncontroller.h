@@ -15,7 +15,7 @@ class SessionController : public PackageListener<TCPPackage>,
                           public PackageListener<UDPPackage>
 {
 public:
-    virtual ~SessionController();
+    virtual ~SessionController() = default;
 
 private:
     virtual void receivedPackage(std::unique_ptr<TCPPackage> package) override;
