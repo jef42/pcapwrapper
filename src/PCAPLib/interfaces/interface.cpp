@@ -13,7 +13,7 @@ Interface::Interface(const std::string& interfaceName)
     }
 }
 
-Interface::~Interface() {
+Interface::~Interface() noexcept{
     if (m_handler) {
         pcap_close(m_handler);
     }

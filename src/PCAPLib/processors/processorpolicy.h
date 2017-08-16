@@ -11,7 +11,7 @@ class ProcessorPolicy {
         return callback_impl(package, header);
     }
 
-    virtual ~ProcessorPolicy() {}
+    virtual ~ProcessorPolicy() noexcept = default;
   protected:
     virtual void callback_impl(const unsigned char *package, const pcap_pkthdr &header) = 0;
 };

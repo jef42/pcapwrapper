@@ -13,7 +13,7 @@ namespace PCAP {
 class ProcessorSave : public ProcessorPolicy
 {
 public:
-    virtual ~ProcessorSave();
+    virtual ~ProcessorSave() noexcept;
 
     bool save(const std::string& filename);
 private:

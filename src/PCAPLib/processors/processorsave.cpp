@@ -5,7 +5,7 @@
 
 namespace PCAP {
 
-ProcessorSave::~ProcessorSave()
+ProcessorSave::~ProcessorSave() noexcept
 {
     for (auto package : m_packages) {
         delete[] package.second;

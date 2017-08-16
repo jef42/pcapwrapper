@@ -29,8 +29,7 @@ class Processor : public ProcessorPolicy {
     void removeSessionController(const std::shared_ptr<SessionController> &controller);
 
     void clearAllListeners();
-
-    virtual ~Processor() {}
+    virtual ~Processor() noexcept = default;
   private:
     template <typename T, typename IT>
     void notifyListeners(IT begin, IT end, const unsigned char* sniff_package, unsigned int length);

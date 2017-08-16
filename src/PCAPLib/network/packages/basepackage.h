@@ -21,7 +21,7 @@ class BasePackage {
     }
     virtual unsigned int getLength() const;
   protected:
-    virtual ~BasePackage();
+    virtual ~BasePackage() noexcept;
 
     unsigned char m_package[snap_len];
     unsigned int m_length;

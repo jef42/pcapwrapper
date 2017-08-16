@@ -14,7 +14,7 @@ namespace PCAP {
 class Interface : public InterfacePolicy {
   public:
     Interface(const std::string& netName);
-    virtual ~Interface();
+    virtual ~Interface() noexcept;
 
     Interface(const Interface& rhs) = delete;
     Interface& operator=(const Interface& rhs) = delete;

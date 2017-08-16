@@ -37,7 +37,7 @@ RawPackage& RawPackage::operator=(RawPackage&& rhs) {
     return *this;
 }
 
-RawPackage::~RawPackage() {
+RawPackage::~RawPackage() noexcept {
     delete[] m_raw;
 }
 

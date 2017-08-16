@@ -16,7 +16,7 @@ IsUp::IsUp(const std::shared_ptr<ForwardPackage>& forward_package,
     m_worker = std::async(&IsUp::worker_impl, this);
 }
 
-IsUp::~IsUp() {
+IsUp::~IsUp() noexcept {
     m_stop_worker = true;
     m_worker.get();
 }

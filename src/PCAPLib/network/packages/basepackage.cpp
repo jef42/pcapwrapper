@@ -37,7 +37,7 @@ void swap(BasePackage& lhs, BasePackage& rhs) {
     std::swap(lhs.m_package, rhs.m_package);
 }
 
-BasePackage::~BasePackage() {
+BasePackage::~BasePackage() noexcept{
 }
 
 unsigned int BasePackage::getLength() const {

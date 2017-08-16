@@ -45,8 +45,8 @@ class Controller : private I, public P {
 
     void start() {
         m_stopThread = false;
-        m_f = std::async([=]() {
-            while (!m_stopThread) {
+        m_f = std::async([this]() {
+            while (!this.m_stopThread) {
                 pcap_pkthdr header;
                 const unsigned char* package = I::readPackage(header);
                 if (package) {

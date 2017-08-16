@@ -12,7 +12,7 @@ public:
     RawPackage& operator=(RawPackage rhs);
     RawPackage(RawPackage &&rhs);
     RawPackage& operator=(RawPackage&& rhs);
-    ~RawPackage();
+    ~RawPackage() noexcept;
 
     friend void swap(RawPackage& first, RawPackage& rhs);
 

@@ -25,7 +25,7 @@ class InterfacePolicy {
         return set_filter_impl(filter);
     }
 
-    virtual ~InterfacePolicy() {}
+    virtual ~InterfacePolicy() noexcept = default;
   protected:
     virtual const unsigned char* read_package_impl(pcap_pkthdr& header) = 0;
     virtual int write_impl(const unsigned char* package, int len) = 0;

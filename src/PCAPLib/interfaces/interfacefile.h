@@ -13,7 +13,7 @@ namespace PCAP {
 class InterfaceFile : public InterfacePolicy {
 public:
     InterfaceFile(const std::string& filename);
-    virtual ~InterfaceFile();
+    virtual ~InterfaceFile() noexcept;
 
     InterfaceFile(const InterfaceFile& rhs) = delete;
     InterfaceFile& operator=(const InterfaceFile& rhs) = delete;

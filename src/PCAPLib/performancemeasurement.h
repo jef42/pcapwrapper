@@ -25,7 +25,7 @@ enum class LOG_LEVEL {
 };
 
 //change this if you want to change logging level
-static constexpr LOG_LEVEL current_level = LOG_LEVEL::None;
+static constexpr LOG_LEVEL current_level = LOG_LEVEL::Error;
 
 template <LOG_LEVEL level>
 struct TO_LOG
@@ -64,7 +64,7 @@ public:
         log_helper<level>(m_function_name, ":", m_line_nr, " ", m_id, " Enter: ", "\n");
     }
 
-    ~LogBlock() {
+    ~LogBlock() noexcept {
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = end - m_start_time;
         log_helper<level>(m_function_name, " ", m_id, " Exit: ", duration.count(), "\n");

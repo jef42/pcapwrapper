@@ -13,7 +13,7 @@ InterfaceFile::InterfaceFile(const std::string& filename)
     }
 }
 
-InterfaceFile::~InterfaceFile() {
+InterfaceFile::~InterfaceFile() noexcept {
     if (m_handler) {
         pcap_close(m_handler);
     }
