@@ -20,8 +20,12 @@ MacAddress::MacAddress() {
     memset(m_mac.data(), 0xFF, ethernet_addr_len);
 }
 
-bool operator==(const MacAddress& lhs, const MacAddress& rhs) {
+bool operator==(const MacAddress& lhs, const MacAddress& rhs) noexcept{
     return lhs.m_mac == rhs.m_mac;
+}
+
+bool operator!=(const MacAddress& lhs, const MacAddress& rhs) noexcept{
+    return !(lhs.m_mac == rhs.m_mac);
 }
 
 std::ostream& operator<<(std::ostream& stream, const MacAddress& rhs) {
@@ -39,7 +43,7 @@ std::string MacAddress::to_string() const {
     return stream.str();
 }
 
-const unsigned char* MacAddress::data() const {
+const unsigned char* MacAddress::data() const noexcept {
     return m_mac.data();
 }
 

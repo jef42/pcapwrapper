@@ -17,9 +17,8 @@ public:
 
     bool save(const std::string& filename);
 private:
-    virtual void callback_impl(const unsigned char *package, const pcap_pkthdr &header);
+    void callback_impl(const unsigned char *package, const pcap_pkthdr &header) override;
 
-    const std::string m_filename;
     std::mutex m_mutex;
 
     using Package = std::pair<pcap_pkthdr, unsigned char*>;

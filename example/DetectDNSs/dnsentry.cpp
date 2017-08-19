@@ -21,8 +21,12 @@ int DNSEntry::get_count() const {
     return m_counter;
 }
 
-bool operator == (const DNSEntry& lhs, const DNSEntry& rhs) {
+bool operator== (const DNSEntry& lhs, const DNSEntry& rhs) noexcept {
     return lhs.m_website == rhs.m_website;
+}
+
+bool operator!= (const DNSEntry& lhs, const DNSEntry& rhs) noexcept {
+    return !(lhs.m_website == rhs.m_website);
 }
 
 std::ostream& operator<<(std::ostream& stream, const DNSEntry& entry) {

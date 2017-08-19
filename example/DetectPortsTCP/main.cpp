@@ -47,13 +47,13 @@ int main(int argc, char* argv[])
         {
             using namespace PCAP::PCAPBuilder;
             auto package = PCAP::PCAPBuilder::make_tcp(std::map<Keys, Option>{
-                    {Keys::Key_Eth_Mac_Src, local_mac},
-                    {Keys::Key_Eth_Mac_Dst, target_mac},
-                    {Keys::Key_Ip_Src, local_ip},
-                    {Keys::Key_Ip_Dst, target_ip},
-                    {Keys::Key_Src_Port, (unsigned short)45022},
-                    {Keys::Key_Dst_Port, (unsigned short)80},
-                    {Keys::Key_Tcp_SeqNr, (unsigned int)i * 3323}
+                    {Keys::Key_Eth_Mac_Src, Option{local_mac}},
+                    {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
+                    {Keys::Key_Ip_Src, Option{local_ip}},
+                    {Keys::Key_Ip_Dst, Option{target_ip}},
+                    {Keys::Key_Src_Port, Option{(unsigned short)45022}},
+                    {Keys::Key_Dst_Port, Option{(unsigned short)80}},
+                    {Keys::Key_Tcp_SeqNr, Option{(unsigned int)i * 3323}}
             });
             package.recalculateChecksums();
             controller->write(package.getPackage(), package.getLength());

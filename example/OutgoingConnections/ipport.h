@@ -15,7 +15,7 @@ struct IPPort {
         m_time = std::time(nullptr);
     }
 
-    bool operator==(const IPPort& rhs) {
+    bool operator==(const IPPort& rhs) noexcept {
         return m_ip == rhs.m_ip && m_src_port == rhs.m_src_port && m_dst_port == rhs.m_dst_port;
     }
 

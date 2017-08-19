@@ -9,7 +9,7 @@ namespace PCAP {
 
 class InterfacePolicy {
   public:
-    InterfacePolicy(const std::string& name)
+    explicit InterfacePolicy(const std::string& name)
         : m_interface_name{name}
     {}
 

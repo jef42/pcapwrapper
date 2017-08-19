@@ -41,12 +41,12 @@ int main(int argc, char* argv[])
         for (const auto ip : ips) {
             using namespace PCAP::PCAPBuilder;
             auto package = PCAP::PCAPBuilder::make_udp(std::map<Keys, Option>{
-                    {Keys::Key_Eth_Mac_Src, local_mac},
-                    {Keys::Key_Eth_Mac_Dst, router_mac},
-                    {Keys::Key_Ip_Src, local_ip},
-                    {Keys::Key_Ip_Dst, ip},
-                    {Keys::Key_Src_Port, (unsigned short)45022},
-                    {Keys::Key_Dst_Port, (unsigned short)45022}
+                    {Keys::Key_Eth_Mac_Src, Option{local_mac}},
+                    {Keys::Key_Eth_Mac_Dst, Option{router_mac}},
+                    {Keys::Key_Ip_Src, Option{local_ip}},
+                    {Keys::Key_Ip_Dst, Option{ip}},
+                    {Keys::Key_Src_Port, Option{(unsigned short)45022}},
+                    {Keys::Key_Dst_Port, Option{(unsigned short)45022}}
             });
             package.recalculateChecksums();
             controller->write(package.getPackage(), package.getLength());

@@ -16,15 +16,20 @@ public:
     explicit IpAddress(unsigned long ip);
     explicit IpAddress();
 
-    friend bool operator==(const IpAddress& lhs, const IpAddress& rhs);
-    friend bool operator!=(const IpAddress& lhs, const IpAddress& rhs);
-    friend bool operator<(const IpAddress& lhs, const IpAddress& rhs);
+    IpAddress(const IpAddress& rhs) noexcept = default;
+    IpAddress(IpAddress&& rhs) noexcept = default;
+    IpAddress& operator=(const IpAddress&) noexcept = default;
+    IpAddress& operator=(IpAddress&&) noexcept = default;
+
+    friend bool operator==(const IpAddress& lhs, const IpAddress& rhs) noexcept;
+    friend bool operator!=(const IpAddress& lhs, const IpAddress& rhs) noexcept;
+    friend bool operator<(const IpAddress& lhs, const IpAddress& rhs) noexcept;
     friend std::ostream& operator<<(std::ostream& stream, const IpAddress& rhs);
-    friend IpAddress operator&(const IpAddress& lhs, const IpAddress& rhs);
+    friend IpAddress operator&(const IpAddress& lhs, const IpAddress& rhs) noexcept;
 
     std::string to_string() const;
-    unsigned long to_long() const;
-    const unsigned char* data() const;
+    unsigned long to_long() const noexcept;
+    const unsigned char* data() const noexcept;
 private:
     std::array<unsigned char, ip_addr_len> m_ip;
 };

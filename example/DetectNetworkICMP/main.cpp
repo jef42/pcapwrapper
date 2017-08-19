@@ -48,12 +48,12 @@ int main(int argc, char* argv[])
         {
             using namespace PCAP::PCAPBuilder;
             auto package = PCAP::PCAPBuilder::make_icmp(std::map<Keys, Option>{
-                {Keys::Key_Eth_Mac_Src, mac},
-                {Keys::Key_Eth_Mac_Dst, PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))},
-                {Keys::Key_Ip_Src, ip},
-                {Keys::Key_Ip_Dst, dest_ip},
-                {Keys::Key_Icmp_Code, (unsigned char)0x00},
-                {Keys::Key_Icmp_Type, (unsigned char)0x08}
+                {Keys::Key_Eth_Mac_Src, Option{mac}},
+                {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+                {Keys::Key_Ip_Src, Option{ip}},
+                {Keys::Key_Ip_Dst, Option{dest_ip}},
+                {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
+                {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}
             });
             package.recalculateChecksums();
             controller->write(package.getPackage(), package.getLength());

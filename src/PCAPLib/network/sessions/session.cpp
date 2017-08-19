@@ -22,7 +22,7 @@ std::tuple<unsigned short, unsigned short> Session::get_ports() const {
     return std::make_tuple(m_port_host, m_port_dest);
 }
 
-bool operator == (const Session& lhs, const Session& rhs) {
+bool operator== (const Session& lhs, const Session& rhs) noexcept {
     return (lhs.m_ip_host == rhs.m_ip_host || lhs.m_ip_host == rhs.m_ip_dest) &&
            (rhs.m_ip_host == lhs.m_ip_host || rhs.m_ip_host == lhs.m_ip_dest) &&
            (lhs.m_port_host == rhs.m_port_host || lhs.m_port_host == rhs.m_port_dest) &&

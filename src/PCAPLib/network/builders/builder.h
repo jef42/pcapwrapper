@@ -17,30 +17,30 @@ namespace PCAPBuilder {
 
 class Option {
 public:
-    Option(unsigned int value)
+    explicit Option(unsigned int value)
         : m_value_int{value}
     {}
 
-    Option(unsigned short value)
+    explicit Option(unsigned short value)
         : m_value_short{value}
     {}
 
-    Option(unsigned char value)
+    explicit Option(unsigned char value)
         : m_value_char{value}
     {}
 
-    Option(PCAP::IpAddress ip)
+    explicit Option(PCAP::IpAddress ip)
         : m_value_ip{ip}
     {}
 
-    Option(PCAP::MacAddress mac)
+    explicit Option(PCAP::MacAddress mac)
         : m_value_mac{mac}
     {}
 
-    Option(const Option& rhs) = default;
-    Option& operator=(const Option& rhs) = default;
-    Option(Option&& rhs) = default;
-    Option& operator=(Option&& rhs) = default;
+    Option(const Option& rhs) noexcept = default;
+    Option& operator=(const Option& rhs) noexcept = default;
+    Option(Option&& rhs) noexcept = default;
+    Option& operator=(Option&& rhs) noexcept = default;
 
     friend void set_ethernet(auto& package, std::map<Keys, Option>& options);
     friend void set_ip(auto& package, std::map<Keys, Option>& options);
@@ -49,13 +49,14 @@ public:
     friend void set_tcp(auto& package, std::map<Keys, Option>& options);
     friend void set_arp(auto& package, std::map<Keys, Option>& options);
 
-
 private:
-    unsigned int m_value_int;
-    unsigned short m_value_short;
-    unsigned char m_value_char;
-    PCAP::IpAddress m_value_ip;
-    PCAP::MacAddress m_value_mac;
+    union {
+        unsigned int m_value_int;
+        unsigned short m_value_short;
+        unsigned char m_value_char;
+        PCAP::IpAddress m_value_ip;
+        PCAP::MacAddress m_value_mac;
+    };
 };
 
 ARPPackage make_apr(std::map<Keys,Option> options);

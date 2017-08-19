@@ -16,7 +16,7 @@ public:
     Session& operator=(const Session& rhs) = default;
     Session& operator=(Session&& rhs) noexcept = default;
 
-    friend bool operator == (const Session& lhs, const Session& rhs);
+    friend bool operator== (const Session& lhs, const Session& rhs) noexcept;
 
     std::tuple<IpAddress, IpAddress> get_ips() const;
     std::tuple<unsigned short, unsigned short> get_ports() const;

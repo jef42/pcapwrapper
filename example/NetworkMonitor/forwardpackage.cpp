@@ -58,7 +58,6 @@ void ForwardPackage::stopClient(PCAP::IpAddress target_ip, PCAP::MacAddress targ
         m_flags.erase(std::remove_if(m_flags.begin(), m_flags.end(),[&target_ip, &target_mac](auto& f){
             return target_ip == f.m_target_ip && target_mac == f.m_target_mac;
         }), m_flags.end());
-        std::cout << "Package size: " << m_packages.size() << std::endl;
     }
 }
 
@@ -90,22 +89,22 @@ void ForwardPackage::workingFunction(PCAP::IpAddress target_ip, PCAP::MacAddress
 
         using namespace PCAP::PCAPBuilder;
         auto package_router = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                        {Keys::Key_Eth_Mac_Src, m_local_mac},
-                                                        {Keys::Key_Eth_Mac_Dst, m_router_mac},
-                                                        {Keys::Key_Arp_Mac_Src, m_local_mac},
-                                                        {Keys::Key_Arp_Mac_Dst, m_router_mac},
-                                                        {Keys::Key_Arp_Opcode, (unsigned char)0x02},
-                                                        {Keys::Key_Ip_Src, target_ip},
-                                                        {Keys::Key_Ip_Dst, m_router_ip}});
+                                                        {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
+                                                        {Keys::Key_Eth_Mac_Dst, Option{m_router_mac}},
+                                                        {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
+                                                        {Keys::Key_Arp_Mac_Dst, Option{m_router_mac}},
+                                                        {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
+                                                        {Keys::Key_Ip_Src, Option{target_ip}},
+                                                        {Keys::Key_Ip_Dst, Option{m_router_ip}}});
 
         auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                        {Keys::Key_Eth_Mac_Src, m_local_mac},
-                                                        {Keys::Key_Eth_Mac_Dst, target_mac},
-                                                        {Keys::Key_Arp_Mac_Src, m_local_mac},
-                                                        {Keys::Key_Arp_Mac_Dst, target_mac},
-                                                        {Keys::Key_Arp_Opcode, (unsigned char)0x02},
-                                                        {Keys::Key_Ip_Src, m_router_ip},
-                                                        {Keys::Key_Ip_Dst, target_ip}});
+                                                        {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
+                                                        {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
+                                                        {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
+                                                        {Keys::Key_Arp_Mac_Dst, Option{target_mac}},
+                                                        {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
+                                                        {Keys::Key_Ip_Src, Option{m_router_ip}},
+                                                        {Keys::Key_Ip_Dst, Option{target_ip}}});
 
         controller->write(package_router.getPackage(), 60);
         controller->write(package_target.getPackage(), 60);

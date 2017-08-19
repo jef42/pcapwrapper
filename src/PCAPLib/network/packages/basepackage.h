@@ -11,17 +11,17 @@ class BasePackage {
 
     BasePackage(const BasePackage& rhs);
     BasePackage& operator=(const BasePackage rhs);
-    BasePackage(BasePackage&& rhs);
-    BasePackage& operator=(BasePackage&& rhs);
+    BasePackage(BasePackage&& rhs) noexcept;
+    BasePackage& operator=(BasePackage&& rhs) noexcept;
 
-    friend void swap(BasePackage& lhs, BasePackage& rhs);
+    friend void swap(BasePackage& lhs, BasePackage& rhs) noexcept;
 
     virtual const unsigned char* getPackage() const {
         return m_package;
     }
     virtual unsigned int getLength() const;
   protected:
-    virtual ~BasePackage() noexcept;
+    virtual ~BasePackage() noexcept = default;
 
     unsigned char m_package[snap_len];
     unsigned int m_length;

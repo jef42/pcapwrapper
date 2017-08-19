@@ -22,22 +22,19 @@ BasePackage& BasePackage::operator=(BasePackage rhs) {
     return *this;
 }
 
-BasePackage::BasePackage(BasePackage&& rhs) {
+BasePackage::BasePackage(BasePackage&& rhs) noexcept {
     swap(*this, rhs);
 }
 
-BasePackage& BasePackage::operator=(BasePackage&& rhs) {
+BasePackage& BasePackage::operator=(BasePackage&& rhs) noexcept {
     auto tmp = BasePackage(std::move(rhs));
     swap(*this, tmp);
     return *this;
 }
 
-void swap(BasePackage& lhs, BasePackage& rhs) {
+void swap(BasePackage& lhs, BasePackage& rhs) noexcept {
     std::swap(lhs.m_length, rhs.m_length);
     std::swap(lhs.m_package, rhs.m_package);
-}
-
-BasePackage::~BasePackage() noexcept{
 }
 
 unsigned int BasePackage::getLength() const {

@@ -9,10 +9,10 @@ namespace PCAP {
 
 class InterfaceThreadSafe : public Interface {
 public:
-    InterfaceThreadSafe(const std::string& name);
+    explicit InterfaceThreadSafe(const std::string& name);
 
 private:
-    virtual int write_impl(const unsigned char* package, int len);
+    int write_impl(const unsigned char* package, int len) override;
 
     static std::mutex m_mutex;
 };

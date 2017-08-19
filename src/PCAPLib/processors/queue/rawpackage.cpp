@@ -41,7 +41,7 @@ RawPackage::~RawPackage() noexcept {
     delete[] m_raw;
 }
 
-void swap(RawPackage& first, RawPackage& rhs) {
+void swap(RawPackage& first, RawPackage& rhs) noexcept {
     using std::swap;
 
     swap(first.m_header, rhs.m_header);

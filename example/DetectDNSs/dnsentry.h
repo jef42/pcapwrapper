@@ -14,7 +14,8 @@ public:
     DNSEntry& operator=(const DNSEntry& rhs) = default;
     DNSEntry& operator=(DNSEntry&& rhs) = default;
 
-    friend bool operator == (const DNSEntry& lhs, const DNSEntry& rhs);
+    friend bool operator== (const DNSEntry& lhs, const DNSEntry& rhs) noexcept;
+    friend bool operator!= (const DNSEntry& lhs, const DNSEntry& rhs) noexcept;
     friend std::ostream& operator<<(std::ostream& stream, const DNSEntry& entry);
 
     void update(std::chrono::time_point<std::chrono::system_clock> time);

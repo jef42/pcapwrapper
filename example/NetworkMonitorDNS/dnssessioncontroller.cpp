@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-DNSSessionController::DNSSessionController(std::vector<PCAP::IpAddress>&& ignore_list)
+DNSSessionController::DNSSessionController(std::vector<PCAP::IpAddress>&& ignore_list) noexcept
     : m_ignore_list{ignore_list}{
 
 }

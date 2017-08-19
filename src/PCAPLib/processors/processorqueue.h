@@ -14,7 +14,7 @@ public:
     ProcessorQueue();
     void stop_worker();
 private:
-    virtual void callback_impl(const unsigned char *package, const pcap_pkthdr &header) override;
+    void callback_impl(const unsigned char *package, const pcap_pkthdr &header) override;
     void worker_impl();
 
     PCAP::Queue<PCAP::RawPackage> m_queue;

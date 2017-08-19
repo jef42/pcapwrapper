@@ -9,13 +9,12 @@
 namespace PCAP {
 namespace PCAPHelper {
 
-class MacListener : public PCAP::PackageListener<PCAP::ARPPackage>
-{
+class MacListener : public PCAP::PackageListener<PCAP::ARPPackage> {
 public:
-    MacListener(const PCAP::IpAddress& ip);
+    explicit MacListener(const PCAP::IpAddress& ip);
     virtual void receivedPackage(std::unique_ptr<PCAP::ARPPackage> package) override;
 
-    PCAP::MacAddress getMac() const;
+    PCAP::MacAddress getMac() const noexcept;
 private:
     PCAP::IpAddress m_ip;
     PCAP::MacAddress m_result;

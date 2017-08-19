@@ -25,18 +25,18 @@ IpAddress::IpAddress() {
     memset(m_ip.data(), 0xFF, ip_addr_len);
 }
 
-bool operator==(const IpAddress& lhs, const IpAddress& rhs) {
+bool operator==(const IpAddress& lhs, const IpAddress& rhs) noexcept {
     return lhs.m_ip[3] == rhs.m_ip[3] &&
            lhs.m_ip[2] == rhs.m_ip[2] &&
            lhs.m_ip[1] == rhs.m_ip[1] &&
            lhs.m_ip[0] == rhs.m_ip[0];
 }
 
-bool operator!=(const IpAddress& lhs, const IpAddress& rhs) {
+bool operator!=(const IpAddress& lhs, const IpAddress& rhs) noexcept {
     return !(lhs == rhs);
 }
 
-bool operator<(const IpAddress& lhs, const IpAddress& rhs) {
+bool operator<(const IpAddress& lhs, const IpAddress& rhs) noexcept {
     return lhs.m_ip < rhs.m_ip;
 }
 
@@ -45,7 +45,7 @@ std::ostream& operator<<(std::ostream& stream, const IpAddress& rhs) {
     return stream;
 }
 
-IpAddress operator&(const IpAddress& lhs, const IpAddress& rhs) {
+IpAddress operator&(const IpAddress& lhs, const IpAddress& rhs) noexcept {
     return IpAddress(lhs.to_long() & rhs.to_long());
 }
 
@@ -59,11 +59,11 @@ std::string IpAddress::to_string() const {
     return result;
 }
 
-unsigned long IpAddress::to_long() const {
+unsigned long IpAddress::to_long() const noexcept {
     return 0 | m_ip[0] << 24 | m_ip[1] << 16 | m_ip[2] << 8 | m_ip[3];
 }
 
-const unsigned char* IpAddress::data() const {
+const unsigned char* IpAddress::data() const noexcept {
     return m_ip.data();
 }
 

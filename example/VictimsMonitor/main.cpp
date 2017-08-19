@@ -44,22 +44,22 @@ int main(int argc, char* argv[])
 
             using namespace PCAP::PCAPBuilder;
             auto package_router = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                            {Keys::Key_Eth_Mac_Src, local_mac},
-                                                            {Keys::Key_Eth_Mac_Dst, router_mac},
-                                                            {Keys::Key_Arp_Mac_Src, local_mac},
-                                                            {Keys::Key_Arp_Mac_Dst, router_mac},
-                                                            {Keys::Key_Arp_Opcode, (unsigned char)0x02},
-                                                            {Keys::Key_Ip_Src, target_ip},
-                                                            {Keys::Key_Ip_Dst, router_ip}});
+                                                            {Keys::Key_Eth_Mac_Src, Option{local_mac}},
+                                                            {Keys::Key_Eth_Mac_Dst, Option{router_mac}},
+                                                            {Keys::Key_Arp_Mac_Src, Option{local_mac}},
+                                                            {Keys::Key_Arp_Mac_Dst, Option{router_mac}},
+                                                            {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
+                                                            {Keys::Key_Ip_Src, Option{target_ip}},
+                                                            {Keys::Key_Ip_Dst, Option{router_ip}}});
 
             auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                            {Keys::Key_Eth_Mac_Src, local_mac},
-                                                            {Keys::Key_Eth_Mac_Dst, target_mac},
-                                                            {Keys::Key_Arp_Mac_Src, local_mac},
-                                                            {Keys::Key_Arp_Mac_Dst, target_mac},
-                                                            {Keys::Key_Arp_Opcode, (unsigned char)0x02},
-                                                            {Keys::Key_Ip_Src, router_ip},
-                                                            {Keys::Key_Ip_Dst, target_ip}});
+                                                            {Keys::Key_Eth_Mac_Src, Option{local_mac}},
+                                                            {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
+                                                            {Keys::Key_Arp_Mac_Src, Option{local_mac}},
+                                                            {Keys::Key_Arp_Mac_Dst, Option{target_mac}},
+                                                            {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
+                                                            {Keys::Key_Ip_Src, Option{router_ip}},
+                                                            {Keys::Key_Ip_Dst, Option{target_ip}}});
 
             controller->write(package_target.getPackage(), 60);
             controller->write(package_router.getPackage(), 60);

@@ -13,8 +13,8 @@ namespace PCAP {
 
 class Interface : public InterfacePolicy {
   public:
-    Interface(const std::string& netName);
-    virtual ~Interface() noexcept;
+    explicit Interface(const std::string& netName);
+    ~Interface() noexcept;
 
     Interface(const Interface& rhs) = delete;
     Interface& operator=(const Interface& rhs) = delete;
@@ -22,9 +22,9 @@ class Interface : public InterfacePolicy {
     Interface& operator=(Interface&& rhs) = delete;
 
   protected:
-    virtual const unsigned char* read_package_impl(pcap_pkthdr& header);
-    virtual int write_impl(const unsigned char* package, int len);
-    virtual bool set_filter_impl(const std::string& filter);
+    const unsigned char* read_package_impl(pcap_pkthdr& header) override;
+    int write_impl(const unsigned char* package, int len) override;
+    bool set_filter_impl(const std::string& filter) override;
 
     bool openInterface(const std::string& netName);
 

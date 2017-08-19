@@ -14,7 +14,7 @@ public:
     RawPackage& operator=(RawPackage&& rhs);
     ~RawPackage() noexcept;
 
-    friend void swap(RawPackage& first, RawPackage& rhs);
+    friend void swap(RawPackage& first, RawPackage& rhs) noexcept;
 
     unsigned char* raw() const {
         return m_raw;
