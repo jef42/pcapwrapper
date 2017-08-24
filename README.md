@@ -25,3 +25,105 @@ make
 ```
 
 This will populate the directory builds with all the executables files. Every example it is needed to be run as `sudo`.
+
+## Example 1.
+
+To detect all the TCP packages that are seen by the network card:
+
+First create a TCP package listener:
+```
+class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage>
+{
+public:
+    void receivedPackage(PCAP::TCPPackage package) override {
+        //TODO
+    }
+};
+```
+
+After that create a controller and set the filter, add the listeners and you just need to start it after that.
+```
+auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(int_name);
+auto tcp_listener = std::make_shared<TCPListener>();
+controller->addListener(tcp_listener);
+controller->setFilter("tcp");
+controller->start();
+```
+
+It is possible to add multiple listeners and to listen to different packages at the same time.
+
+## Example 2.
+
+It is also possible to write packages in the network. Most of the examples are using this. For example to detect all the computers in the network it could use the ICMP protocol to send a broadcast ping and listen for replies.
+
+So we need a ICMP package listener:
+```
+class ICMPListener : public PCAP::PackageListener<PCAP::ICMPPackage>
+{
+public:
+    void receivedPackage(PCAP::ICMPPackage package) override {
+        //TODO
+    }
+};
+```
+
+And also we need to add the listener to controller and to start the controller.
+```
+auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(int_name);
+auto icmp_listener = std::make_shared<ICMPListener>();
+controller->addListener(icmp_listener);
+controller->setFilter("icmp");
+controller->start();
+```
+
+Now we need to create the packages that will be send in the network. to create a map with the pairs, field values.
+```
+auto package = PCAP::PCAPBuilder::make_icmp(std::map<Keys, Option>{
+    {Keys::Key_Eth_Mac_Src, Option{mac}},
+    {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+    {Keys::Key_Ip_Src, Option{ip}},
+    {Keys::Key_Ip_Dst, Option{dest_ip}},
+    {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
+    {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}
+});
+package.recalculateChecksums(); //Recalculate checksums
+controller->write(package.getPackage(), package.getLength()); //Sends package on network
+```
+## Example 3.
+
+A more complicated example is to monitor the entire network. For a complete example check example NetworkMonitor.
+
+First step is to detect the router MAC address. After that we need to detect the computers that are in the network. We can use ARP package to request for MAC addresses for all IPs in the network, and those that are up will reply with their MAC. And then for each IP we need to do the ARP Spoof, so we can receive the packages.
+
+!OBS! Be careful when and where you use this method.
+
+```
+class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>
+{
+public:
+    ARPListener(router_ip, router_mac, local_ip, local_mac);
+    void receivedPackage(PCAP::ARPPackage package) override {
+        send_arp_package(router_ip, local_mac, target_ip, target_mac);
+        send_arp_package(local_ip, target_mac, router_ip, router_mac);
+    }
+};
+
+auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(int_name);
+auto arp_listener = std::make_shared<ARPListener>();
+controller->addListener(arp_listener);
+controller->setFilter("arp");
+controller->start();
+
+for (const auto& target_ip : ips) {
+    auto package = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+        {Keys::Key_Eth_Mac_Src, Option(local_mac)},
+        {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+        {Keys::Key_Arp_Mac_Src, Option(local_mac)},
+        {Keys::Key_Arp_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+        {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
+        {Keys::Key_Ip_Src, Option(local_ip)},
+        {Keys::Key_Ip_Dst, Option(target_ip)}});
+    controller->write(package.getPackage(), package.getLength());
+}
+```
+
