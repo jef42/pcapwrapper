@@ -1,5 +1,5 @@
 COMPILER = g++
-COPTIONS = -std=c++14 -Wall -Wextra -O3
+COPTIONS = -std=c++14 -Wall -Wextra -g
 
 LIB_PATH = 	-L/usr/lib/pcapwrapper
 
@@ -12,13 +12,11 @@ GCC = $(COMPILER) $(COPTIONS)
 all: output
 
 HEADER =	detectnetwork.h \
-		forwardpackage.h \
-		isup.h
+		forwardpackage.h
 
 CORE =	main.o \
 	detectnetwork.o \
-	forwardpackage.o \
-	isup.o
+	forwardpackage.o
 
 %.o: %.cpp $(HEADER)
 	$(GCC) -c -o $@ $<

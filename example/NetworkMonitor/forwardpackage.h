@@ -9,15 +9,17 @@
 #include <pcapwrapper/network/addresses/macaddress.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
 
-struct ThreadFlags {
-    ThreadFlags(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac)
-        : m_target_ip{target_ip}
-        , m_target_mac{target_mac}
+struct NetworkClient {
+    NetworkClient(PCAP::IpAddress ip, PCAP::MacAddress mac)
+        : m_ip{ip}
+        , m_mac{mac}
     {}
-
-    PCAP::IpAddress m_target_ip;
-    PCAP::MacAddress m_target_mac;
-    bool m_stop = false;
+    friend bool operator==(const NetworkClient &lhs, const NetworkClient &rhs) {
+        return lhs.m_ip == rhs.m_ip && lhs.m_mac == rhs.m_mac;
+    }
+    PCAP::IpAddress m_ip;
+    PCAP::MacAddress m_mac;
+    bool m_running = true;
 };
 
 class ForwardPackage {
@@ -27,26 +29,27 @@ public:
                    PCAP::IpAddress router_ip,
                    PCAP::MacAddress router_mac,
                    const std::string& interface_name);
-    void newClient(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac);
-    void stopClient(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac);
+    void new_client(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac);
     void stop();
 
 private:
-    void workingFunction(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac);
-    bool is_stop(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac);
-    auto get_flags(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac);
+    void clients_receivers();
+    void working_function();
 
     PCAP::IpAddress m_local_ip;
     PCAP::MacAddress m_local_mac;
     PCAP::IpAddress m_router_ip;
     PCAP::MacAddress m_router_mac;
     std::string m_interface_name;
+    bool m_stop;
 
-    std::vector<std::tuple<PCAP::IpAddress, PCAP::MacAddress>> m_packages;
+    std::future<void> m_future_clients;
+    std::future<void> m_future_working;
+
 
     std::mutex m_mutex;
-    std::vector<std::unique_ptr<std::thread>> m_threads;
-    std::vector<ThreadFlags> m_flags;
+    std::vector<NetworkClient> m_new_clients;
+    std::vector<NetworkClient> m_existing_clients;
 };
 
 #endif

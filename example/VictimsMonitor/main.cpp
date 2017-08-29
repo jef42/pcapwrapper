@@ -52,6 +52,7 @@ int main(int argc, char* argv[])
                                                             {Keys::Key_Ip_Src, Option{target_ip}},
                                                             {Keys::Key_Ip_Dst, Option{router_ip}}});
 
+            controller->write(package_router.getPackage(), 60);
             auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
                                                             {Keys::Key_Eth_Mac_Src, Option{local_mac}},
                                                             {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
@@ -60,12 +61,10 @@ int main(int argc, char* argv[])
                                                             {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
                                                             {Keys::Key_Ip_Src, Option{router_ip}},
                                                             {Keys::Key_Ip_Dst, Option{target_ip}}});
-
             controller->write(package_target.getPackage(), 60);
-            controller->write(package_router.getPackage(), 60);
         }
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(3s);
+        std::this_thread::sleep_for(10s);
     }
     controller->stop();
 }
