@@ -5,8 +5,8 @@
 
 namespace PCAP {
 
-IPPackage::IPPackage(const unsigned char* p, unsigned int l)
-    : EthernetPackage{p, l}
+IPPackage::IPPackage(const unsigned char* p, unsigned int l, bool modify)
+    : EthernetPackage{p, l, modify}
 {
     m_ip = (sniffip*)(m_package + size_ethernet);
 }

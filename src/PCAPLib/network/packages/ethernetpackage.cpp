@@ -6,8 +6,8 @@
 
 namespace PCAP {
 
-EthernetPackage::EthernetPackage(const unsigned char* p,unsigned int l)
-    : BasePackage{p, l}
+EthernetPackage::EthernetPackage(const unsigned char* p,unsigned int l, bool modify)
+    : BasePackage{p, l, modify}
 {
     m_ethernet = (struct sniffethernet*)m_package;
 }

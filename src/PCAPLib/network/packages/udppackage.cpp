@@ -7,8 +7,8 @@
 
 namespace PCAP {
 
-UDPPackage::UDPPackage(const unsigned char *p, unsigned int l)
-    : IPPackage{p, l} {
+UDPPackage::UDPPackage(const unsigned char *p, unsigned int l, bool modify)
+    : IPPackage{p, l, modify} {
     m_udp = (struct sniffudp*)(m_package + size_ethernet + 5*4);
     m_data = &m_package[size_ethernet + 5 * 4 + sizeof(*m_udp)];
 }

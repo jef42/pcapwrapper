@@ -111,7 +111,7 @@ void set_arp(auto& package, std::map<Keys, Option>& options) {
 
 PCAP::ARPPackage make_apr(std::map<Keys, Option> options) {
 
-    PCAP::ARPPackage package(package_buffer, snap_len);
+    PCAP::ARPPackage package(package_buffer, snap_len, true);
     package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setEtherType(0x0806);
@@ -133,7 +133,7 @@ PCAP::ARPPackage make_apr(std::map<Keys, Option> options) {
 
 PCAP::UDPPackage make_udp(std::map<Keys, Option> options) {
 
-    PCAP::UDPPackage package(package_buffer, snap_len);
+    PCAP::UDPPackage package(package_buffer, snap_len, true);
     package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setEtherType(0x0800);
@@ -159,7 +159,7 @@ PCAP::UDPPackage make_udp(std::map<Keys, Option> options) {
 }
 
 ICMPPackage make_icmp(std::map<Keys, Option> options) {
-    PCAP::ICMPPackage package(package_buffer, snap_len);
+    PCAP::ICMPPackage package(package_buffer, snap_len, true);
     package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setEtherType(0x0800);
@@ -184,7 +184,7 @@ ICMPPackage make_icmp(std::map<Keys, Option> options) {
 }
 
 TCPPackage make_tcp(std::map<Keys, Option> options) {
-    PCAP::TCPPackage package(package_buffer, snap_len);
+    PCAP::TCPPackage package(package_buffer, snap_len, true);
     package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
     package.setEtherType(0x0800);

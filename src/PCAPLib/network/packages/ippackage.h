@@ -11,7 +11,7 @@ namespace PCAP {
 
 class IPPackage : public EthernetPackage {
 public:
-    IPPackage(const unsigned char* p, unsigned int l);
+    IPPackage(const unsigned char* p, unsigned int l, bool modify = false);
 
     IpAddress getSrcIp() const;
     IpAddress getDstIp() const;

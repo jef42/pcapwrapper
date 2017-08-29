@@ -7,8 +7,8 @@
 
 namespace PCAP {
 
-ARPPackage::ARPPackage(const unsigned char *p, unsigned int l)
-    : EthernetPackage{p, l} {
+ARPPackage::ARPPackage(const unsigned char *p, unsigned int l, bool modify)
+    : EthernetPackage{p, l, modify} {
     m_arp = (struct sniffarp*)(m_package + size_ethernet);
 }
 

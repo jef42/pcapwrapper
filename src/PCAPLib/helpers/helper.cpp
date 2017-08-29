@@ -184,7 +184,7 @@ PCAP::MacAddress getMac(const PCAP::IpAddress& target_ip, const std::string& int
         memset(package_buffer, '\0', snap_len);
 
         while (run_flag) {
-            PCAP::ARPPackage package(package_buffer, (unsigned int)snap_len);
+            PCAP::ARPPackage package(package_buffer, (unsigned int)snap_len, true);
             package.setSrcMac(local_mac);
             package.setDstMac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
             package.setEtherType(0x0806);

@@ -12,7 +12,7 @@ namespace PCAP {
 
 class EthernetPackage : public BasePackage {
 public:
-    EthernetPackage(const unsigned char* p, unsigned int l);
+    EthernetPackage(const unsigned char* p, unsigned int l, bool modify = false);
 
     MacAddress getSrcMac() const;
     MacAddress getDstMac() const;

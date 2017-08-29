@@ -13,7 +13,7 @@ namespace PCAP {
 
 class ARPPackage : public EthernetPackage {
   public:
-    ARPPackage(const unsigned char* p, unsigned int l);
+    ARPPackage(const unsigned char* p, unsigned int l, bool modify = false);
     IpAddress getSrcIp() const;
     IpAddress getDstIp() const;
     MacAddress getSrcArpMac() const;

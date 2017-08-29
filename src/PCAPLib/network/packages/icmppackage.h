@@ -10,7 +10,7 @@ namespace PCAP {
 
 class ICMPPackage : public IPPackage {
   public:
-    ICMPPackage(const unsigned char* p, unsigned int l);
+    ICMPPackage(const unsigned char* p, unsigned int l, bool modify = false);
 
     unsigned char getType() const;
     unsigned char getCode() const;

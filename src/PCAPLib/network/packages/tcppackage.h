@@ -10,7 +10,7 @@ namespace PCAP {
 
 class TCPPackage : public IPPackage {
   public:
-    TCPPackage(const unsigned char* p, unsigned int l);
+    TCPPackage(const unsigned char* p, unsigned int l, bool modify = false);
 
     unsigned short getSrcPort() const;
     unsigned short getDstPort() const;

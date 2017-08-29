@@ -7,8 +7,8 @@
 
 namespace PCAP {
 
-ICMPPackage::ICMPPackage(const unsigned char *p, unsigned int l)
-    : IPPackage{p, l} {
+ICMPPackage::ICMPPackage(const unsigned char *p, unsigned int l, bool modify)
+    : IPPackage{p, l, modify} {
     m_icmp = (struct snifficmp*)(m_package + size_ethernet + 5*4);
     m_data = (unsigned char*)(m_package + size_ethernet + 5*4 + sizeof(snifficmp));
 }

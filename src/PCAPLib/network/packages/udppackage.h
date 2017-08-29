@@ -10,7 +10,7 @@ namespace PCAP {
 
 class UDPPackage : public IPPackage {
   public:
-    UDPPackage(const unsigned char* p, unsigned int l);
+    UDPPackage(const unsigned char* p, unsigned int l, bool modify = false);
 
     unsigned short getSrcPort() const;
     unsigned short getDstPort() const;

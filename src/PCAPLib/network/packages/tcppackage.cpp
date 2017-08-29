@@ -7,8 +7,8 @@
 
 namespace PCAP {
 
-TCPPackage::TCPPackage(const unsigned char *p, unsigned int l)
-    : IPPackage{p, l} {
+TCPPackage::TCPPackage(const unsigned char *p, unsigned int l, bool modify)
+    : IPPackage{p, l, modify} {
     m_tcp = (struct snifftcp*)(m_package + size_ethernet + 5*4);
     if (TH_OFF(m_tcp) > 5) { //if there is optional data
         m_tcp_opt = (struct snifftcpopt*)(m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp)); //tcp_opt can be also over the data, is it max 40
