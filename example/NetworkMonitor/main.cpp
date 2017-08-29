@@ -15,7 +15,6 @@
 
 #include "forwardpackage.h"
 #include "detectnetwork.h"
-#include "processor.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -49,26 +48,22 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Start detecting the network" << std::endl;
     
-    auto result = WorkerThread::start(
-        [&](){
-            for (const auto& target_ip : ips) {
-                using namespace PCAP::PCAPBuilder;
-                auto package = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
-                                                                {Keys::Key_Eth_Mac_Src, Option(local_mac)},
-                                                                {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
-                                                                {Keys::Key_Arp_Mac_Src, Option(local_mac)},
-                                                                {Keys::Key_Arp_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
-                                                                {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
-                                                                {Keys::Key_Ip_Src, Option(local_ip)},
-                                                                {Keys::Key_Ip_Dst, Option(target_ip)}});
-                controller->write(package.getPackage(), package.getLength());
-            }
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(10s);
-        }, 
-        [&](){return false;});
-
-    result.get();
+    while (true) {
+        for (const auto& target_ip : ips) {
+            using namespace PCAP::PCAPBuilder;
+            auto package = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+                                                            {Keys::Key_Eth_Mac_Src, Option(local_mac)},
+                                                            {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+                                                            {Keys::Key_Arp_Mac_Src, Option(local_mac)},
+                                                            {Keys::Key_Arp_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+                                                            {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
+                                                            {Keys::Key_Ip_Src, Option(local_ip)},
+                                                            {Keys::Key_Ip_Dst, Option(target_ip)}});
+            controller->write(package.getPackage(), package.getLength());
+        }
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(10s);
+    }
     controller->stop();
     forward_packages->stop();
 }
