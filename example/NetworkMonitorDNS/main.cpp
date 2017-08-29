@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     controller->setFilter("udp dst port 53");
     controller->start();
 
-    std::cout << "Started" << std::endl;
+    std::cout << "NetworkMonitorDNS" << std::endl;
 
     auto start_time = std::chrono::high_resolution_clock::now();
     while (1) {
