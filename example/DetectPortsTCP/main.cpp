@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
     controller->setFilter("tcp");
     controller->start();
 
-    std::cout << "Started" << std::endl;
+    std::cout << "DetectPortsTCP" << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
     while (1)
     {
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
                     {Keys::Key_Ip_Src, Option{local_ip}},
                     {Keys::Key_Ip_Dst, Option{target_ip}},
                     {Keys::Key_Src_Port, Option{(unsigned short)45022}},
-                    {Keys::Key_Dst_Port, Option{(unsigned short)80}},
+                    {Keys::Key_Dst_Port, Option{(unsigned short)i}},
                     {Keys::Key_Tcp_SeqNr, Option{(unsigned int)i * 3323}}
             });
             package.recalculateChecksums();
@@ -59,13 +59,12 @@ int main(int argc, char* argv[])
         }
 
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(3s);
+        std::this_thread::sleep_for(6s);
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> elapsed = end - start;
         if (time != -1 && elapsed.count() > time * 1000)
             break;
     }
-    controller->stop_worker();
     controller->stop();
 }
