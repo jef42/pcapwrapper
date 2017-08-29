@@ -10,7 +10,7 @@
 class ICMPListener : public PCAP::PackageListener<PCAP::ICMPPackage> {
 public:
     ICMPListener(const PCAP::IpAddress& local_ip);
-    virtual void receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package) override;
+    void receivedPackage(PCAP::ICMPPackage package) override;
 private:
     PCAP::IpAddress m_local_ip;
 };

@@ -11,7 +11,7 @@
 class DetectNetwork : public PCAP::PackageListener<PCAP::ICMPPackage>
 {
 public:
-    virtual void receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package) override;
+    virtual void receivedPackage(PCAP::ICMPPackage package) override;
 private:
     std::vector<std::tuple<PCAP::IpAddress, PCAP::MacAddress>> m_packages;
 };

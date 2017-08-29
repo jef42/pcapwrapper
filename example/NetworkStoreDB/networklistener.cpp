@@ -10,22 +10,22 @@ NetworkListener::NetworkListener(const std::shared_ptr<DBConnection>& db_connect
 
 }
 
-void NetworkListener::receivedPackage(std::unique_ptr<PCAP::TCPPackage> package)
+void NetworkListener::receivedPackage(PCAP::TCPPackage package)
 {
     m_db_connection->execute(std::make_shared<InsertCommand>(m_db_connection, package));
 }
 
-void NetworkListener::receivedPackage(std::unique_ptr<PCAP::UDPPackage> package)
+void NetworkListener::receivedPackage(PCAP::UDPPackage package)
 {
     m_db_connection->execute(std::make_shared<InsertCommand>(m_db_connection, package));
 }
 
-void NetworkListener::receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package)
+void NetworkListener::receivedPackage(PCAP::ICMPPackage package)
 {
     m_db_connection->execute(std::make_shared<InsertCommand>(m_db_connection, package));
 }
 
-void NetworkListener::receivedPackage(std::unique_ptr<PCAP::ARPPackage> package)
+void NetworkListener::receivedPackage(PCAP::ARPPackage package)
 {
     m_db_connection->execute(std::make_shared<InsertCommand>(m_db_connection, package));
 }

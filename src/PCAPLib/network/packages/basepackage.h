@@ -7,8 +7,7 @@ namespace PCAP {
 
 class BasePackage {
   public:
-    BasePackage(const unsigned char* p, unsigned int l);
-
+    BasePackage(const unsigned char* p, unsigned int l, bool modify = false);
     BasePackage(const BasePackage& rhs);
     BasePackage& operator=(const BasePackage rhs);
     BasePackage(BasePackage&& rhs) noexcept;
@@ -21,10 +20,12 @@ class BasePackage {
     }
     virtual unsigned int getLength() const;
   protected:
-    virtual ~BasePackage() noexcept = default;
+    virtual ~BasePackage() noexcept;
 
-    unsigned char m_package[snap_len];
+    //unsigned char m_package[snap_len];
+    unsigned char* m_package;
     unsigned int m_length;
+    bool m_modify;
 };
 
 }

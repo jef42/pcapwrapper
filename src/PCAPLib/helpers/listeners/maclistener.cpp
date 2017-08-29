@@ -11,9 +11,9 @@ MacListener::MacListener(const PCAP::IpAddress& ip)
 
 }
 
-void MacListener::receivedPackage(std::unique_ptr<PCAP::ARPPackage> package) {
-    if (package->getSrcIp() == m_ip) {
-        m_result = package->getSrcMac();
+void MacListener::receivedPackage(PCAP::ARPPackage package) {
+    if (package.getSrcIp() == m_ip) {
+        m_result = package.getSrcMac();
         m_founded = true;
     }
 }

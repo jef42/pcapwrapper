@@ -17,7 +17,7 @@ class DNSSessionController : public PCAP::SessionController {
 public:
     DNSSessionController(const std::vector<PCAP::IpAddress>& target);
 
-    virtual void newSession(const PCAP::Session& session, std::unique_ptr<PCAP::UDPPackage> package) override;
+    void newSession(const PCAP::Session& session, PCAP::UDPPackage package) override;
     std::map<PCAP::IpAddress, std::vector<DNSEntry>> get_websites();
 
 private:

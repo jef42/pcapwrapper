@@ -13,7 +13,7 @@
 class TcpListener : public PCAP::PackageListener<PCAP::TCPPackage> {
 public:
     TcpListener(const PCAP::IpAddress& ip);
-    virtual void receivedPackage(std::unique_ptr<PCAP::TCPPackage> package) override;
+    void receivedPackage(PCAP::TCPPackage package) override;
 private:
     PCAP::IpAddress m_local_ip;
     std::vector<IPPort> m_cache;

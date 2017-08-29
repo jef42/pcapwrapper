@@ -13,12 +13,12 @@ public:
         : Listener{netmask}
     {}
 
-    virtual void receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package) override {
-        if ((package->getSrcIp() & m_netmask) == m_netmask) {
-            inc_count(package->getSrcIp());
+    virtual void receivedPackage(PCAP::ICMPPackage package) override {
+        if ((package.getSrcIp() & m_netmask) == m_netmask) {
+            inc_count(package.getSrcIp());
         }
-        if ((package->getDstIp() & m_netmask) == m_netmask) {
-            inc_count(package->getDstIp());
+        if ((package.getDstIp() & m_netmask) == m_netmask) {
+            inc_count(package.getDstIp());
         }
     }
 };

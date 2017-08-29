@@ -11,8 +11,8 @@ HTTPSessionController::HTTPSessionController(const PCAP::IpAddress& mask, std::v
 {
 }
 
-void HTTPSessionController::receivedPackage(std::unique_ptr<PCAP::TCPPackage> package) {
-    auto src_ip = package->getSrcIp();
+void HTTPSessionController::receivedPackage(PCAP::TCPPackage package) {
+    auto src_ip = package.getSrcIp();
     if (m_mask != (m_mask & src_ip)) {
         return; //not in the same network
     }
@@ -20,10 +20,10 @@ void HTTPSessionController::receivedPackage(std::unique_ptr<PCAP::TCPPackage> pa
     if (std::find(std::begin(m_ignore_ips), std::end(m_ignore_ips), src_ip) == std::end(m_ignore_ips)) {
         auto it = std::find_if(std::begin(m_workers), std::end(m_workers), [&src_ip](auto &a){ return a->get_src_ip() == src_ip; });
         if (it != std::end(m_workers)) {
-            (*it)->new_package(std::move(package));
+            (*it)->new_package(package);
         }
         else {
-            m_workers.push_back(std::make_shared<HTTPWorker>(std::move(package)));
+            m_workers.push_back(std::make_shared<HTTPWorker>(package));
         }
     }
 }

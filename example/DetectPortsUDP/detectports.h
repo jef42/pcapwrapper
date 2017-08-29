@@ -15,7 +15,7 @@ class DetectPorts : public PCAP::PackageListener<PCAP::ICMPPackage>
 public:
     DetectPorts(PCAP::IpAddress desiredIp);
 
-    virtual void receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package) override;
+    void receivedPackage(PCAP::ICMPPackage package) override;
     std::vector<int> get_ports();
 
 private:

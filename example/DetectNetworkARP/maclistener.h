@@ -1,7 +1,6 @@
 #ifndef MACLISTENER_H
 #define MACLISTENER_H
 
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -13,7 +12,7 @@
 
 class MacListener : public PCAP::PackageListener<PCAP::ARPPackage> {
 public:
-    void receivedPackage(std::unique_ptr<PCAP::ARPPackage> package) override;
+    void receivedPackage(PCAP::ARPPackage package) override;
 private:
     std::vector<std::tuple<PCAP::IpAddress, PCAP::MacAddress>> m_packages;
 };

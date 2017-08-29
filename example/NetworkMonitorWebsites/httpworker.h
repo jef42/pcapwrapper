@@ -12,8 +12,8 @@
 
 class HTTPWorker {
 public:
-    HTTPWorker(std::unique_ptr<PCAP::TCPPackage> package);
-    void new_package(std::unique_ptr<PCAP::TCPPackage> package);
+    HTTPWorker(PCAP::TCPPackage package);
+    void new_package(PCAP::TCPPackage package);
 
     void finish();
     PCAP::IpAddress get_src_ip() const;

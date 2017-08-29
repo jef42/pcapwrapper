@@ -49,9 +49,9 @@ void ForwardPackage::stopClient(PCAP::IpAddress target_ip, PCAP::MacAddress targ
         std::cout << "Package doesn't exist in flags" << std::endl;
     }
 
+    std::cout << "Stoping a thread " << target_ip.to_string() << " " << target_mac.to_string() << std::endl;
     {
         std::lock_guard<std::mutex> m_lock(m_mutex);
-        std::cout << "Stoping a thread " << target_ip.to_string() << " " << target_mac.to_string() << std::endl;
         m_packages.erase(std::remove_if(m_packages.begin(), m_packages.end(), [&target_ip, &target_mac](auto& p){
             return target_ip == std::get<0>(p) && target_mac == std::get<1>(p);
         }), m_packages.end());
@@ -96,6 +96,7 @@ void ForwardPackage::workingFunction(PCAP::IpAddress target_ip, PCAP::MacAddress
                                                         {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
                                                         {Keys::Key_Ip_Src, Option{target_ip}},
                                                         {Keys::Key_Ip_Dst, Option{m_router_ip}}});
+        controller->write(package_router.getPackage(), 60);
 
         auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
                                                         {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
@@ -105,8 +106,6 @@ void ForwardPackage::workingFunction(PCAP::IpAddress target_ip, PCAP::MacAddress
                                                         {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
                                                         {Keys::Key_Ip_Src, Option{m_router_ip}},
                                                         {Keys::Key_Ip_Dst, Option{target_ip}}});
-
-        controller->write(package_router.getPackage(), 60);
         controller->write(package_target.getPackage(), 60);
 
         using namespace std::chrono_literals;

@@ -10,8 +10,8 @@ TCPListener::TCPListener(const PCAP::IpAddress& local_ip)
 
 }
 
-void TCPListener::receivedPackage(std::unique_ptr<PCAP::TCPPackage> package) {
-    if (package->getSrcIp() == m_target_ip) {
+void TCPListener::receivedPackage(PCAP::TCPPackage package) {
+    if (package.getSrcIp() == m_target_ip) {
             std::cout << "We finished" << std::endl;
             m_finished = true;
     }

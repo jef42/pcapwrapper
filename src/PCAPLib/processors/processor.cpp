@@ -61,7 +61,7 @@ void Processor::notifyListeners(IT begin, IT end, const unsigned char* sniff_pac
     std::for_each(begin, end, [&sniff_package, length](std::weak_ptr<PackageListener<T>> p) {
         std::shared_ptr<PackageListener<T>> listener = p.lock();
         if (listener != nullptr) {
-            listener->receivedPackage(std::make_unique<T>(sniff_package, length));
+            listener->receivedPackage(T(sniff_package, length));
         }
     });
 }

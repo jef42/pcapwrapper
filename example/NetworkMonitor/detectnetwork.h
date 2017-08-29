@@ -15,7 +15,7 @@ public:
     DetectNetwork(const std::shared_ptr<ForwardPackage> &forward_package, 
                   const std::shared_ptr<IsUp> &is_up, std::vector<PCAP::IpAddress>&& ignore_ips);
 
-    virtual void receivedPackage(std::unique_ptr<PCAP::ARPPackage> package) override;
+    virtual void receivedPackage(PCAP::ARPPackage package) override;
 private:
     std::shared_ptr<ForwardPackage> m_forward_package;
     std::shared_ptr<IsUp> m_is_up;

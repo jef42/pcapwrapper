@@ -41,16 +41,16 @@ void append_to(const std::string& filename, const std::string& data) {
     stream.close();
 }
 
-CookieWorker::CookieWorker(std::unique_ptr<PCAP::TCPPackage> package) {
+CookieWorker::CookieWorker(PCAP::TCPPackage package) {
     m_worker_finished = false;
     m_worker = std::async(&CookieWorker::worker, this);
-    m_src_ip = package->getSrcIp();
+    m_src_ip = package.getSrcIp();
     m_file_name = create_dir() + "/" + m_src_ip.to_string();
-    this->new_package(std::move(package));
+    this->new_package(package);
 }
 
-void CookieWorker::new_package(std::unique_ptr<PCAP::TCPPackage> package) {
-    std::string data = std::string((char*)package->getData(), package->getDataLength());
+void CookieWorker::new_package(PCAP::TCPPackage package) {
+    std::string data = std::string((char*)package.getData(), package.getDataLength());
 
     std::unique_lock<std::mutex> lk(m_worker_mutex);
     m_payloads.emplace_back(data);

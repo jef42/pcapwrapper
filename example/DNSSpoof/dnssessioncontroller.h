@@ -19,9 +19,9 @@ private:
         std::string m_ip;
     };
 
-    virtual void receivedPackage(std::unique_ptr<PCAP::UDPPackage> package) override;
-    void send_reply(std::unique_ptr<PCAP::UDPPackage> package, const std::string &ip);
-    void forward_question(std::unique_ptr<PCAP::UDPPackage> package);
+    void receivedPackage(PCAP::UDPPackage package) override;
+    void send_reply(PCAP::UDPPackage package, const std::string &ip);
+    void forward_question(PCAP::UDPPackage package);
     void read_websites();
     std::string is_block_website(const std::string& data);
 

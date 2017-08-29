@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-void DetectTCP::receivedPackage(std::unique_ptr<PCAP::TCPPackage> package)
+void DetectTCP::receivedPackage(PCAP::TCPPackage package)
 {
-    std::cout << package->getSrcIp() << ":" << package->getSrcPort() << " -> " << package->getDstIp() << ":" << package->getDstPort() << std::endl;
+    std::cout << package.getSrcIp() << ":" << package.getSrcPort() << " -> " << package.getDstIp() << ":" << package.getDstPort() << std::endl;
 }
 

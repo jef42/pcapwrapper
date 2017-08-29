@@ -5,7 +5,6 @@
 #include <pcapwrapper/network/packages/tcppackage.h>
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/processors/processor.h>
-#include <pcapwrapper/processors/processorqueue.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/builders/keys.h>
@@ -32,7 +31,7 @@ int main(int argc, char* argv[])
     const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface);
     int time = std::stoi(argv[3]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorQueue>::getController(interface);
+    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface);
     auto sniffer = std::make_shared<DetectPorts>(target_ip);
     controller->addListener(sniffer);
 

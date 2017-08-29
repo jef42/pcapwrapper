@@ -12,7 +12,7 @@
 class DNSSessionController : public PCAP::SessionController {
 public:
     explicit DNSSessionController(std::vector<PCAP::IpAddress>&& ignore_list) noexcept;
-    virtual void newSession(const PCAP::Session& session, std::unique_ptr<PCAP::UDPPackage> package) override;
+    virtual void newSession(const PCAP::Session& session, PCAP::UDPPackage package) override;
     void finish();
 private:
     std::vector<std::shared_ptr<DNSWorker>> m_workers;

@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
             controller->write(package.getPackage(), package.getLength());
         }
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
+        std::this_thread::sleep_for(10s);
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> elapsed = end - start;

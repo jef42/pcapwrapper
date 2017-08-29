@@ -13,7 +13,7 @@
 class CookieSessionController : public PCAP::SessionController {
 public:
     CookieSessionController(const PCAP::IpAddress& mask, std::vector<PCAP::IpAddress>&& ignore_ip);
-    virtual void receivedPackage(std::unique_ptr<PCAP::TCPPackage> package) override;
+    void receivedPackage(PCAP::TCPPackage package) override;
     void finish();
 private:
     PCAP::IpAddress m_mask;

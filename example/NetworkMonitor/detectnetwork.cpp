@@ -11,10 +11,10 @@ DetectNetwork::DetectNetwork(const std::shared_ptr<ForwardPackage> &forward_pack
 
 }
 
-void DetectNetwork::receivedPackage(std::unique_ptr<PCAP::ARPPackage> package)
+void DetectNetwork::receivedPackage(PCAP::ARPPackage package)
 {
-    auto src_ip = package->getSrcIp();
-    auto src_mac = package->getSrcMac();
+    auto src_ip = package.getSrcIp();
+    auto src_mac = package.getSrcMac();
     if (std::find(m_ignore_ips.begin(), m_ignore_ips.end(), src_ip) == m_ignore_ips.end())
     {
         m_forward_package->newClient(src_ip, src_mac);

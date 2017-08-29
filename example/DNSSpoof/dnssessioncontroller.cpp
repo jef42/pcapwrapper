@@ -51,43 +51,42 @@ std::string DNSSessionController::is_block_website(const std::string& data) {
     return "0.0.0.0";
 }
 
-void DNSSessionController::receivedPackage(std::unique_ptr<PCAP::UDPPackage> package) {
+void DNSSessionController::receivedPackage(PCAP::UDPPackage package) {
 
-    const unsigned char* query = &(package->getData()[QUERIES+1]);
-    std::string data = std::string((char*) query);
+    std::string data = std::string((char*) &(package.getData()[QUERIES+1]));
 
     if (m_force_all) {
-        send_reply(std::move(package), m_local_ip.to_string());
+        send_reply(package, m_local_ip.to_string());
     }
     else {
         auto ip = is_block_website(data);
         if (ip != "0.0.0.0") {
-            send_reply(std::move(package), ip);
+            send_reply(package, ip);
         }
         else {
-            forward_question(std::move(package));
+            forward_question(package);
         }
     }
 }
 
-void DNSSessionController::send_reply(std::unique_ptr<PCAP::UDPPackage> package, const std::string& ip) {
+void DNSSessionController::send_reply(PCAP::UDPPackage package, const std::string& ip) {
     auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(m_interface_name);
 
     DNSBuilder builder;
-    builder << create_ethernet(package->getDstMac().to_string(), package->getSrcMac().to_string());
-    builder << create_ip(package->getDstIp().to_string(), package->getSrcIp().to_string());
-    builder << create_udp(package->getDstPort(), package->getSrcPort());
-    builder << create_dns_question(1, package->getData(), QUERIES);
-    builder << create_dns_query(&package->getData()[QUERIES]);
+    builder << create_ethernet(package.getDstMac().to_string(), package.getSrcMac().to_string());
+    builder << create_ip(package.getDstIp().to_string(), package.getSrcIp().to_string());
+    builder << create_udp(package.getDstPort(), package.getSrcPort());
+    builder << create_dns_question(1, package.getData(), QUERIES);
+    builder << create_dns_query(&package.getData()[QUERIES]);
     builder << create_dns_answer(ip);
     builder.build();
     controller->write(builder.getPackage(), builder.getLength());
 }
 
-void DNSSessionController::forward_question(std::unique_ptr<PCAP::UDPPackage> package) {
+void DNSSessionController::forward_question(PCAP::UDPPackage package) {
     auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(m_interface_name);
 
-    DNSParser parser(package->getPackage(), package->getLength());
+    DNSParser parser(package.getPackage(), package.getLength());
     memcpy(parser.m_ethernet->m_ether_shost, m_local_mac.data(), 6);
     memcpy(parser.m_ethernet->m_ether_dhost, m_router_mac.data(), 6);
     parser.build();

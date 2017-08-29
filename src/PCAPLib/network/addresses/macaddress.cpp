@@ -21,7 +21,12 @@ MacAddress::MacAddress() {
 }
 
 bool operator==(const MacAddress& lhs, const MacAddress& rhs) noexcept{
-    return lhs.m_mac == rhs.m_mac;
+    return lhs.m_mac[5] == rhs.m_mac[5] &&
+           lhs.m_mac[4] == rhs.m_mac[4] &&
+           lhs.m_mac[3] == rhs.m_mac[3] &&
+           lhs.m_mac[2] == rhs.m_mac[2] &&
+           lhs.m_mac[1] == rhs.m_mac[1] &&
+           lhs.m_mac[0] == rhs.m_mac[0];
 }
 
 bool operator!=(const MacAddress& lhs, const MacAddress& rhs) noexcept{

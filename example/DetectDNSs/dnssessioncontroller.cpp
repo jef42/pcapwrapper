@@ -16,10 +16,9 @@ DNSSessionController::DNSSessionController(const std::vector<PCAP::IpAddress>& t
     : m_targets_ip{target}
 {}
 
-void DNSSessionController::newSession(const PCAP::Session&, std::unique_ptr<PCAP::UDPPackage> package) {
-    if (std::find(m_targets_ip.begin(), m_targets_ip.end(), package->getSrcIp()) != m_targets_ip.end()) {
-        const unsigned char* query = &(package->getData()[QUERIES+1]);
-        std::string data = std::string((char*) query);
+void DNSSessionController::newSession(const PCAP::Session&, PCAP::UDPPackage package) {
+    if (std::find(m_targets_ip.begin(), m_targets_ip.end(), package.getSrcIp()) != m_targets_ip.end()) {
+        std::string data = std::string((char*) &(package.getData()[QUERIES+1]));
         std::transform(data.begin(), data.end(), data.begin(), [](auto c) {
             if (std::isalpha(c))
                 return c;
@@ -28,7 +27,7 @@ void DNSSessionController::newSession(const PCAP::Session&, std::unique_ptr<PCAP
         static const std::string www = "www.";
         if (std::equal(www.begin(), www.end(), data.begin())) {
             std::lock_guard<std::mutex> lk(m_websites_mutex);
-            m_websites[package->getSrcIp()].emplace_back(data, std::chrono::high_resolution_clock::now());
+            m_websites[package.getSrcIp()].emplace_back(data, std::chrono::high_resolution_clock::now());
         }
     }
 }

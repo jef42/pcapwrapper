@@ -18,15 +18,15 @@ public:
     virtual ~SessionController() noexcept = default;
 
 private:
-    void receivedPackage(std::unique_ptr<TCPPackage> package) override;
-    void receivedPackage(std::unique_ptr<UDPPackage> package) override;
+    void receivedPackage(TCPPackage package) override;
+    void receivedPackage(UDPPackage package) override;
 
-    virtual void newSession(const Session&, std::unique_ptr<TCPPackage>) {}
-    virtual void appendSession(const Session&, std::unique_ptr<TCPPackage>) {}
+    virtual void newSession(const Session&, TCPPackage) {}
+    virtual void appendSession(const Session&, TCPPackage) {}
     virtual void finishedSession(const Session&) {}
 
-    virtual void newSession(const Session&, std::unique_ptr<UDPPackage>) {}
-    virtual void appendSession(const Session&, std::unique_ptr<UDPPackage>) {}
+    virtual void newSession(const Session&, UDPPackage) {}
+    virtual void appendSession(const Session&, UDPPackage) {}
 
 private:
     std::vector<Session> m_tcp_session;

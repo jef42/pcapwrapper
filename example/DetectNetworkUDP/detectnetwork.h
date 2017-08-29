@@ -2,6 +2,7 @@
 #define DETECTNETWORK_H
 
 #include <vector>
+#include <tuple>
 
 #include <pcapwrapper/listeners/packagelistener.h>
 #include <pcapwrapper/network/packages/icmppackage.h>
@@ -11,7 +12,7 @@
 class DetectNetwork : public PCAP::PackageListener<PCAP::ICMPPackage>
 {
 public:
-    virtual void receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package) override;
+    void receivedPackage(PCAP::ICMPPackage package) override;
 private:
     std::vector<std::tuple<PCAP::IpAddress, PCAP::MacAddress>> m_packages;
 };

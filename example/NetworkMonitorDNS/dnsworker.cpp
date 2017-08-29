@@ -8,7 +8,6 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
-#include <iostream>
 
 static const int TRANSACTION_ID = 0;
 static const int FLAGS = 2;
@@ -48,17 +47,17 @@ void append_to(const std::string& filename, const std::string& data) {
     stream.close();
 }
 
-DNSWorker::DNSWorker(std::unique_ptr<PCAP::UDPPackage> package) {
+DNSWorker::DNSWorker(PCAP::UDPPackage package) {
     m_worker_finished = false;
     m_worker = std::async(&DNSWorker::worker, this);
-    m_src_ip = package->getSrcIp();
+    m_src_ip = package.getSrcIp();
     m_file_name = create_dir() + "/" + m_src_ip.to_string();
-    this->new_session(std::move(package));
+    this->new_session(package);
 }
 
-void DNSWorker::new_session(std::unique_ptr<PCAP::UDPPackage> package) {
+void DNSWorker::new_session(PCAP::UDPPackage package) {
 
-    const unsigned char* query = &(package->getData()[QUERIES+1]);
+    const unsigned char* query = &(package.getData()[QUERIES+1]);
     std::string data = std::string((char*) query);
 
     std::unique_lock<std::mutex> lk(m_worker_mutex);

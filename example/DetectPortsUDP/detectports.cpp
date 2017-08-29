@@ -12,10 +12,10 @@ DetectPorts::DetectPorts(PCAP::IpAddress desiredIp)
     reset();
 }
 
-void DetectPorts::receivedPackage(std::unique_ptr<PCAP::ICMPPackage> package)
+void DetectPorts::receivedPackage(PCAP::ICMPPackage package)
 {
-    if (package->getSrcIp() == m_expectedip) {
-        const unsigned char* data = package->getPackage();
+    if (package.getSrcIp() == m_expectedip) {
+        const unsigned char* data = package.getPackage();
         unsigned short port = (((unsigned short)data[64]) << 0x08) | ((unsigned short)data[65]);
         m_ports[port] = true;
     }

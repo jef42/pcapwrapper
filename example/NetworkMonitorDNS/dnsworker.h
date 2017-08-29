@@ -12,8 +12,8 @@
 
 class DNSWorker {
 public:
-    DNSWorker(std::unique_ptr<PCAP::UDPPackage> package);
-    void new_session(std::unique_ptr<PCAP::UDPPackage> package);
+    DNSWorker(PCAP::UDPPackage package);
+    void new_session(PCAP::UDPPackage package);
 
     void finish();
     PCAP::IpAddress get_src_ip() const;

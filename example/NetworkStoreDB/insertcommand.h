@@ -17,10 +17,10 @@ class InsertCommand : public DBCommand
 public:
     friend class DBConnection;
 
-    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::UDPPackage>& package);
-    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::TCPPackage>& package);
-    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::ICMPPackage>& package);
-    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, std::unique_ptr<PCAP::ARPPackage>& package);
+    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, PCAP::UDPPackage package);
+    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, PCAP::TCPPackage package);
+    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, PCAP::ICMPPackage package);
+    explicit InsertCommand(const std::shared_ptr<DBConnection>& db, PCAP::ARPPackage package);
     virtual ~InsertCommand() = default;
 private:
     sqlite3_stmt* m_stmt;

@@ -12,7 +12,7 @@ class DetectPorts : public PCAP::PackageListener<PCAP::TCPPackage>
 public:
     DetectPorts(PCAP::IpAddress desiredIp);
 
-    virtual void receivedPackage(std::unique_ptr<PCAP::TCPPackage> package);
+    void receivedPackage(PCAP::TCPPackage package) override;
 
 private:
     PCAP::IpAddress m_expectedip;

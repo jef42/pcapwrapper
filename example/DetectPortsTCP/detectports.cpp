@@ -10,12 +10,12 @@ DetectPorts::DetectPorts(PCAP::IpAddress desiredIp)
 
 }
 
-void DetectPorts::receivedPackage(std::unique_ptr<PCAP::TCPPackage> package)
+void DetectPorts::receivedPackage(PCAP::TCPPackage package)
 {
-    if (package->getSrcIp() == m_expectedip) {
-        unsigned char flags = package->getFlags();
+    if (package.getSrcIp() == m_expectedip) {
+        unsigned char flags = package.getFlags();
         if ( flags & 0x02 ) {
-            std::cout << package->getSrcPort() << std::endl;
+            std::cout << package.getSrcPort() << std::endl;
         }
     }
 }
