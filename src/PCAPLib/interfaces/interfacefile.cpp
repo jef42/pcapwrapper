@@ -2,6 +2,8 @@
 
 #include <cstring>
 #include <stdexcept>
+#include <chrono>
+#include <thread>
 
 namespace PCAP {
 
@@ -35,7 +37,16 @@ bool InterfaceFile::set_filter_impl(const std::string&) {
 }
 
 const unsigned char* InterfaceFile::read_package_impl(pcap_pkthdr &header) {
-    return pcap_next(m_handler, &header);
+    static auto cr_time = std::chrono::duration_cast< std::chrono::milliseconds >(
+                            std::chrono::system_clock::now().time_since_epoch());;
+
+    auto tmp = pcap_next(m_handler, &header);
+    if (tmp) {
+        std::chrono::milliseconds new_time{header.ts.tv_sec * 1000 + header.ts.tv_usec / 1000};
+        std::this_thread::sleep_for(new_time - cr_time);
+        cr_time = new_time;
+    }
+    return tmp;
 }
 
 int InterfaceFile::write_impl(const unsigned char *package, int len) {
