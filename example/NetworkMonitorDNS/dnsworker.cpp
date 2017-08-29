@@ -85,7 +85,7 @@ void DNSWorker::worker() {
         for (auto& data : m_tmp_websites) {
 
             std::transform(data.begin(), data.end(), data.begin(), [](auto c) {
-                if (std::isalpha(c))
+                if (std::isprint(c))
                     return c;
                 return '.';
             });
