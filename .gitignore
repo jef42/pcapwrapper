@@ -18,6 +18,7 @@ example/HelperScripts/
 *.a
 *.gch
 *.txt
+!CMakeLists.txt
 *.pcap
 *.pyc
 *.py
