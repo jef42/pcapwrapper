@@ -8,23 +8,26 @@ This is a wrapper over `C` pcap library. The purpose of the library is to enable
 
 Because it is a wrapper over pcap library, it requires this library to be installed. The wrapper is built using `libpcap-dev 1.7.4-2` library, `g++` and `C++17` on Unix system. It doesn't work on Windows systems.
 
+To managed to build the library, it is required `cmake` version `3.5`
+
 One of the example programs requires `sqlite3`.
 
 ## Build
 
-Select the path were to install the library using the variables `INSTALL_INCLUDE_PATH` and `INSTALL_LIB_PATH` in Makefile, otherwise is using the default values which is `/usr/include/pcapwrapper` respectively `/usr/lib/pcapwrapper`.
+The build the library are required 4 steps
+1. `mkdir build`
+2. `cd build`
+2. `cmake ..`
+3. `make`
 
-It is easy to build, just go where is the Makefile and:
+To be able to build the examples you need to install the library using the command `sudo make install` and will be added under `/usr/lib/pcapwrapper`
+
+To build the examples change inside directory `example` and run:
 ```
 make
-````
-
-In case to build the examples change inside `example` directory and run:
-```
-make
 ```
 
-This will populate the directory builds with all the executables files. Every example it is needed to be run as `sudo`.
+This will populate the directory builds under example with all the executables files. Every example is needed to be run with the right privileges.
 
 ## Example 1.
 
