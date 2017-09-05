@@ -14,7 +14,7 @@ One of the example programs requires `sqlite3`.
 
 ## Build
 
-The build the library are required 4 steps
+To build the library are required 4 steps
 1. `mkdir build`
 2. `cd build`
 2. `cmake ..`
@@ -22,10 +22,7 @@ The build the library are required 4 steps
 
 To be able to build the examples you need to install the library using the command `sudo make install` and will be added under `/usr/lib/pcapwrapper`
 
-To build the examples change inside directory `example` and run:
-```
-make
-```
+To build the examples are required the same 4 steps to build the library only that, the commands needs to be run from the directory `example`
 
 This will populate the directory builds under example with all the executables files. Every example is needed to be run with the right privileges.
 
