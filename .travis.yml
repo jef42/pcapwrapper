@@ -1,4 +1,4 @@
-language: cpp
+language: generic
 os:
 - linux
 addons:
@@ -10,12 +10,14 @@ addons:
         - cmake
         - g++-6
 env:
-  - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
   - COMPILER_NAME=gcc CXX=g++-6 CC=gcc-6
 
 sudo: required
 before_install:
     - sudo apt-get install libpcap-dev
+
+install:
+    - export CXX="g++-6" CC="gcc-6"
 
 script:
     - mkdir build
