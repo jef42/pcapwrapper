@@ -1,5 +1,8 @@
 # pcapwrapper
 
+## Build status
+- Travis: [![Travis Build Status](https://travis-ci.org/pocoproject/poco.png?branch=develop)](https://travis-ci.org/jef42/pcapwrapper)
+
 ## Motivation
 
 This is a wrapper over `C` pcap library. The purpose of the library is to enable easy access to the network. It is easier to write/read/analyze packages that are sent over the network.
