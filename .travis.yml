@@ -26,4 +26,5 @@ script:
     - sudo make install
     - cd ../example
     - mkdir builds
+    - cd builds
     - cmake .. && make
