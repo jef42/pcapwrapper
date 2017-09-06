@@ -22,4 +22,7 @@ install:
 script:
     - mkdir build
     - cd build
+    - cmake .. && make && make install
+    - cd ../example
+    - mkdir build
     - cmake .. && make
