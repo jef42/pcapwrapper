@@ -22,7 +22,8 @@ install:
 script:
     - mkdir build
     - cd build
-    - cmake .. && make && make install
+    - cmake .. && make
+    - sudo make install
     - cd ../example
-    - mkdir build
+    - mkdir builds
     - cmake .. && make
