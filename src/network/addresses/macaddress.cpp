@@ -3,13 +3,16 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
+#include <stdexcept>
 
 #include "../../../include/helpers/helper.h"
 
 namespace PCAP {
 
 MacAddress::MacAddress(const std::string& mac) {
-    PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(mac, ':', m_mac, 16);
+    if (!PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(mac, ':', m_mac, 16)) {
+        throw std::runtime_error("Wrong argument");
+    }
 }
 
 MacAddress::MacAddress(unsigned char *data) {

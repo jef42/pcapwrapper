@@ -24,6 +24,7 @@ public:
     friend bool operator==(const IpAddress& lhs, const IpAddress& rhs) noexcept;
     friend bool operator!=(const IpAddress& lhs, const IpAddress& rhs) noexcept;
     friend bool operator<(const IpAddress& lhs, const IpAddress& rhs) noexcept;
+    friend bool operator>(const IpAddress& lhs, const IpAddress& rhs) noexcept;
     friend std::ostream& operator<<(std::ostream& stream, const IpAddress& rhs);
     friend IpAddress operator&(const IpAddress& lhs, const IpAddress& rhs) noexcept;
 

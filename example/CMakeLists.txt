@@ -6,9 +6,7 @@ include_directories("/usr/include/pcapwrapper/")
 MACRO(ADD_DEFAULT_TARGET name path)
     file(GLOB_RECURSE SOURCES ${path})
     add_executable(${name} ${SOURCES})
-    target_link_libraries(${name} "pcapwrapper")
-    target_link_libraries(${name} "pcap")
-    target_link_libraries(${name} "pthread")
+    target_link_libraries(${name} "pcapwrapper" "pcap" "pthread")
 ENDMACRO()
 
 #Add targets

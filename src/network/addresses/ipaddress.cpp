@@ -1,13 +1,15 @@
 #include "../../../include/network/addresses/ipaddress.h"
 
 #include <cstring>
+#include <stdexcept>
 
 #include "../../../include/helpers/helper.h"
 
 namespace PCAP {
 
 IpAddress::IpAddress(const std::string& ip) {
-    PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip, '.', m_ip, 10);
+    if (!PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip, '.', m_ip, 10))
+        throw std::runtime_error("Wrong argument");
 }
 
 IpAddress::IpAddress(unsigned char *data) {
@@ -38,6 +40,10 @@ bool operator!=(const IpAddress& lhs, const IpAddress& rhs) noexcept {
 
 bool operator<(const IpAddress& lhs, const IpAddress& rhs) noexcept {
     return lhs.m_ip < rhs.m_ip;
+}
+
+bool operator>(const IpAddress& lhs, const IpAddress& rhs) noexcept {
+    return lhs.m_ip > rhs.m_ip;
 }
 
 std::ostream& operator<<(std::ostream& stream, const IpAddress& rhs) {

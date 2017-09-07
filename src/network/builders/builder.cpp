@@ -171,8 +171,8 @@ ICMPPackage make_icmp(std::map<Keys, Option> options) {
     package.setFragmentOffset(0x0);
     package.setTTL(0x64);
     package.setProtocol(0x01);
-    package.setSrcIp(IpAddress("255:255:255:255"));
-    package.setDstIp(IpAddress("255:255:255:255"));
+    package.setSrcIp(IpAddress("255.255.255.255"));
+    package.setDstIp(IpAddress("255.255.255.255"));
     package.setType(0x08);
     package.setCode(0x00);
 
@@ -196,8 +196,8 @@ TCPPackage make_tcp(std::map<Keys, Option> options) {
     package.setFragmentOffset(0x0);
     package.setTTL(0x64);
     package.setProtocol(0x06);
-    package.setSrcIp(IpAddress("255:255:255:255"));
-    package.setDstIp(IpAddress("255:255:255:255"));
+    package.setSrcIp(IpAddress("255.255.255.255"));
+    package.setDstIp(IpAddress("255.255.255.255"));
     package.setSrcPort(1);
     package.setDstPort(1);
     package.setSeqNr(0x3323);
