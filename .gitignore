@@ -17,9 +17,10 @@ example/HelperScripts/
 *.out
 *.a
 *.gch
+*.pcap
 *.txt
 !CMakeLists.txt
-*.pcap
+!tests/pcapfiles/*
 *.pyc
 *.py
 *.log
