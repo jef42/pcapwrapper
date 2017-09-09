@@ -1,7 +1,7 @@
 # pcapwrapper
 
 ## Build status
-- Travis: [![Travis Build Status](https://travis-ci.org/pocoproject/poco.png?branch=develop)](https://travis-ci.org/jef42/pcapwrapper)
+- Travis: [![Travis Build Status](https://travis-ci.org/jef42/pcapwrapper.svg?branch=master)](https://travis-ci.org/jef42/pcapwrapper)
 
 ## Motivation
 
