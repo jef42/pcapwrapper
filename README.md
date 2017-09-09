@@ -2,6 +2,7 @@
 
 ## Build status
 - Travis: [![Travis Build Status](https://travis-ci.org/jef42/pcapwrapper.svg?branch=master)](https://travis-ci.org/jef42/pcapwrapper)
+- Coveralls [![Coverage Status](https://coveralls.io/repos/github/jef42/pcapwrapper/badge.svg)](https://coveralls.io/github/jef42/pcapwrapper)
 
 ## Motivation
 
