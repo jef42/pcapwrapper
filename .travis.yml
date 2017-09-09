@@ -21,10 +21,10 @@ before_install:
     - sudo cmake CMakeLists.txt
     - sudo make 
     - sudo cp *.a /usr/lib
-    - pip install --user cpp-coveralls
     - sudo ln -sf /usr/bin/gcov-6 /usr/bin/gcov
 
 install:
+    - gem install coveralls-lcov
     - export CXX="g++-6" CC="gcc-6"
 
 script:
@@ -49,4 +49,4 @@ after_script:
     - lcov --directory . --capture --output-file coverage.info
     - lcov --remove coverage.info '/usr/*' --output-file coverage.info
     - lcov --list coverage.info
-    - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
+    - coveralls-lcov coverage.info
