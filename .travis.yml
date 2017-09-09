@@ -16,6 +16,10 @@ sudo: required
 before_install:
     - sudo apt-get install libpcap-dev
     - sudo apt-get install libgtest-dev
+    - cd /usr/src/gtest
+    - sudo cmake CMakeLists.txt
+    - sudo make 
+    - sudo cp *.a /usr/lib
     - pip install --user cpp-coveralls
 
 install:
