@@ -40,7 +40,7 @@ script:
     - mkdir builds
     - cd builds
     - cmake .. && make
-    - ./runtests
+    - ./runTests
     - ../../build
 
 after_success:
