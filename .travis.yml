@@ -41,7 +41,7 @@ script:
     - cd builds
     - cmake .. && make
     - ./runTests
-    - ../../build
+    - cd ../../build
 
 after_success:
     - lcov --directory . --capture --output-file coverage.info
