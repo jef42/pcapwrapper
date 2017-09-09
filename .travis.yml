@@ -15,6 +15,7 @@ env:
 sudo: required
 before_install:
     - sudo apt-get install libpcap-dev
+    - sudo apt-get install libgtest-dev
     - pip install --user cpp-coveralls
 
 install:
