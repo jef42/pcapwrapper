@@ -37,6 +37,7 @@ bool split_string(const std::string& s, const char splitter, std::array<T,N>& ar
         try {
             std::string aux = tmp.substr(0, p);
             int b = std::stoi(aux, 0, base);
+            if (i >= N) return false;
             array[i++] = b;
             tmp = tmp.substr(p+1, std::string::npos);
         } catch( std::invalid_argument& ex) {
