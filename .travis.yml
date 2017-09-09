@@ -26,6 +26,7 @@ install:
     - export CXX="g++-6" CC="gcc-6"
 
 script:
+    - cd ${TRAVIS_BUILD_DIR}
     - mkdir build
     - cd build
     - cmake .. -DGTEST_FOUND=ON
