@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -25,7 +26,7 @@ int main(int argc, char* argv[]) {
     std::for_each(&argv[3], &argv[argc], [&ignore_ips](auto ip) { ignore_ips.emplace_back(PCAP::IpAddress(ip)); });
     ignore_ips.emplace_back(local_ip);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     auto session_controller = std::make_shared<DNSSessionController>(std::move(ignore_ips));
     controller->addSessionController(session_controller);
     controller->setFilter("udp dst port 53");

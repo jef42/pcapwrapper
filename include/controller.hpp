@@ -8,7 +8,6 @@
 #include <mutex>
 #include <algorithm>
 #include <type_traits>
-#include <unordered_map>
 
 #include <pcap/pcap.h>
 
@@ -20,13 +19,10 @@ namespace PCAP {
 template <typename I, typename P>
 class Controller : private I, public P {
   public:
-    static std::shared_ptr<Controller> getController(const std::string& interface) {
-        static std::unordered_map<std::string, std::shared_ptr<Controller<I,P>>> controllers;
-        auto &controller_ptr = controllers[interface];
-        if (!controller_ptr)
-            controller_ptr = std::shared_ptr<Controller<I,P>>(new Controller<I,P>(interface));
-        return controller_ptr;
-    }
+    Controller(const std::string& interfaceName)
+        :  I{interfaceName},
+           m_stopThread{true}
+    {}
 
     using I::readPackage;
     using I::write;
@@ -62,10 +58,6 @@ class Controller : private I, public P {
     }
 
   private:
-    Controller(const std::string& interfaceName)
-        :  I{interfaceName},
-           m_stopThread{true}
-    {}
 
     bool m_stopThread;
     std::future<void> m_f;

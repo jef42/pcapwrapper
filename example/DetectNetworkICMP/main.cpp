@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <sstream>
 #include <memory>
-#include <string.h>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/helpers/helper.h>
@@ -33,7 +32,7 @@ int main(int argc, char* argv[])
     std::string interface = argv[1];
     int time = std::stoi(argv[2]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface);
     auto sniffer = std::make_shared<DetectNetwork>();
     controller->addListener(sniffer);
 

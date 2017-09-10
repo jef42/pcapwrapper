@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interface.h>
@@ -90,7 +91,7 @@ void ForwardPackage::stop() {
 }
 
 void ForwardPackage::working_function() {
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(m_interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(m_interface_name);
 
     while (!m_stop) {
         {

@@ -14,19 +14,18 @@ env:
 
 sudo: required
 before_install:
-    - sudo apt-get install libpcap-dev
-    - sudo apt-get install libgtest-dev
-    - sudo apt-get install lcov
+    - sudo apt-get install libpcap-dev #install pcap library
+    - sudo apt-get install lcov #install lcov
+    - sudo apt-get install libgtest-dev #install and build gtest
     - cd /usr/src/gtest
     - sudo cmake CMakeLists.txt
     - sudo make 
     - sudo cp *.a /usr/lib
-    - sudo ln -sf /usr/bin/gcov-6 /usr/bin/gcov
+    - sudo ln -sf /usr/bin/gcov-6 /usr/bin/gcov #update version of the gcov
 
 install:
-    - gem install coveralls-lcov
-    - export CXX="g++-6" CC="gcc-6"
-
+    - gem install coveralls-lcov #install coveralls-lcov
+    - export CXX="g++-6" CC="gcc-6" #update g++ version
 script:
     - cd ${TRAVIS_BUILD_DIR}
     - mkdir build
@@ -46,6 +45,7 @@ script:
     - cd ../../build
 
 after_script:
+    #create coverage statistics and send them to coveralls
     - lcov --directory . --capture --output-file coverage.info
     - lcov --remove coverage.info '/usr/*' --output-file coverage.info
     - lcov --list coverage.info

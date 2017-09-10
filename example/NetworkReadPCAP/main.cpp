@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/processors/processor.h>
@@ -17,7 +18,7 @@ int main(int argc, char* argv[])
     const std::string filename = argv[1];
     const int time = std::stoi(argv[2]);
 
-    auto controller = PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>::getController(filename);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<DetectTCP>();
     controller->addListener(listener);
     controller->start();

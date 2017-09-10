@@ -2,7 +2,7 @@
 #define PCAPINTERFACEFILE_H
 
 #include <string>
-#include <memory>
+#include <chrono>
 
 #include <pcap/pcap.h>
 
@@ -30,6 +30,7 @@ public:
     char m_errbuf[PCAP_ERRBUF_SIZE];
 
     pcap_t* m_handler;
+    std::chrono::milliseconds m_cr_time;
 };
 
 }

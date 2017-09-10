@@ -174,7 +174,7 @@ PCAP::MacAddress getMac(const PCAP::IpAddress& target_ip, const std::string& int
     PCAP::IpAddress local_ip = getIp(interface);
     PCAP::MacAddress local_mac = getMac(interface);
     auto mac_listener = std::make_shared<MacListener>(target_ip);
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface);
     controller->addListener(mac_listener);
     controller->start();
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/processors/processor.h>
@@ -23,7 +24,7 @@ int main(int argc, char* argv[])
     std::string db_name = argv[2];
     int time = std::stoi(argv[3]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(net_interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(net_interface);
     auto db_connection = std::make_shared<DBConnection>(db_name);
     auto listener = std::make_shared<NetworkListener>(db_connection);
     controller->addListener(static_cast<std::shared_ptr<PCAP::PackageListener<PCAP::TCPPackage>>>(listener));

@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string.h>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface_name);
     const auto broadcast_ip = PCAP::PCAPHelper::getBroadcastIp(interface_name);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(interface_name);
 
     std::cout << "Started" << std::endl;
 

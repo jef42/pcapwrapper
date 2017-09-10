@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <map>
 #include <fstream>
+#include <memory>
 
 #include <pcapwrapper/processors/processor.h>
 #include <pcapwrapper/interfaces/interface.h>
@@ -34,7 +35,7 @@ int main(int argc, char* argv[]) {
     std::vector<PCAP::IpAddress> targets_ip;
     std::for_each(&argv[2], &argv[argc], [&targets_ip](auto ip){ targets_ip.emplace_back(PCAP::IpAddress(ip)); });
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface);
     auto sessioncontroller = std::make_shared<DNSSessionController>(targets_ip);
     controller->addSessionController(sessioncontroller);
 

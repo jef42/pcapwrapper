@@ -2,7 +2,7 @@
 #include <future>
 #include <thread>
 #include <chrono>
-#include <string.h>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interface.h>
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     std::for_each(std::begin(targets_ip), std::end(targets_ip), [&targets_mac, &interface](auto ip)
         { targets_mac.emplace_back(PCAP::PCAPHelper::getMac(ip, interface)); });
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(interface);
     controller->start();
 
     std::cout << "Started" << std::endl;

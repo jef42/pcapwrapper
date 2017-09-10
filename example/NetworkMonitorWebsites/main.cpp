@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -27,7 +28,7 @@ int main(int argc, char* argv[]) {
 
     int time = std::stoi(argv[2]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     auto httpsessioncontroller = std::make_shared<HTTPSessionController>(net, std::move(ignore_ips));
     controller->addSessionController(httpsessioncontroller);
     controller->setFilter("tcp dst port 80");

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <string.h>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interface.h>
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     const auto router_ip = PCAP::PCAPHelper::getRouterIp(net_interf);
     const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, net_interf);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(net_interf);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(net_interf);
     controller->start();
 
     std::cout << "Started" << std::endl;

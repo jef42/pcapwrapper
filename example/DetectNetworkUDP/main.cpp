@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -27,7 +28,7 @@ int main(int argc, char* argv[])
     auto ips = PCAP::PCAPHelper::getIps(local_ip, PCAP::PCAPHelper::getMask(interface));
     const int time = std::stoi(argv[2]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface);
     auto listener = std::make_shared<DetectNetwork>();
     controller->addListener(listener);
 

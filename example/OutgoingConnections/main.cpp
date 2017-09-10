@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     auto tcp_listener = std::make_shared<TcpListener>(local_ip);
     auto udp_listener = std::make_shared<UdpListener>(local_ip);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     controller->addListener(tcp_listener);
     controller->addListener(udp_listener);
 

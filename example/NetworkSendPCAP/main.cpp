@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <future>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
@@ -14,7 +15,7 @@ class SendProcessor : public PCAP::ProcessorPolicy
 {
 private:
     void callback_impl(const unsigned char *package, const pcap_pkthdr &header) override {
-        static auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(interface_name);
+        static auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(interface_name);
         controller->write(package, header.len);
     }
 };
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]) {
     interface_name = argv[1];
     const std::string filename = argv[2];
 
-    auto controller = PCAP::Controller<PCAP::InterfaceFile, SendProcessor>::getController(filename);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, SendProcessor>>(filename);
     controller->start();
 
     std::promise<void>().get_future().wait();

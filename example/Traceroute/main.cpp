@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string.h>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     const auto router_ip = PCAP::PCAPHelper::getRouterIp(interface_name);
     const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     auto icmp_listener = std::make_shared<ICMPListener>(local_ip);
     auto tcp_listener = std::make_shared<TCPListener>(target_ip);
 

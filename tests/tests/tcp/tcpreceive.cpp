@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <chrono>
 #include <thread>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
@@ -23,13 +24,13 @@ public:
 };
 
 TEST(TestReceiveTCP, TestOnePackage) {
-    // std::string filename = std::string("../pcapfiles/tcp1package.pcap");
-    // auto controller = PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>::getController(filename);
-    // auto listener = std::make_shared<ListenerReceiveTCP>();
-    // controller->addListener(listener);
-    // controller->start();
+    std::string filename = std::string("../pcapfiles/tcp1package.pcap");
+    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto listener = std::make_shared<ListenerReceiveTCP>();
+    controller->addListener(listener);
+    controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));
-    //ASSERT_EQ(true, listener->is_done());
-    //controller->stop();
+    EXPECT_EQ(true, listener->is_done());
+    controller->stop();
 }

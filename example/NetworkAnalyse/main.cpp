@@ -3,6 +3,7 @@
 #include <chrono>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/processors/processor.h>
@@ -62,7 +63,7 @@ int main(int argc, char* argv[]) {
     auto netmask = PCAP::PCAPHelper::getMask(interface_name);
     auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     auto tcp_listener = std::make_shared<TCPListener>(netmask & local_ip);
     auto udp_listener = std::make_shared<UDPListener>(netmask & local_ip);
     auto icmp_listener = std::make_shared<ICMPListener>(netmask & local_ip);

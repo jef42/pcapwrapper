@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include <string.h>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
         return std::find(std::begin(ignore_ips), std::end(ignore_ips), ip) != std::end(ignore_ips);
     }));
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     controller->setFilter("arp");
 
     auto forward_packages = std::make_shared<ForwardPackage>(local_ip, local_mac, router_ip, router_mac, interface_name);

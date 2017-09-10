@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interface.h>
@@ -70,7 +71,7 @@ void DNSSessionController::receivedPackage(PCAP::UDPPackage package) {
 }
 
 void DNSSessionController::send_reply(PCAP::UDPPackage package, const std::string& ip) {
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(m_interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(m_interface_name);
 
     DNSBuilder builder;
     builder << create_ethernet(package.getDstMac().to_string(), package.getSrcMac().to_string());
@@ -84,7 +85,7 @@ void DNSSessionController::send_reply(PCAP::UDPPackage package, const std::strin
 }
 
 void DNSSessionController::forward_question(PCAP::UDPPackage package) {
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(m_interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(m_interface_name);
 
     DNSParser parser(package.getPackage(), package.getLength());
     memcpy(parser.m_ethernet->m_ether_shost, m_local_mac.data(), 6);

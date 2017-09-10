@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iostream>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/processors/processorsave.h>
@@ -17,7 +18,7 @@ int main(int argc, char* argv[])
     const std::string filename = argv[2];
     const int time = std::stoi(argv[3]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorSave>::getController(interface);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorSave>>(interface);
     controller->start();
 
     std::cout << "Started" << std::endl;

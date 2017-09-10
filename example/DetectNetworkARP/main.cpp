@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 #include <chrono>
-#include <string.h>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     auto ips = PCAP::PCAPHelper::getIps(local_ip, net_mask);
     int time = std::stoi(argv[2]);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
     auto mac_listener = std::make_shared<MacListener>();
     controller->addListener(mac_listener);
     controller->start();

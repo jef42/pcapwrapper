@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <netinet/in.h>
 #include <cstring>
+#include <memory>
 
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
@@ -113,7 +114,7 @@ int main(int argc, char* argv[]) {
     const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
     const auto target_mac = local_ip == target_ip ? PCAP::PCAPHelper::getMac(interface_name) : PCAP::PCAPHelper::getMac(target_ip, interface_name);
 
-    auto controller = PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>::getController(interface_name);
+    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(interface_name);
     DHCPBuilder builder;
     builder << create_ethernet(target_mac.to_string(), router_mac.to_string());
     builder << create_ip(target_ip.to_string(), router_ip.to_string());
