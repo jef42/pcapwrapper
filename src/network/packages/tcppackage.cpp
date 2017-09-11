@@ -104,4 +104,13 @@ unsigned int TCPPackage::getDataLength() const {
     return ntohs(m_ip->m_ip_len) - ((IP_HL(m_ip) + TH_OFF(m_tcp)) * 4);
 }
 
+bool operator==(const TCPPackage &lhs, const TCPPackage &rhs) {
+    return static_cast<const IPPackage&>(lhs) == static_cast<const IPPackage&>(rhs) &&
+           memcmp(lhs.m_tcp, rhs.m_tcp, sizeof(snifftcp)) == 0;
+}
+
+bool operator!=(const TCPPackage &lhs, const TCPPackage &rhs) {
+    return !(lhs == rhs);
+}
+
 }

@@ -38,6 +38,9 @@ class TCPPackage : public IPPackage {
 
     unsigned int getLength() const override; // return total length
 
+    friend bool operator==(const TCPPackage &lhs, const TCPPackage &rhs);
+    friend bool operator!=(const TCPPackage &lhs, const TCPPackage &rhs);
+
   private:
     snifftcp* m_tcp;
     snifftcpopt* m_tcp_opt;

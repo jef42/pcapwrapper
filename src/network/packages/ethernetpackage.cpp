@@ -36,4 +36,12 @@ void EthernetPackage::setEtherType(unsigned short type) {
     m_ethernet->m_ether_type = htons(type);
 }
 
+bool operator==(const EthernetPackage &lhs, const EthernetPackage &rhs) {
+    return memcmp(lhs.m_ethernet, rhs.m_ethernet, sizeof(sniffethernet)) == 0;
+}
+
+bool operator!=(const EthernetPackage &lhs, const EthernetPackage &rhs) {
+    return !(lhs == rhs);
+}
+
 }

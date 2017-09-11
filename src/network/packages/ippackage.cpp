@@ -91,4 +91,13 @@ void IPPackage::setProtocol(unsigned char protocol) {
     m_ip->m_ip_p = protocol;
 }
 
+bool operator==(const IPPackage &lhs, const IPPackage &rhs) {
+    return static_cast<const EthernetPackage&>(lhs) == static_cast<const EthernetPackage&>(rhs) &&
+           memcmp(lhs.m_ip, rhs.m_ip, sizeof(sniffip)) == 0;
+}
+
+bool operator!=(const IPPackage &lhs, const IPPackage &rhs) {
+    return !(lhs == rhs);
+}
+
 }

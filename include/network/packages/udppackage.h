@@ -29,6 +29,9 @@ class UDPPackage : public IPPackage {
 
     unsigned int getLength() const override;
 
+    friend bool operator==(const UDPPackage &lhs, const UDPPackage &rhs);
+    friend bool operator!=(const UDPPackage &lhs, const UDPPackage &rhs);
+
   private:
     sniffudp* m_udp;
     unsigned char* m_data;

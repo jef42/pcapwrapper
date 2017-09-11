@@ -60,4 +60,13 @@ unsigned int UDPPackage::getLength() const {
     return sizeof(*m_ethernet) + ntohs(m_ip->m_ip_len);
 }
 
+bool operator==(const UDPPackage &lhs, const UDPPackage &rhs) {
+    return static_cast<const IPPackage&>(lhs) == static_cast<const IPPackage&>(rhs) &&
+           memcmp(lhs.m_udp, rhs.m_udp, sizeof(sniffudp)) == 0;
+}
+
+bool operator!=(const UDPPackage &lhs, const UDPPackage &rhs) {
+    return !(lhs == rhs);
+}
+
 }

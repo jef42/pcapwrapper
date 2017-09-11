@@ -36,6 +36,9 @@ class ARPPackage : public EthernetPackage {
 
     unsigned int getLength() const override;
 
+    friend bool operator==(const ARPPackage &lhs, const ARPPackage &rhs);
+    friend bool operator!=(const ARPPackage &lhs, const ARPPackage &rhs);
+
   protected:
     sniffarp* m_arp;
 };

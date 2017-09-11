@@ -51,4 +51,13 @@ unsigned int ICMPPackage::getLength() const {
     return sizeof(*m_ethernet) + ntohs(m_ip->m_ip_len);
 }
 
+bool operator==(const ICMPPackage &lhs, const ICMPPackage &rhs) {
+    return static_cast<const IPPackage&>(lhs) == static_cast<const IPPackage&>(rhs) &&
+           memcmp(lhs.m_icmp, rhs.m_icmp, sizeof(snifficmp) == 0);
+}
+
+bool operator!=(const ICMPPackage &lhs, const ICMPPackage &rhs) {
+    return !(lhs == rhs);
+}
+
 }

@@ -22,6 +22,8 @@ public:
     void setDstMac(MacAddress mac);
     void setEtherType(unsigned short type);
 
+    friend bool operator==(const EthernetPackage &lhs, const EthernetPackage &rhs);
+    friend bool operator!=(const EthernetPackage &lhs, const EthernetPackage &rhs);
 
 protected:
     sniffethernet* m_ethernet;

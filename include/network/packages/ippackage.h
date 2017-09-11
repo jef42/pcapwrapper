@@ -35,6 +35,9 @@ public:
     void setTTL(unsigned char ttl);
     void setProtocol(unsigned char protocol);
 
+    friend bool operator==(const IPPackage &lhs, const IPPackage &rhs);
+    friend bool operator!=(const IPPackage &lhs, const IPPackage &rhs);
+
 protected:
     sniffip* m_ip;
 };

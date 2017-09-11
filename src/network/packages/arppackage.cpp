@@ -88,4 +88,13 @@ unsigned int ARPPackage::getLength() const {
     return sizeof(*m_ethernet) + sizeof(*m_arp);
 }
 
+bool operator==(const ARPPackage &lhs, const ARPPackage &rhs) {
+    return static_cast<const EthernetPackage&>(lhs) == static_cast<const EthernetPackage&>(rhs) &&
+           memcmp(lhs.m_arp, rhs.m_arp, sizeof(sniffarp)) == 0;
+}
+
+bool operator!=(const ARPPackage &lhs, const ARPPackage &rhs) {
+    return !(lhs == rhs);
+}
+
 }

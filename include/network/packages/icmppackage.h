@@ -26,6 +26,9 @@ class ICMPPackage : public IPPackage {
 
     unsigned int getLength() const override;
 
+    friend bool operator==(const ICMPPackage &lhs, const ICMPPackage &rhs);
+    friend bool operator!=(const ICMPPackage &lhs, const ICMPPackage &rhs);
+
   protected:
     snifficmp* m_icmp;
     unsigned char* m_data;
