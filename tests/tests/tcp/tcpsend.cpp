@@ -58,7 +58,18 @@ TEST_F(TestSendTCP, TestSendOnePackage) {
     using namespace PCAP::PCAPBuilder;
     auto package = PCAP::PCAPBuilder::make_tcp(std::map<Keys, Option>{
         {Keys::Key_Eth_Mac_Src, Option{PCAP::MacAddress("80:80:80:AA:AA:AA")}},
-    });
+        {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress{"80:80:80:AA:BB:CC"}}},
+        {Keys::Key_Ip_Src, Option{PCAP::IpAddress{"128.23.21.55"}}},
+        {Keys::Key_Ip_Dst, Option{PCAP::IpAddress{"123.22.33.22"}}},
+        {Keys::Key_Ip_TTL, Option{(unsigned char)0x60}},
+        {Keys::Key_Ip_Flags, Option{(unsigned char)0x02}},
+        {Keys::Key_Ip_Id, Option{(unsigned short)0x0102}},
+        {Keys::Key_Ip_Length, Option{(unsigned short)0x3c}},
+        {Keys::Key_Src_Port, Option{(unsigned short)0x5023}},
+        {Keys::Key_Dst_Port, Option{(unsigned short)0x4241}},
+        {Keys::Key_Tcp_SeqNr, Option{(unsigned int)0x12324}},
+        {Keys::Key_Tcp_AckNr, Option{(unsigned int)0x332123}},
+        {Keys::Key_Tcp_Flags, Option{(unsigned char)0x04}}});
     package.recalculateChecksums();
     send_package(package);
 
