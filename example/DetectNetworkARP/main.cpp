@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     while (1) {
         for (const auto& target_ip : ips) {
             using namespace PCAP::PCAPBuilder;
-            auto package = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+            auto package = PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
                                                                 {Keys::Key_Eth_Mac_Src, Option{local_mac}},
                                                                 {Keys::Key_Arp_Mac_Src, Option{local_mac}},
                                                                 {Keys::Key_Ip_Src, Option{local_ip}},

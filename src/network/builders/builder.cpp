@@ -109,7 +109,7 @@ void set_arp(auto& package, std::map<Keys, Option>& options) {
     }
 }
 
-PCAP::ARPPackage make_apr(std::map<Keys, Option> options) {
+PCAP::ARPPackage make_arp(std::map<Keys, Option> options) {
 
     PCAP::ARPPackage package(package_buffer, snap_len, true);
     package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));

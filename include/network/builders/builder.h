@@ -59,7 +59,7 @@ private:
     };
 };
 
-ARPPackage make_apr(std::map<Keys,Option> options);
+ARPPackage make_arp(std::map<Keys,Option> options);
 UDPPackage make_udp(std::map<Keys,Option> options);
 ICMPPackage make_icmp(std::map<Keys, Option> options);
 TCPPackage make_tcp(std::map<Keys, Option> options);

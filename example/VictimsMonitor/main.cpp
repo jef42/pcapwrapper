@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
             auto target_mac = targets_mac[i];
 
             using namespace PCAP::PCAPBuilder;
-            auto package_router = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+            auto package_router = PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
                                                             {Keys::Key_Eth_Mac_Src, Option{local_mac}},
                                                             {Keys::Key_Eth_Mac_Dst, Option{router_mac}},
                                                             {Keys::Key_Arp_Mac_Src, Option{local_mac}},
@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
                                                             {Keys::Key_Ip_Dst, Option{router_ip}}});
 
             controller->write(package_router.getPackage(), 60);
-            auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+            auto package_target = PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
                                                             {Keys::Key_Eth_Mac_Src, Option{local_mac}},
                                                             {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
                                                             {Keys::Key_Arp_Mac_Src, Option{local_mac}},

@@ -99,7 +99,7 @@ void ForwardPackage::working_function() {
             std::lock_guard<std::mutex> lock(m_mutex);
             for (auto &client : m_existing_clients) {
                 using namespace PCAP::PCAPBuilder;
-                auto package_router = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+                auto package_router = PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
                                                                 {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
                                                                 {Keys::Key_Eth_Mac_Dst, Option{m_router_mac}},
                                                                 {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
@@ -109,7 +109,7 @@ void ForwardPackage::working_function() {
                                                                 {Keys::Key_Ip_Dst, Option{m_router_ip}}});
                 controller->write(package_router.getPackage(), 60);
 
-                auto package_target = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+                auto package_target = PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
                                                                 {Keys::Key_Eth_Mac_Src, Option{m_local_mac}},
                                                                 {Keys::Key_Eth_Mac_Dst, Option{client.m_mac}},
                                                                 {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},

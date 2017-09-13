@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     while (true) {
         for (const auto& target_ip : ips) {
             using namespace PCAP::PCAPBuilder;
-            auto package = PCAP::PCAPBuilder::make_apr(std::map<Keys, Option>{
+            auto package = PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
                 {Keys::Key_Eth_Mac_Src, Option(local_mac)},
                 {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
                 {Keys::Key_Arp_Mac_Src, Option(local_mac)},
