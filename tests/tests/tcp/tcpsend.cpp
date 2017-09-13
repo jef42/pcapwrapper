@@ -46,14 +46,6 @@ protected:
     }
 };
 
-template <typename T>
-void send_package(T package) {
-    auto processor = std::make_shared<PCAP::ProcessorSave>();
-    auto interface = std::make_shared<InterfaceTest>(processor);
-    interface->write(package.getPackage(), package.getLength());
-    processor->save("tmp-file.pcap");
-}
-
 TEST_F(TestSendTCP, TestSendOnePackage) {
     using namespace PCAP::PCAPBuilder;
     auto package = PCAP::PCAPBuilder::make_tcp(std::map<Keys, Option>{

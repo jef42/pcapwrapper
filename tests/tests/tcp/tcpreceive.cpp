@@ -44,7 +44,7 @@ public:
     }
 };
 
-TEST(TestReceiveTCP, TestOnePackage) {
+TEST(TestReceiveTCP, TestReceiveOnePackage) {
     std::string filename = std::string("../pcapfiles/tcp1package.pcap");
     auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerReceiveTCP>();

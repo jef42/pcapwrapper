@@ -1,5 +1,9 @@
 #include <chrono>
 
+#include <memory>
+
+#include <pcapwrapper/processors/processorsave.h>
+#include "interfacetest.h"
 
 //1. for each protocol have different folders with files
 //2. for each protocol needs at least 2 tests
@@ -18,3 +22,11 @@ struct FinishTest {
 protected:
     bool m_done = false;
 };
+
+template <typename T>
+void send_package(T package) {
+    auto processor = std::make_shared<PCAP::ProcessorSave>();
+    auto interface = std::make_shared<InterfaceTest>(processor);
+    interface->write(package.getPackage(), package.getLength());
+    processor->save("tmp-file.pcap");
+}
