@@ -19,6 +19,22 @@ class ListenerReceiveUDP : public PCAP::PackageListener<PCAP::UDPPackage>,
 public:
     //expected values are from file
     void receivedPackage(PCAP::UDPPackage package) override {
+        EXPECT_EQ(PCAP::MacAddress("00:26:16:00:00:d2"), package.getDstMac());
+        EXPECT_EQ(PCAP::MacAddress("00:0C:29:50:A9:FC"), package.getSrcMac());
+        EXPECT_EQ(0x0800, package.getEtherType());
+        EXPECT_EQ(0x45, package.getVHL());
+        EXPECT_EQ(0x00, package.getTOS());
+        EXPECT_EQ(0x29, package.getTotalLength());
+        EXPECT_EQ(0x0000, package.getID());
+        EXPECT_EQ(0x02, static_cast<PCAP::IPPackage>(package).getFlags());
+        EXPECT_EQ(0x0, package.getFragmentOffset());
+        EXPECT_EQ(0x40, package.getTTL());
+        EXPECT_EQ(0x11, package.getProtocol());
+        EXPECT_EQ(PCAP::IpAddress("192.168.0.101"), package.getSrcIp());
+        EXPECT_EQ(PCAP::IpAddress("192.168.0.10"), package.getDstIp());
+        EXPECT_EQ(0xc2f1, package.getSrcPort());
+        EXPECT_EQ(0x13e6, package.getDstPort());
+        EXPECT_EQ(0x15, package.getUDPLength());
         m_done = true;
     }
 };
