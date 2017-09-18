@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
+#include <sstream>
 
 #include <pcapwrapper/network/addresses/ipaddress.h>
 
@@ -40,4 +41,11 @@ TEST(IpAddress, Compare) {
 TEST(IpAddress, Invalid) {
     EXPECT_THROW(PCAP::IpAddress("0"), std::runtime_error);
     EXPECT_THROW(PCAP::IpAddress("0:0:0:0"), std::runtime_error);
+}
+
+TEST(IpAddress, Stream) {
+    PCAP::IpAddress ip("1.2.3.4");
+    std::stringstream stream;
+    stream << ip;
+    EXPECT_EQ(ip.to_string(), stream.str());
 }

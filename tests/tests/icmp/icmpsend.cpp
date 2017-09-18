@@ -27,7 +27,8 @@ public:
 
     void receivedPackage(PCAP::ICMPPackage package) override {
         EXPECT_EQ(m_package.getLength(), package.getLength());
-        //EXPECT_EQ(package, m_package);
+        EXPECT_EQ(package, m_package);
+        EXPECT_FALSE(package != m_package);
         m_done = true;
     }
 private:
@@ -56,7 +57,9 @@ TEST_F(TestSendICMP, TestSendOnePackage) {
         {Keys::Key_Ip_TTL, Option{(unsigned char)0x60}},
         {Keys::Key_Ip_Flags, Option{(unsigned char)0x02}},
         {Keys::Key_Ip_Id, Option{(unsigned short)0x0102}},
-        {Keys::Key_Ip_Length, Option{(unsigned short)0x3c}}});
+        {Keys::Key_Ip_Length, Option{(unsigned short)0x3c}},
+        {Keys::Key_Icmp_Type, Option{(unsigned char)0x01}},
+        {Keys::Key_Icmp_Code, Option{(unsigned char)0x02}}});
     package.recalculateChecksums();
     send_package(package);
 

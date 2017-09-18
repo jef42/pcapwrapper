@@ -31,3 +31,10 @@ TEST(MacAddress, Invalid) {
     EXPECT_THROW(PCAP::MacAddress("AA.AA.AA.AA.AA.AA.AA.AA"), std::runtime_error);
     EXPECT_THROW(PCAP::MacAddress("AA:A:AA:AA:AA:AA:AA"), std::runtime_error);
 }
+
+TEST(MacAddress, Stream) {
+    PCAP::MacAddress mac("AA:BB:CC:DD:EE:FF");
+    std::stringstream stream;
+    stream << mac;
+    EXPECT_EQ(mac.to_string(), stream.str());
+}

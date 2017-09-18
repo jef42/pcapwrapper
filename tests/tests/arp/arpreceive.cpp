@@ -18,7 +18,18 @@ class ListenerReceiveARP : public PCAP::PackageListener<PCAP::ARPPackage>,
 public:
     //expected values are from file
     void receivedPackage(PCAP::ARPPackage package) override {
-        
+        EXPECT_EQ(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"), package.getDstMac());
+        EXPECT_EQ(PCAP::MacAddress("00:07:0d:af:f4:54"), package.getSrcMac());
+        EXPECT_EQ(0x0806, package.getEtherType());
+        EXPECT_EQ(PCAP::IpAddress("24.166.172.1"), package.getSrcIp());
+        EXPECT_EQ(PCAP::IpAddress("24.166.173.161"), package.getDstIp());
+        EXPECT_EQ(PCAP::MacAddress("00:07:0d:af:f4:54"), package.getSrcArpMac());
+        EXPECT_EQ(PCAP::MacAddress("00:00:00:00:00:00"), package.getDstArpMac());
+        EXPECT_EQ(0x1, package.getHardwareType());
+        EXPECT_EQ(0x6, package.getHardwareLength());
+        EXPECT_EQ(0x800, package.getProtocol());
+        EXPECT_EQ(0x4, package.getProtocolLength());
+        EXPECT_EQ(0x1, package.getOpcode());
         m_done = true;
     }
 };

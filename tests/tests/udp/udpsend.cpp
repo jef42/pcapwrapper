@@ -28,6 +28,7 @@ public:
     void receivedPackage(PCAP::UDPPackage package) override {
         EXPECT_EQ(m_package.getLength(), package.getLength());
         EXPECT_EQ(package, m_package);
+        EXPECT_FALSE(package != m_package);
         m_done = true;
     }
 private:
@@ -56,10 +57,11 @@ TEST_F(TestSendUDP, TestSendOnePackage) {
         {Keys::Key_Ip_TTL, Option{(unsigned char)0x60}},
         {Keys::Key_Ip_Flags, Option{(unsigned char)0x02}},
         {Keys::Key_Ip_Id, Option{(unsigned short)0x0102}},
-        {Keys::Key_Ip_Length, Option{(unsigned short)0x3c}},
+        {Keys::Key_Ip_Length, Option{(unsigned short)0x29}},
         {Keys::Key_Src_Port, Option{(unsigned short)0x5023}},
-        {Keys::Key_Dst_Port, Option{(unsigned short)0x4241}}});
-    package.recalculateChecksums();
+        {Keys::Key_Dst_Port, Option{(unsigned short)0x4241}},
+        {Keys::Key_Udp_Length, Option{(unsigned short)0x15}}});
+    //package.recalculateChecksums();
     send_package(package);
 
     std::string filename = std::string("tmp-file.pcap");
