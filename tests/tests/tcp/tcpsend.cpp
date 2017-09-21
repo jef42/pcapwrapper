@@ -28,7 +28,7 @@ public:
     void receivedPackage(PCAP::TCPPackage package) override {
         EXPECT_EQ(m_package.getLength(), package.getLength());
         EXPECT_EQ(package, m_package);
-        EXPECT_TRUE(package != m_package);
+        EXPECT_FALSE(package != m_package);
         m_done = true;
     }
 private:
