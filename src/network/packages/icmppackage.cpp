@@ -53,7 +53,7 @@ unsigned int ICMPPackage::getLength() const {
 
 bool operator==(const ICMPPackage &lhs, const ICMPPackage &rhs) {
     return static_cast<const IPPackage&>(lhs) == static_cast<const IPPackage&>(rhs) &&
-           memcmp(lhs.m_icmp, rhs.m_icmp, sizeof(snifficmp) == 0);
+           memcmp(lhs.m_icmp, rhs.m_icmp, sizeof(snifficmp)) == 0;
 }
 
 bool operator!=(const ICMPPackage &lhs, const ICMPPackage &rhs) {
