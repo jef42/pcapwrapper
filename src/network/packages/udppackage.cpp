@@ -39,7 +39,7 @@ void UDPPackage::setUDPLength(unsigned short length) {
 
 void UDPPackage::recalculateChecksums() {
     PCAPHelper::setIPChecksum(m_ip);
-    PCAPHelper::setUDPChecksum(m_ip, m_udp, nullptr);
+    PCAPHelper::setUDPChecksum(m_ip, m_udp, m_data);
 }
 
 const unsigned char* UDPPackage::getData() const {
