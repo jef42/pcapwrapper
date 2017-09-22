@@ -17,7 +17,7 @@ class TCPPackage : public IPPackage {
     unsigned int getSeqNr() const;
     unsigned int getAckNr() const;
     unsigned char getDataOffset() const;
-    unsigned char getFlags() const;
+    unsigned char getTcpFlags() const;
     unsigned short getWindowSize() const;
     unsigned short getUrgentPtr() const;
 
@@ -26,7 +26,7 @@ class TCPPackage : public IPPackage {
     void setSeqNr(unsigned int nr);
     void setAckNr(unsigned int nr);
     void setDataOffset(unsigned char offset);
-    void setFlags(unsigned char flags);
+    void setTcpFlags(unsigned char flags);
     void setWindowSize(unsigned short size);
     void setUrgentPtr(unsigned short ptr);
 

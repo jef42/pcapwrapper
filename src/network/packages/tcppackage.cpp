@@ -34,11 +34,11 @@ void TCPPackage::setDstPort(unsigned short port) {
     m_tcp->m_th_dport = htons(port);
 }
 
-unsigned char TCPPackage::getFlags() const {
+unsigned char TCPPackage::getTcpFlags() const {
     return m_tcp->m_th_flags;
 }
 
-void TCPPackage::setFlags(unsigned char flags) {
+void TCPPackage::setTcpFlags(unsigned char flags) {
     m_tcp->m_th_flags = flags;
 }
 

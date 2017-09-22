@@ -26,7 +26,7 @@ public:
         EXPECT_EQ(0x00, package.getTOS());
         EXPECT_EQ(0x29, package.getTotalLength());
         EXPECT_EQ(0x0000, package.getID());
-        EXPECT_EQ(0x02, static_cast<PCAP::IPPackage>(package).getFlags());
+        EXPECT_EQ(0x02, package.getIpFlags());
         EXPECT_EQ(0x0, package.getFragmentOffset());
         EXPECT_EQ(0x40, package.getTTL());
         EXPECT_EQ(0x11, package.getProtocol());

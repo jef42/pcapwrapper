@@ -19,7 +19,7 @@ public:
     unsigned char getTOS() const;
     unsigned short getTotalLength() const;
     unsigned short getID() const;
-    unsigned char getFlags() const;
+    unsigned char getIpFlags() const;
     unsigned short getFragmentOffset() const;
     unsigned char getTTL() const;
     unsigned char getProtocol() const;
@@ -30,7 +30,7 @@ public:
     void setTOS(unsigned char value);
     void setTotalLength(unsigned short length);
     void setID(unsigned short id);
-    void setFlags(unsigned char flags);
+    void setIpFlags(unsigned char flags);
     void setFragmentOffset(unsigned short fragment);
     void setTTL(unsigned char ttl);
     void setProtocol(unsigned char protocol);

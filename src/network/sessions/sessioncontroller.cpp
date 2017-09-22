@@ -6,7 +6,7 @@ namespace PCAP {
 
 void SessionController::receivedPackage(TCPPackage package) {
     const Session session(package.getSrcIp(), package.getDstIp(), package.getSrcPort(), package.getDstPort());
-    bool is_finished = package.getFlags() & 0x01;
+    bool is_finished = package.getTcpFlags() & 0x01;
     if (std::find(m_tcp_session.begin(), m_tcp_session.end(), session) == m_tcp_session.end()) {
         m_tcp_session.push_back(session);
         return newSession(session, package);

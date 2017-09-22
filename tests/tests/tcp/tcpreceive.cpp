@@ -26,7 +26,7 @@ public:
         EXPECT_EQ(0x00, package.getTOS());
         EXPECT_EQ(0x3C, package.getTotalLength());
         EXPECT_EQ(0x5e86, package.getID());
-        EXPECT_EQ(0x02, static_cast<PCAP::IPPackage>(package).getFlags());
+        EXPECT_EQ(0x02, package.getIpFlags());
         EXPECT_EQ(0x0, package.getFragmentOffset());
         EXPECT_EQ(0x70, package.getTTL());
         EXPECT_EQ(0x06, package.getProtocol());
@@ -37,7 +37,7 @@ public:
         EXPECT_EQ(0xa3b019e3, package.getSeqNr());
         EXPECT_EQ(0x82823c71, package.getAckNr());
         EXPECT_EQ(0x0a, package.getDataOffset());
-        EXPECT_EQ(0x12, package.getFlags());
+        EXPECT_EQ(0x12, package.getTcpFlags());
         EXPECT_EQ(0x2000, package.getWindowSize());
         EXPECT_EQ(0x0000, package.getUrgentPtr());
         m_done = true;

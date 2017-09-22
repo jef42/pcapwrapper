@@ -33,7 +33,7 @@ void set_ip(auto& package, std::map<Keys, Option>& options) {
             package.setTTL(option.second.m_value_char);
         }
         if (option.first == Keys::Key_Ip_Flags) {
-            package.setFlags(option.second.m_value_char);
+            package.setIpFlags(option.second.m_value_char);
         }
         if (option.first == Keys::Key_Ip_Id) {
             package.setID(option.second.m_value_short);
@@ -84,7 +84,7 @@ void set_tcp(auto& package, std::map<Keys, Option>& options) {
             package.setAckNr(option.second.m_value_int);
         }
         if (option.first == Keys::Key_Tcp_Flags) {
-            package.setFlags(option.second.m_value_char);
+            package.setTcpFlags(option.second.m_value_char);
         }
     }
 }
@@ -141,7 +141,7 @@ PCAP::UDPPackage make_udp(std::map<Keys, Option> options) {
     package.setTOS(0x0);
     package.setTotalLength(0x001c);
     package.setID(0x1000);
-    package.setFlags(0x0);
+    package.setIpFlags(0x0);
     package.setFragmentOffset(0x0);
     package.setTTL(0x64);
     package.setProtocol(0x11);
@@ -167,7 +167,7 @@ ICMPPackage make_icmp(std::map<Keys, Option> options) {
     package.setTOS(0x0);
     package.setTotalLength(0x001c);
     package.setID(0x1000);
-    package.setFlags(0x0);
+    package.setIpFlags(0x0);
     package.setFragmentOffset(0x0);
     package.setTTL(0x64);
     package.setProtocol(0x01);
@@ -192,7 +192,7 @@ TCPPackage make_tcp(std::map<Keys, Option> options) {
     package.setTOS(0x0);
     package.setTotalLength(0x003c);
     package.setID(0x1000);
-    package.setFlags(0x0);
+    package.setIpFlags(0x0);
     package.setFragmentOffset(0x0);
     package.setTTL(0x64);
     package.setProtocol(0x06);
@@ -203,7 +203,7 @@ TCPPackage make_tcp(std::map<Keys, Option> options) {
     package.setSeqNr(0x3323);
     package.setAckNr(0);
     package.setDataOffset(0x50);
-    package.setFlags(0x02);
+    package.setTcpFlags(0x02);
     package.setWindowSize(0x7210);
     package.setUrgentPtr(0x0000);
     

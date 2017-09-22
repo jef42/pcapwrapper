@@ -35,7 +35,7 @@ unsigned short IPPackage::getID() const {
     return ntohs(m_ip->m_ip_id);
 }
 
-unsigned char IPPackage::getFlags() const {
+unsigned char IPPackage::getIpFlags() const {
     return ntohs(m_ip->m_ip_off) >> 13;
 }
 
@@ -75,7 +75,7 @@ void IPPackage::setID(unsigned short id) {
     m_ip->m_ip_id = htons(id);
 }
 
-void IPPackage::setFlags(unsigned char flags) {
+void IPPackage::setIpFlags(unsigned char flags) {
     m_ip->m_ip_off |= (htons(flags) << 13);
 }
 
