@@ -51,7 +51,7 @@ unsigned int UDPPackage::getDataLength() const {
 }
 
 void UDPPackage::appendData(unsigned char* data, int size) {
-    memcpy(&m_package[getDataLength()], (char*)data, size);
+    memcpy(&m_package[getLength()], (char*)data, size);
     m_ip->m_ip_len = htons(ntohs(m_ip->m_ip_len) + size);
     m_udp->m_length = htons(ntohs(m_udp->m_length) + size);
 }
