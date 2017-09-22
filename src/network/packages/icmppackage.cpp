@@ -31,7 +31,7 @@ void ICMPPackage::setCode(unsigned char code) {
 
 void ICMPPackage::recalculateChecksums() {
     PCAPHelper::setIPChecksum(m_ip);
-    PCAPHelper::setICMPChecksum(m_icmp);
+    PCAPHelper::setICMPChecksum(m_ip, m_icmp);
 }
 
 const unsigned char* ICMPPackage::getData() const {

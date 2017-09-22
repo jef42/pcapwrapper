@@ -39,9 +39,9 @@ void setIPChecksum(sniffip* ip) {
     ip->m_ip_sum = checksum<sniffip>(ip, sizeof(*ip));
 }
 
-void setICMPChecksum(snifficmp* icmp) {
+void setICMPChecksum(sniffip *ip, snifficmp* icmp) {
     icmp->m_checksum = 0x0000;
-    icmp->m_checksum = checksum<snifficmp>(icmp, sizeof(*icmp));
+    icmp->m_checksum = checksum((char*)icmp, ntohs(ip->m_ip_len) - (IP_HL(ip) * 4));
 }
 
 void setTCPChecksum(sniffip *ip, snifftcp *tcp, snifftcpopt *tcp_opt, unsigned char* data) {
