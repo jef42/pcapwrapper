@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 #include <pcapwrapper/network/addresses/ipaddress.h>
 
 TEST(IpAddress, Equal) {
     PCAP::IpAddress a(std::string("192.168.1.1"));
     PCAP::IpAddress b("192.168.1.1");
-    EXPECT_EQ(a,b);
+    EXPECT_EQ(a, b);
     EXPECT_EQ(a.to_string(), b.to_string());
     EXPECT_EQ(a.to_long(), b.to_long());
     EXPECT_EQ(a, a & b);
@@ -17,7 +17,7 @@ TEST(IpAddress, Equal) {
 TEST(IpAddress, NotEqual) {
     PCAP::IpAddress a("192.168.2.1");
     PCAP::IpAddress b(111234677);
-    EXPECT_NE(a,b);
+    EXPECT_NE(a, b);
     EXPECT_NE(a.to_string(), b.to_string());
     EXPECT_NE(a.to_long(), b.to_long());
     EXPECT_NE(a, a & b);

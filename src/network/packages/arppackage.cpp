@@ -1,7 +1,7 @@
 #include "../../../include/network/packages/arppackage.h"
 
-#include <netinet/in.h>
 #include <cstring>
+#include <netinet/in.h>
 
 #include "../../../include/helpers/constants.h"
 
@@ -9,7 +9,7 @@ namespace PCAP {
 
 ARPPackage::ARPPackage(const unsigned char *p, unsigned int l, bool modify)
     : EthernetPackage{p, l, modify} {
-    m_arp = (struct sniffarp*)(m_package + size_ethernet);
+    m_arp = (struct sniffarp *)(m_package + size_ethernet);
 }
 
 IpAddress ARPPackage::getSrcIp() const {
@@ -80,21 +80,19 @@ void ARPPackage::setOpcode(unsigned short code) {
     m_arp->m_opcode = htons(code);
 }
 
-unsigned short ARPPackage::getOpcode() const {
-    return ntohs(m_arp->m_opcode);
-}
+unsigned short ARPPackage::getOpcode() const { return ntohs(m_arp->m_opcode); }
 
 unsigned int ARPPackage::getLength() const {
     return sizeof(*m_ethernet) + sizeof(*m_arp);
 }
 
 bool operator==(const ARPPackage &lhs, const ARPPackage &rhs) {
-    return static_cast<const EthernetPackage&>(lhs) == static_cast<const EthernetPackage&>(rhs) &&
+    return static_cast<const EthernetPackage &>(lhs) ==
+               static_cast<const EthernetPackage &>(rhs) &&
            memcmp(lhs.m_arp, rhs.m_arp, sizeof(sniffarp)) == 0;
 }
 
 bool operator!=(const ARPPackage &lhs, const ARPPackage &rhs) {
     return !(lhs == rhs);
 }
-
 }

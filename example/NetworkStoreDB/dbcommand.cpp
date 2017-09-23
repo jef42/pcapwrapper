@@ -1,3 +1,3 @@
 #include "dbcommand.h"
 
-DBCommand::~DBCommand(){}
+DBCommand::~DBCommand() {}

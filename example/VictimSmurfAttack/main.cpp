@@ -1,15 +1,15 @@
 #include <iostream>
 #include <memory>
 
-#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
-#include <pcapwrapper/processors/processorempty.h>
-#include <pcapwrapper/network/packages/icmppackage.h>
 #include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/builders/keys.h>
+#include <pcapwrapper/network/packages/icmppackage.h>
+#include <pcapwrapper/processors/processorempty.h>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     if (argc != 3) {
         std::cout << "1. Interface\n";
@@ -22,7 +22,9 @@ int main(int argc, char* argv[]) {
     const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface_name);
     const auto broadcast_ip = PCAP::PCAPHelper::getBroadcastIp(interface_name);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(interface_name);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(
+        interface_name);
 
     std::cout << "Started" << std::endl;
 
@@ -30,16 +32,16 @@ int main(int argc, char* argv[]) {
         using namespace PCAP::PCAPBuilder;
         auto package = PCAP::PCAPBuilder::make_icmp(std::map<Keys, Option>{
             {Keys::Key_Eth_Mac_Src, Option{target_mac}},
-            {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
+            {Keys::Key_Eth_Mac_Dst,
+             Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
             {Keys::Key_Ip_Src, Option{target_ip}},
             {Keys::Key_Ip_Dst, Option{broadcast_ip}},
             {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
-            {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}
-        });
+            {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
         package.recalculateChecksums();
         controller->write(package.getPackage(), package.getLength());
 
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(2s);
     }
- }
+}

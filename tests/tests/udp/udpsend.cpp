@@ -1,29 +1,26 @@
-#include <gtest/gtest.h>
 #include <chrono>
+#include <gtest/gtest.h>
+#include <memory>
 #include <thread>
 #include <unistd.h>
-#include <memory>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
-#include <pcapwrapper/processors/processor.h>
-#include <pcapwrapper/processors/processorsave.h>
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/udppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
 #include <pcapwrapper/network/addresses/macaddress.h>
 #include <pcapwrapper/network/builders/builder.h>
+#include <pcapwrapper/network/packages/udppackage.h>
+#include <pcapwrapper/processors/processor.h>
+#include <pcapwrapper/processors/processorsave.h>
 
 #include "../common.h"
 #include "../interfacetest.h"
 
 class ListenerSendUDP : public PCAP::PackageListener<PCAP::UDPPackage>,
-                    public FinishTest
-{
-public:
-    ListenerSendUDP(PCAP::UDPPackage package)
-        : m_package{package}
-    {}
+                        public FinishTest {
+  public:
+    ListenerSendUDP(PCAP::UDPPackage package) : m_package{package} {}
 
     void receivedPackage(PCAP::UDPPackage package) override {
         EXPECT_EQ(m_package.getLength(), package.getLength());
@@ -31,20 +28,16 @@ public:
         EXPECT_FALSE(package != m_package);
         m_done = true;
     }
-private:
+
+  private:
     PCAP::UDPPackage m_package;
 };
 
-class TestSendUDP : public ::testing::Test
-{
-protected:
-    virtual void SetUp() {
-        unlink("tmp-file.pcap");
-    }
+class TestSendUDP : public ::testing::Test {
+  protected:
+    virtual void SetUp() { unlink("tmp-file.pcap"); }
 
-    virtual void TearDown() {
-        unlink("tmp-file.pcap");
-    }
+    virtual void TearDown() { unlink("tmp-file.pcap"); }
 };
 
 TEST_F(TestSendUDP, TestSendOnePackage) {
@@ -65,7 +58,8 @@ TEST_F(TestSendUDP, TestSendOnePackage) {
     send_package(package);
 
     std::string filename = std::string("tmp-file.pcap");
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerSendUDP>(package);
     controller->addListener(listener);
     controller->start();
@@ -80,11 +74,13 @@ TEST_F(TestSendUDP, TestAppendData) {
     constexpr unsigned int data_size = 6;
     auto package = PCAP::PCAPBuilder::make_udp(std::map<Keys, Option>{});
     unsigned char data[data_size] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6};
-    unsigned char data_result[data_size * 2] = {1,2,3,4,5,6,1,2,3,4,5,6};
+    unsigned char data_result[data_size * 2] = {1, 2, 3, 4, 5, 6,
+                                                1, 2, 3, 4, 5, 6};
     package.appendData(data, data_size);
     EXPECT_EQ(package.getDataLength(), data_size);
     EXPECT_TRUE(memcmp(package.getData(), data, package.getDataLength()) == 0);
     package.appendData(data, data_size);
     EXPECT_EQ(package.getDataLength(), data_size * 2);
-    EXPECT_TRUE(memcmp(package.getData(), data_result, package.getDataLength()) == 0);
+    EXPECT_TRUE(
+        memcmp(package.getData(), data_result, package.getDataLength()) == 0);
 }

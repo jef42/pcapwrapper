@@ -3,17 +3,16 @@
 
 #include <string>
 
-#include "ethernetpackage.h"
-#include "../sniff/sniffarp.h"
-#include "../addresses/macaddress.h"
 #include "../addresses/ipaddress.h"
-
+#include "../addresses/macaddress.h"
+#include "../sniff/sniffarp.h"
+#include "ethernetpackage.h"
 
 namespace PCAP {
 
 class ARPPackage : public EthernetPackage {
   public:
-    ARPPackage(const unsigned char* p, unsigned int l, bool modify = false);
+    ARPPackage(const unsigned char *p, unsigned int l, bool modify = false);
     IpAddress getSrcIp() const;
     IpAddress getDstIp() const;
     MacAddress getSrcArpMac() const;
@@ -40,9 +39,8 @@ class ARPPackage : public EthernetPackage {
     friend bool operator!=(const ARPPackage &lhs, const ARPPackage &rhs);
 
   protected:
-    sniffarp* m_arp;
+    sniffarp *m_arp;
 };
-
 }
 
 #endif // ARPPACKAGE_H

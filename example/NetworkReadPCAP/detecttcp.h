@@ -6,13 +6,11 @@
 #include <pcapwrapper/listeners/packagelistener.h>
 #include <pcapwrapper/network/packages/tcppackage.h>
 
-class DetectTCP : public PCAP::PackageListener<PCAP::TCPPackage>
-{
-public:
+class DetectTCP : public PCAP::PackageListener<PCAP::TCPPackage> {
+  public:
     void receivedPackage(PCAP::TCPPackage package) override;
-private:
-    
+
+  private:
 };
 
 #endif // DETECTPORTS_H
-

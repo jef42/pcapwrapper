@@ -1,17 +1,16 @@
 #include <iostream>
-#include <string>
 #include <memory>
+#include <string>
 
 #include <pcapwrapper/controller.hpp>
-#include <pcapwrapper/interfaces/interface.h>
-#include <pcapwrapper/processors/processorempty.h>
 #include <pcapwrapper/helpers/helper.h>
-#include <pcapwrapper/network/packages/icmppackage.h>
+#include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/builders/keys.h>
+#include <pcapwrapper/network/packages/icmppackage.h>
+#include <pcapwrapper/processors/processorempty.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cout << "1. Interface\n";
         std::cout << "2. Time(s)\n";
@@ -26,7 +25,8 @@ int main(int argc, char* argv[])
     const auto router_ip = PCAP::PCAPHelper::getRouterIp(net_interf);
     const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, net_interf);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(net_interf);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(net_interf);
     controller->start();
 
     std::cout << "Started" << std::endl;
@@ -39,8 +39,7 @@ int main(int argc, char* argv[])
             {Keys::Key_Ip_Src, Option{local_ip}},
             {Keys::Key_Ip_Dst, Option{router_ip}},
             {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
-            {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}
-        });
+            {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
         package.recalculateChecksums();
         controller->write(package.getPackage(), package.getLength());
 

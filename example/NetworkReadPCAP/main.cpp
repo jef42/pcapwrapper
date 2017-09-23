@@ -2,13 +2,12 @@
 #include <memory>
 
 #include <pcapwrapper/controller.hpp>
-#include <pcapwrapper/processors/processor.h>
 #include <pcapwrapper/interfaces/interfacefile.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "detecttcp.h"
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cout << "1. Filename\n";
         std::cout << "2. Time(s)\n";
@@ -18,7 +17,8 @@ int main(int argc, char* argv[])
     const std::string filename = argv[1];
     const int time = std::stoi(argv[2]);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<DetectTCP>();
     controller->addListener(listener);
     controller->start();

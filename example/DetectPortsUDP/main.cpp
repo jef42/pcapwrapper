@@ -1,19 +1,18 @@
 #include <iostream>
 #include <memory>
 
-#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
-#include <pcapwrapper/processors/processor.h>
-#include <pcapwrapper/network/packages/udppackage.h>
+#include <pcapwrapper/network/addresses/ipaddress.h>
 #include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/builders/keys.h>
-#include <pcapwrapper/network/addresses/ipaddress.h>
+#include <pcapwrapper/network/packages/udppackage.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "detectports.h"
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     if (argc != 4) {
         std::cout << "1. Interface\n";
         std::cout << "2. Targetip\n";
@@ -28,7 +27,9 @@ int main(int argc, char* argv[])
     const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface);
     int time = std::stoi(argv[3]);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface);
+    auto controller =
+        std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
+            interface);
     auto listener = std::make_shared<DetectPorts>(target_ip);
 
     controller->start();
@@ -41,13 +42,12 @@ int main(int argc, char* argv[])
         for (int port = 1; port <= 65000; ++port) {
             using namespace PCAP::PCAPBuilder;
             auto package = PCAP::PCAPBuilder::make_udp(std::map<Keys, Option>{
-                    {Keys::Key_Eth_Mac_Src, Option{local_mac}},
-                    {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
-                    {Keys::Key_Ip_Src, Option{local_ip}},
-                    {Keys::Key_Ip_Dst, Option{target_ip}},
-                    {Keys::Key_Src_Port, Option{(unsigned short)45022}},
-                    {Keys::Key_Dst_Port, Option{(unsigned short)port}}
-            });
+                {Keys::Key_Eth_Mac_Src, Option{local_mac}},
+                {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
+                {Keys::Key_Ip_Src, Option{local_ip}},
+                {Keys::Key_Ip_Dst, Option{target_ip}},
+                {Keys::Key_Src_Port, Option{(unsigned short)45022}},
+                {Keys::Key_Dst_Port, Option{(unsigned short)port}}});
             package.recalculateChecksums();
             controller->write(package.getPackage(), package.getLength());
         }
@@ -59,8 +59,6 @@ int main(int argc, char* argv[])
         std::chrono::duration<double, std::milli> elapsed = end - start;
         if (time != -1 && elapsed.count() > time * 1000)
             break;
-
-
     }
     controller->stop();
 }

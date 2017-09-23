@@ -1,28 +1,30 @@
 #include <iostream>
 
-#include <stdio.h>
-#include <netinet/in.h>
 #include <cstring>
 #include <memory>
+#include <netinet/in.h>
+#include <stdio.h>
 
-#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/processors/processorempty.h>
 
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
 #include <pcapwrapper/network/sniff/sniffip.h>
 #include <pcapwrapper/network/sniff/sniffudp.h>
-#include <pcapwrapper/helpers/helper.h>
 
 #include "dhcpbuilder.h"
-#include "dhcpoption.h"
 #include "dhcpframe.h"
+#include "dhcpoption.h"
 
 template <typename T>
-bool setIp(unsigned char* ip, const T& ip_value, int base) {
+bool setIp(unsigned char *ip, const T &ip_value, int base) {
     std::array<unsigned char, ip_addr_len> array;
-    bool successful = PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip_value, '.', array, base);
+    bool successful =
+        PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(
+            ip_value, '.', array, base);
     if (successful) {
         memcpy(ip, array.data(), ip_addr_len);
     }
@@ -30,16 +32,19 @@ bool setIp(unsigned char* ip, const T& ip_value, int base) {
 }
 
 template <typename T>
-bool setMac(unsigned char* addr, const T& ethernet_value, int base) {
+bool setMac(unsigned char *addr, const T &ethernet_value, int base) {
     std::array<unsigned char, ethernet_addr_len> array;
-    bool sucessful = PCAP::PCAPHelper::split_string<unsigned char,ethernet_addr_len>(ethernet_value, ':', array, base);
+    bool sucessful =
+        PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(
+            ethernet_value, ':', array, base);
     if (sucessful) {
         memcpy(addr, array.data(), ethernet_addr_len);
     }
     return sucessful;
 }
 
-PCAP::sniffethernet create_ethernet(const std::string& src_mac, const std::string& dst_mac) {
+PCAP::sniffethernet create_ethernet(const std::string &src_mac,
+                                    const std::string &dst_mac) {
     PCAP::sniffethernet ethernet;
     setMac(ethernet.m_ether_dhost, dst_mac, 16);
     setMac(ethernet.m_ether_shost, src_mac, 16);
@@ -47,11 +52,11 @@ PCAP::sniffethernet create_ethernet(const std::string& src_mac, const std::strin
     return ethernet;
 }
 
-PCAP::sniffip create_ip(const std::string& src_ip, const std::string& dst_ip) {
+PCAP::sniffip create_ip(const std::string &src_ip, const std::string &dst_ip) {
     PCAP::sniffip ip;
     ip.m_ip_vhl = 0x45;
     ip.m_ip_tos = 0x00;
-    ip.m_ip_len = htons(0x0014); //20
+    ip.m_ip_len = htons(0x0014); // 20
     ip.m_ip_id = htons(0x0000);
     ip.m_ip_off = htons(0x4000);
     ip.m_ip_ttl = 0x40;
@@ -71,7 +76,8 @@ PCAP::sniffudp create_udp(unsigned short src_port, unsigned short dst_port) {
     return udp;
 }
 
-sniffdhcp create_dhcp(const std::string& target_ip, const std::string& target_mac) {
+sniffdhcp create_dhcp(const std::string &target_ip,
+                      const std::string &target_mac) {
     sniffdhcp dhcp;
     dhcp.m_op = 0x01;
     dhcp.m_type = 0x01;
@@ -100,7 +106,7 @@ std::array<unsigned char, 1> create_end() {
     return std::array<unsigned char, 1>{0xFF};
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cout << "1. Interface\n";
         std::cout << "2. Target\n";
@@ -112,9 +118,14 @@ int main(int argc, char* argv[]) {
     const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
     const auto router_ip = PCAP::PCAPHelper::getRouterIp(interface_name);
     const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
-    const auto target_mac = local_ip == target_ip ? PCAP::PCAPHelper::getMac(interface_name) : PCAP::PCAPHelper::getMac(target_ip, interface_name);
+    const auto target_mac =
+        local_ip == target_ip
+            ? PCAP::PCAPHelper::getMac(interface_name)
+            : PCAP::PCAPHelper::getMac(target_ip, interface_name);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(interface_name);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(
+        interface_name);
     DHCPBuilder builder;
     builder << create_ethernet(target_mac.to_string(), router_mac.to_string());
     builder << create_ip(target_ip.to_string(), router_ip.to_string());

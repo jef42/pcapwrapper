@@ -1,15 +1,15 @@
 #include <iostream>
-#include <vector>
 #include <memory>
+#include <vector>
 
-#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/controller.hpp>
-#include <pcapwrapper/processors/processor.h>
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "httpsessioncontroller.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     if (argc != 3) {
         std::cout << "1. Interface\n";
@@ -23,13 +23,18 @@ int main(int argc, char* argv[]) {
     const auto net = mask & local_ip;
 
     std::vector<PCAP::IpAddress> ignore_ips;
-    std::for_each(&argv[3], &argv[argc], [&ignore_ips](auto ip) { ignore_ips.emplace_back(PCAP::IpAddress(ip)); });
+    std::for_each(&argv[3], &argv[argc], [&ignore_ips](auto ip) {
+        ignore_ips.emplace_back(PCAP::IpAddress(ip));
+    });
     ignore_ips.emplace_back(local_ip);
 
     int time = std::stoi(argv[2]);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
-    auto httpsessioncontroller = std::make_shared<HTTPSessionController>(net, std::move(ignore_ips));
+    auto controller =
+        std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
+            interface_name);
+    auto httpsessioncontroller =
+        std::make_shared<HTTPSessionController>(net, std::move(ignore_ips));
     controller->addSessionController(httpsessioncontroller);
     controller->setFilter("tcp dst port 80");
     controller->start();
@@ -41,7 +46,8 @@ int main(int argc, char* argv[]) {
         std::this_thread::sleep_for(2s);
 
         auto end_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> duration = end_time - start_time;
+        std::chrono::duration<double, std::milli> duration =
+            end_time - start_time;
         if (time != -1 && duration.count() > time * 1000) {
             break;
         }

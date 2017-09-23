@@ -1,34 +1,32 @@
 #include "dhcpbuilder.h"
 
-#include <stdio.h>
-#include <netinet/in.h>
 #include <cstring>
+#include <netinet/in.h>
+#include <stdio.h>
 
 #include <pcapwrapper/helpers/helper.h>
 
-DHCPBuilder::DHCPBuilder() 
-    : m_index{0} 
-{
+DHCPBuilder::DHCPBuilder() : m_index{0} {
     memset(m_package, '\0', snap_len);
-    m_ethernet = (PCAP::sniffethernet*)&m_package[m_index];
+    m_ethernet = (PCAP::sniffethernet *)&m_package[m_index];
 }
 
 void DHCPBuilder::operator<<(PCAP::sniffethernet ethernet) {
     memcpy(m_package, &ethernet, sizeof(ethernet));
     m_index += sizeof(ethernet);
-    m_ip = (PCAP::sniffip*)&m_package[m_index];
+    m_ip = (PCAP::sniffip *)&m_package[m_index];
 }
 
 void DHCPBuilder::operator<<(PCAP::sniffip ip) {
     memcpy(&m_package[m_index], &ip, sizeof(ip));
     m_index += sizeof(ip);
-    m_udp = (PCAP::sniffudp*)&m_package[m_index];
+    m_udp = (PCAP::sniffudp *)&m_package[m_index];
 }
 
 void DHCPBuilder::operator<<(PCAP::sniffudp udp) {
     memcpy(&m_package[m_index], &udp, sizeof(udp));
     m_index += sizeof(udp);
-    m_dhcp = (sniffdhcp*)&m_package[m_index];
+    m_dhcp = (sniffdhcp *)&m_package[m_index];
 
     this->m_ip->m_ip_len = htons(ntohs(this->m_ip->m_ip_len) + sizeof(udp));
 }
@@ -51,13 +49,11 @@ void DHCPBuilder::build() {
     }
 
     PCAP::PCAPHelper::setIPChecksum(m_ip);
-    PCAP::PCAPHelper::setUDPChecksum(m_ip, m_udp, (unsigned char*)m_dhcp);
+    PCAP::PCAPHelper::setUDPChecksum(m_ip, m_udp, (unsigned char *)m_dhcp);
 }
 
-unsigned char* DHCPBuilder::getPackage() const {
-    return (unsigned char*)&m_package[0];
+unsigned char *DHCPBuilder::getPackage() const {
+    return (unsigned char *)&m_package[0];
 }
 
-unsigned int DHCPBuilder::getLength() const {
-    return m_index;
-}
+unsigned int DHCPBuilder::getLength() const { return m_index; }

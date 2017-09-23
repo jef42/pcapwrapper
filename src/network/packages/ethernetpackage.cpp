@@ -6,10 +6,10 @@
 
 namespace PCAP {
 
-EthernetPackage::EthernetPackage(const unsigned char* p,unsigned int l, bool modify)
-    : BasePackage{p, l, modify}
-{
-    m_ethernet = (struct sniffethernet*)m_package;
+EthernetPackage::EthernetPackage(const unsigned char *p, unsigned int l,
+                                 bool modify)
+    : BasePackage{p, l, modify} {
+    m_ethernet = (struct sniffethernet *)m_package;
 }
 
 MacAddress EthernetPackage::getSrcMac() const {
@@ -43,5 +43,4 @@ bool operator==(const EthernetPackage &lhs, const EthernetPackage &rhs) {
 bool operator!=(const EthernetPackage &lhs, const EthernetPackage &rhs) {
     return !(lhs == rhs);
 }
-
 }

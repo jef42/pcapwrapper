@@ -9,7 +9,6 @@ struct snifficmp {
     unsigned short m_checksum;
     unsigned int m_rest_header;
 };
-
 }
 
 #endif // SNIFFICMP_H

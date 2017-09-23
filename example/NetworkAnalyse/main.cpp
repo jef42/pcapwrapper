@@ -1,15 +1,15 @@
-#include <iostream>
-#include <thread>
-#include <chrono>
-#include <vector>
 #include <algorithm>
+#include <chrono>
+#include <iostream>
 #include <memory>
+#include <thread>
+#include <vector>
 
-#include <pcapwrapper/helpers/helper.h>
-#include <pcapwrapper/processors/processor.h>
-#include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/helper.h>
+#include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "arplistener.h"
 #include "icmplistener.h"
@@ -19,40 +19,49 @@
 using namespace std::chrono_literals;
 
 void print_result(
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>>& tcp_packages,
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>>& udp_packages,
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>>& arp_packages,
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>>& icmp_packages,
-    unsigned long sum
-) {
-    for (auto& t : tcp_packages) {
+    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &tcp_packages,
+    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &udp_packages,
+    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &arp_packages,
+    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &icmp_packages,
+    unsigned long sum) {
+    for (auto &t : tcp_packages) {
         std::cout << "Ip: " << t.first << "\n";
-        std::cout << "TCP: " << t.second << " " << (double)t.second * 100 / sum << "%\n";
+        std::cout << "TCP: " << t.second << " " << (double)t.second * 100 / sum
+                  << "%\n";
 
         {
-            auto it_udp = std::find_if(udp_packages.begin(), udp_packages.end(), [&t](auto u){ return t.first == u.first;});
+            auto it_udp =
+                std::find_if(udp_packages.begin(), udp_packages.end(),
+                             [&t](auto u) { return t.first == u.first; });
             if (it_udp != udp_packages.end()) {
-                std::cout << "UDP: " << it_udp->second << " " << (double)it_udp->second * 100 / sum << "%\n";
+                std::cout << "UDP: " << it_udp->second << " "
+                          << (double)it_udp->second * 100 / sum << "%\n";
             }
         }
 
         {
-            auto it_icmp = std::find_if(icmp_packages.begin(), icmp_packages.end(), [&t](auto i){ return t.first == i.first;});
+            auto it_icmp =
+                std::find_if(icmp_packages.begin(), icmp_packages.end(),
+                             [&t](auto i) { return t.first == i.first; });
             if (it_icmp != icmp_packages.end()) {
-                std::cout << "ICMP: " << it_icmp->second << " " << (double)it_icmp->second * 100 / sum << "%\n";
+                std::cout << "ICMP: " << it_icmp->second << " "
+                          << (double)it_icmp->second * 100 / sum << "%\n";
             }
         }
 
         {
-            auto it_arp = std::find_if(arp_packages.begin(), arp_packages.end(), [&t](auto a){ return t.first == a.first;});
+            auto it_arp =
+                std::find_if(arp_packages.begin(), arp_packages.end(),
+                             [&t](auto a) { return t.first == a.first; });
             if (it_arp != arp_packages.end()) {
-                std::cout << "ARP: " << it_arp->second << " " << (double)it_arp->second * 100 / sum << "%\n";
+                std::cout << "ARP: " << it_arp->second << " "
+                          << (double)it_arp->second * 100 / sum << "%\n";
             }
         }
     }
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cout << "1. Interface\n";
         std::cout << "2. Time(s)\n";
@@ -63,7 +72,9 @@ int main(int argc, char* argv[]) {
     auto netmask = PCAP::PCAPHelper::getMask(interface_name);
     auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(interface_name);
+    auto controller =
+        std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
+            interface_name);
     auto tcp_listener = std::make_shared<TCPListener>(netmask & local_ip);
     auto udp_listener = std::make_shared<UDPListener>(netmask & local_ip);
     auto icmp_listener = std::make_shared<ICMPListener>(netmask & local_ip);

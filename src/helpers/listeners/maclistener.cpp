@@ -5,11 +5,8 @@
 namespace PCAP {
 namespace PCAPHelper {
 
-MacListener::MacListener(const PCAP::IpAddress& ip)
-    : m_ip{ip},
-    m_founded{false} {
-
-}
+MacListener::MacListener(const PCAP::IpAddress &ip)
+    : m_ip{ip}, m_founded{false} {}
 
 void MacListener::receivedPackage(PCAP::ARPPackage package) {
     if (package.getSrcIp() == m_ip) {
@@ -25,6 +22,5 @@ PCAP::MacAddress MacListener::getMac() const noexcept {
     }
     return m_result;
 }
-
 }
 }

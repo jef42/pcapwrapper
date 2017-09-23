@@ -10,7 +10,7 @@ namespace PCAP {
 
 class TCPPackage : public IPPackage {
   public:
-    TCPPackage(const unsigned char* p, unsigned int l, bool modify = false);
+    TCPPackage(const unsigned char *p, unsigned int l, bool modify = false);
 
     unsigned short getSrcPort() const;
     unsigned short getDstPort() const;
@@ -32,9 +32,9 @@ class TCPPackage : public IPPackage {
 
     void recalculateChecksums();
 
-    const unsigned char* getData() const; //return only tcp data
+    const unsigned char *getData() const; // return only tcp data
     unsigned int getDataLength() const;
-    void appendData(unsigned char* data, int size);
+    void appendData(unsigned char *data, int size);
 
     unsigned int getLength() const override; // return total length
 
@@ -42,10 +42,9 @@ class TCPPackage : public IPPackage {
     friend bool operator!=(const TCPPackage &lhs, const TCPPackage &rhs);
 
   private:
-    snifftcp* m_tcp;
-    unsigned char* m_data;
+    snifftcp *m_tcp;
+    unsigned char *m_data;
 };
-
 }
 
 #endif // TCPPACKAGE_H

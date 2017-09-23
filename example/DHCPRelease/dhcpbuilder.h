@@ -2,19 +2,19 @@
 #define DHCPBUILDER_H
 
 #include <array>
-#include <stdio.h>
 #include <netinet/in.h>
+#include <stdio.h>
 
 #include <pcapwrapper/helpers/constants.h>
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
 #include <pcapwrapper/network/sniff/sniffip.h>
 #include <pcapwrapper/network/sniff/sniffudp.h>
-#include <pcapwrapper/helpers/helper.h>
 
 #include "dhcpframe.h"
 
 class DHCPBuilder {
-public:
+  public:
     DHCPBuilder();
 
     void operator<<(PCAP::sniffethernet ethernet);
@@ -23,18 +23,22 @@ public:
     void operator<<(sniffdhcp dhcp);
 
     template <long unsigned int S>
-    friend void operator<<(DHCPBuilder& dhcpbuilder, std::array<unsigned char, S> data) {
+    friend void operator<<(DHCPBuilder &dhcpbuilder,
+                           std::array<unsigned char, S> data) {
         memcpy(&dhcpbuilder.m_package[dhcpbuilder.m_index], data.data(), S);
         dhcpbuilder.m_index += S;
 
-        dhcpbuilder.m_ip->m_ip_len = htons(ntohs(dhcpbuilder.m_ip->m_ip_len) + S);
-        dhcpbuilder.m_udp->m_length = htons(ntohs(dhcpbuilder.m_udp->m_length) + S);
+        dhcpbuilder.m_ip->m_ip_len =
+            htons(ntohs(dhcpbuilder.m_ip->m_ip_len) + S);
+        dhcpbuilder.m_udp->m_length =
+            htons(ntohs(dhcpbuilder.m_udp->m_length) + S);
     }
 
     void build();
-    unsigned char* getPackage() const;
+    unsigned char *getPackage() const;
     unsigned int getLength() const;
-private:
+
+  private:
     unsigned char m_package[snap_len];
     unsigned int m_index;
     PCAP::sniffethernet *m_ethernet;

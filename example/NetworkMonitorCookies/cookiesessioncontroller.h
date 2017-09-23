@@ -3,19 +3,21 @@
 
 #include <vector>
 
-#include <pcapwrapper/network/sessions/sessioncontroller.h>
-#include <pcapwrapper/network/sessions/session.h>
-#include <pcapwrapper/network/packages/tcppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
+#include <pcapwrapper/network/packages/tcppackage.h>
+#include <pcapwrapper/network/sessions/session.h>
+#include <pcapwrapper/network/sessions/sessioncontroller.h>
 
 #include "cookieworker.h"
 
 class CookieSessionController : public PCAP::SessionController {
-public:
-    CookieSessionController(const PCAP::IpAddress& mask, std::vector<PCAP::IpAddress>&& ignore_ip);
+  public:
+    CookieSessionController(const PCAP::IpAddress &mask,
+                            std::vector<PCAP::IpAddress> &&ignore_ip);
     void receivedPackage(PCAP::TCPPackage package) override;
     void finish();
-private:
+
+  private:
     PCAP::IpAddress m_mask;
 
     std::vector<std::shared_ptr<CookieWorker>> m_workers;

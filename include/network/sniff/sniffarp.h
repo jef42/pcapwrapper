@@ -16,7 +16,6 @@ struct sniffarp {
     unsigned char m_target_harware_address[ethernet_addr_len];
     unsigned char m_target_ip_address[ip_addr_len];
 };
-
 }
 
 #endif // SNIFFARP_H

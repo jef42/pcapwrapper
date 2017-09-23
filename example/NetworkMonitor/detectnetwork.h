@@ -8,13 +8,14 @@
 
 #include "forwardpackage.h"
 
-class DetectNetwork : public PCAP::PackageListener<PCAP::ARPPackage>
-{
-public:
-    DetectNetwork(const std::shared_ptr<ForwardPackage> &forward_package, std::vector<PCAP::IpAddress>&& ignore_ips);
+class DetectNetwork : public PCAP::PackageListener<PCAP::ARPPackage> {
+  public:
+    DetectNetwork(const std::shared_ptr<ForwardPackage> &forward_package,
+                  std::vector<PCAP::IpAddress> &&ignore_ips);
 
     virtual void receivedPackage(PCAP::ARPPackage package) override;
-private:
+
+  private:
     std::shared_ptr<ForwardPackage> m_forward_package;
     std::vector<PCAP::IpAddress> m_ignore_ips;
 };

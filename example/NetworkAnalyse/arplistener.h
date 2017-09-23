@@ -2,16 +2,15 @@
 #define ARPLISTENER_H
 
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/arppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
+#include <pcapwrapper/network/packages/arppackage.h>
 
 #include "listener.h"
 
-class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>, public Listener {
-public:
-    ARPListener(PCAP::IpAddress netmask)
-        : Listener{netmask}
-    {}
+class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>,
+                    public Listener {
+  public:
+    ARPListener(PCAP::IpAddress netmask) : Listener{netmask} {}
 
     void receivedPackage(PCAP::ARPPackage package) override {
         if ((package.getSrcIp() & m_netmask) == m_netmask) {

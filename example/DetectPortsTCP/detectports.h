@@ -4,19 +4,17 @@
 #include <string>
 
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/tcppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
+#include <pcapwrapper/network/packages/tcppackage.h>
 
-class DetectPorts : public PCAP::PackageListener<PCAP::TCPPackage>
-{
-public:
+class DetectPorts : public PCAP::PackageListener<PCAP::TCPPackage> {
+  public:
     DetectPorts(PCAP::IpAddress desiredIp);
 
     void receivedPackage(PCAP::TCPPackage package) override;
 
-private:
+  private:
     PCAP::IpAddress m_expectedip;
 };
 
 #endif // DETECTPORTS_H
-

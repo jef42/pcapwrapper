@@ -5,15 +5,15 @@
 #include <vector>
 
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/arppackage.h>
-#include <pcapwrapper/network/addresses/macaddress.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
-
+#include <pcapwrapper/network/addresses/macaddress.h>
+#include <pcapwrapper/network/packages/arppackage.h>
 
 class MacListener : public PCAP::PackageListener<PCAP::ARPPackage> {
-public:
+  public:
     void receivedPackage(PCAP::ARPPackage package) override;
-private:
+
+  private:
     std::vector<std::tuple<PCAP::IpAddress, PCAP::MacAddress>> m_packages;
 };
 

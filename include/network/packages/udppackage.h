@@ -10,7 +10,7 @@ namespace PCAP {
 
 class UDPPackage : public IPPackage {
   public:
-    UDPPackage(const unsigned char* p, unsigned int l, bool modify = false);
+    UDPPackage(const unsigned char *p, unsigned int l, bool modify = false);
 
     unsigned short getSrcPort() const;
     unsigned short getDstPort() const;
@@ -22,10 +22,9 @@ class UDPPackage : public IPPackage {
 
     void recalculateChecksums();
 
-    const unsigned char* getData() const;
+    const unsigned char *getData() const;
     unsigned int getDataLength() const;
-    void appendData(unsigned char* data, int size);
-
+    void appendData(unsigned char *data, int size);
 
     unsigned int getLength() const override;
 
@@ -33,10 +32,9 @@ class UDPPackage : public IPPackage {
     friend bool operator!=(const UDPPackage &lhs, const UDPPackage &rhs);
 
   private:
-    sniffudp* m_udp;
-    unsigned char* m_data;
+    sniffudp *m_udp;
+    unsigned char *m_data;
 };
-
 }
 
 #endif

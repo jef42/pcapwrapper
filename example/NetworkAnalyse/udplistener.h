@@ -6,11 +6,10 @@
 
 #include "listener.h"
 
-class UDPListener : public PCAP::PackageListener<PCAP::UDPPackage>, public Listener {
-public:
-    UDPListener(const PCAP::IpAddress& netmask)
-        : Listener{netmask}
-    {}
+class UDPListener : public PCAP::PackageListener<PCAP::UDPPackage>,
+                    public Listener {
+  public:
+    UDPListener(const PCAP::IpAddress &netmask) : Listener{netmask} {}
 
     void receivedPackage(PCAP::UDPPackage package) override {
         if ((package.getSrcIp() & m_netmask) == m_netmask) {

@@ -5,19 +5,19 @@
 #include <vector>
 
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/udppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
+#include <pcapwrapper/network/packages/udppackage.h>
 
 #include "ipport.h"
 
 class UdpListener : public PCAP::PackageListener<PCAP::UDPPackage> {
-public:
-    UdpListener(const PCAP::IpAddress& ip);
+  public:
+    UdpListener(const PCAP::IpAddress &ip);
     void receivedPackage(PCAP::UDPPackage package) override;
-private:
+
+  private:
     PCAP::IpAddress m_local_ip;
     std::vector<IPPort> m_cache;
 };
-
 
 #endif

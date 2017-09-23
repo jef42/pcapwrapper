@@ -12,10 +12,11 @@ class ProcessorPolicy {
     }
 
     virtual ~ProcessorPolicy() noexcept = default;
-  protected:
-    virtual void callback_impl(const unsigned char *package, const pcap_pkthdr &header) = 0;
-};
 
+  protected:
+    virtual void callback_impl(const unsigned char *package,
+                               const pcap_pkthdr &header) = 0;
+};
 }
 
 #endif

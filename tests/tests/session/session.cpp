@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 #include <tuple>
 
-#include <pcapwrapper/network/sessions/session.h>
 #include <pcapwrapper/network/packages/ippackage.h>
-
+#include <pcapwrapper/network/sessions/session.h>
 
 TEST(Session, CreateSession) {
     const PCAP::IpAddress addr_src("1.2.3.4");
@@ -28,5 +27,4 @@ TEST(Session, CreateSessions) {
     PCAP::Session session2{addr_src, addr_dst, port_src, port_dst};
     EXPECT_TRUE(session1 == session2);
     EXPECT_FALSE(session1 != session2);
-
 }

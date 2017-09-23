@@ -9,7 +9,7 @@ namespace PCAP {
 
 UDPPackage::UDPPackage(const unsigned char *p, unsigned int l, bool modify)
     : IPPackage{p, l, modify} {
-    m_udp = (struct sniffudp*)(m_package + size_ethernet + 5*4);
+    m_udp = (struct sniffudp *)(m_package + size_ethernet + 5 * 4);
     m_data = &m_package[size_ethernet + 5 * 4 + sizeof(*m_udp)];
 }
 
@@ -42,16 +42,14 @@ void UDPPackage::recalculateChecksums() {
     PCAPHelper::setUDPChecksum(m_ip, m_udp, m_data);
 }
 
-const unsigned char* UDPPackage::getData() const {
-    return m_data;
-}
+const unsigned char *UDPPackage::getData() const { return m_data; }
 
 unsigned int UDPPackage::getDataLength() const {
     return ntohs(m_udp->m_length) - 8;
 }
 
-void UDPPackage::appendData(unsigned char* data, int size) {
-    memcpy(&m_package[getLength()], (char*)data, size);
+void UDPPackage::appendData(unsigned char *data, int size) {
+    memcpy(&m_package[getLength()], (char *)data, size);
     m_ip->m_ip_len = htons(ntohs(m_ip->m_ip_len) + size);
     m_udp->m_length = htons(ntohs(m_udp->m_length) + size);
 }
@@ -61,12 +59,12 @@ unsigned int UDPPackage::getLength() const {
 }
 
 bool operator==(const UDPPackage &lhs, const UDPPackage &rhs) {
-    return static_cast<const IPPackage&>(lhs) == static_cast<const IPPackage&>(rhs) &&
+    return static_cast<const IPPackage &>(lhs) ==
+               static_cast<const IPPackage &>(rhs) &&
            memcmp(lhs.m_udp, rhs.m_udp, sizeof(sniffudp)) == 0;
 }
 
 bool operator!=(const UDPPackage &lhs, const UDPPackage &rhs) {
     return !(lhs == rhs);
 }
-
 }

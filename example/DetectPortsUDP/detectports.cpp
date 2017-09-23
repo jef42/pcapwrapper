@@ -1,28 +1,25 @@
 #include "detectports.h"
 
 #include <iostream>
-#include <string>
 #include <string.h>
+#include <string>
 
 using namespace PCAP;
 
-DetectPorts::DetectPorts(PCAP::IpAddress desiredIp)
-    : m_expectedip{desiredIp}
-{
+DetectPorts::DetectPorts(PCAP::IpAddress desiredIp) : m_expectedip{desiredIp} {
     reset();
 }
 
-void DetectPorts::receivedPackage(PCAP::ICMPPackage package)
-{
+void DetectPorts::receivedPackage(PCAP::ICMPPackage package) {
     if (package.getSrcIp() == m_expectedip) {
-        const unsigned char* data = package.getPackage();
-        unsigned short port = (((unsigned short)data[64]) << 0x08) | ((unsigned short)data[65]);
+        const unsigned char *data = package.getPackage();
+        unsigned short port =
+            (((unsigned short)data[64]) << 0x08) | ((unsigned short)data[65]);
         m_ports[port] = true;
     }
 }
 
-std::vector<int> DetectPorts::get_ports()
-{
+std::vector<int> DetectPorts::get_ports() {
     std::vector<int> result;
     for (int i = 0; i < MAX_PORT; ++i) {
         if (!m_ports[i])
@@ -32,8 +29,4 @@ std::vector<int> DetectPorts::get_ports()
     return result;
 }
 
-void DetectPorts::reset()
-{
-    memset(m_ports, '\0', MAX_PORT);
-}
-
+void DetectPorts::reset() { memset(m_ports, '\0', MAX_PORT); }

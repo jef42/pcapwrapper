@@ -1,32 +1,32 @@
+#include <chrono>
 #include <gtest/gtest.h>
 #include <memory>
-#include <chrono>
 
-#include <pcapwrapper/network/sessions/sessioncontroller.h>
-#include <pcapwrapper/interfaces/interfacefile.h>
+#include "../common.h"
 #include <pcapwrapper/controller.hpp>
-#include <pcapwrapper/processors/processor.h>
+#include <pcapwrapper/interfaces/interfacefile.h>
 #include <pcapwrapper/network/packages/tcppackage.h>
 #include <pcapwrapper/network/packages/udppackage.h>
 #include <pcapwrapper/network/sessions/session.h>
 #include <pcapwrapper/network/sessions/sessioncontroller.h>
-#include "../common.h"
+#include <pcapwrapper/network/sessions/sessioncontroller.h>
+#include <pcapwrapper/processors/processor.h>
 
 class SessionControllerTest : public PCAP::SessionController {
-public:
-    virtual void newSession(const PCAP::Session&, PCAP::TCPPackage) {
+  public:
+    virtual void newSession(const PCAP::Session &, PCAP::TCPPackage) {
         new_tcp_session = true;
     }
-    virtual void appendSession(const PCAP::Session&, PCAP::TCPPackage) {
+    virtual void appendSession(const PCAP::Session &, PCAP::TCPPackage) {
         app_tcp_session = true;
     }
-    virtual void finishedSession(const PCAP::Session&) {
+    virtual void finishedSession(const PCAP::Session &) {
         fin_tcp_session = true;
     }
-    virtual void newSession(const PCAP::Session&, PCAP::UDPPackage) {
+    virtual void newSession(const PCAP::Session &, PCAP::UDPPackage) {
         new_udp_session = true;
     }
-    virtual void appendSession(const PCAP::Session&, PCAP::UDPPackage) {
+    virtual void appendSession(const PCAP::Session &, PCAP::UDPPackage) {
         app_udp_session = true;
     }
 
@@ -39,7 +39,8 @@ public:
 
 TEST(TestSendSession, NewSession) {
     const std::string filename = "../pcapfiles/session.pcap";
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto session_controller = std::make_shared<SessionControllerTest>();
     controller->addSessionController(session_controller);
     controller->start();
@@ -54,7 +55,8 @@ TEST(TestSendSession, NewSession) {
 
 TEST(TestSendSession, NoSession) {
     const std::string filename = "../pcapfiles/session.pcap";
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto session_controller = std::make_shared<SessionControllerTest>();
     controller->addSessionController(session_controller);
     controller->removeSessionController(session_controller);

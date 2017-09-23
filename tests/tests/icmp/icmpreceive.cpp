@@ -1,23 +1,22 @@
-#include <gtest/gtest.h>
 #include <chrono>
-#include <thread>
+#include <gtest/gtest.h>
 #include <memory>
+#include <thread>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
-#include <pcapwrapper/processors/processor.h>
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/icmppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
 #include <pcapwrapper/network/addresses/macaddress.h>
+#include <pcapwrapper/network/packages/icmppackage.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "../common.h"
 
 class ListenerReceiveICMP : public PCAP::PackageListener<PCAP::ICMPPackage>,
-                    public FinishTest
-{
-public:
-    //expected values are from file
+                            public FinishTest {
+  public:
+    // expected values are from file
     void receivedPackage(PCAP::ICMPPackage package) override {
         EXPECT_EQ(PCAP::MacAddress("9C:97:26:6e:81:90"), package.getDstMac());
         EXPECT_EQ(PCAP::MacAddress("80:A5:89:8C:6F:43"), package.getSrcMac());
@@ -40,7 +39,8 @@ public:
 
 TEST(TestReceiveICMP, TestReceiveOnePackage) {
     std::string filename = std::string("../pcapfiles/icmp1package.pcap");
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerReceiveICMP>();
     controller->addListener(listener);
     controller->start();

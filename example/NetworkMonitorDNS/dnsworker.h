@@ -1,23 +1,24 @@
 #ifndef DSNWORKER_H
 #define DNSWORKER_H
 
+#include <condition_variable>
 #include <future>
+#include <memory>
 #include <mutex>
 #include <string>
-#include <condition_variable>
 #include <vector>
-#include <memory>
 
 #include <pcapwrapper/network/packages/udppackage.h>
 
 class DNSWorker {
-public:
+  public:
     DNSWorker(PCAP::UDPPackage package);
     void new_session(PCAP::UDPPackage package);
 
     void finish();
     PCAP::IpAddress get_src_ip() const;
-private:
+
+  private:
     std::vector<std::string> m_tmp_websites;
     PCAP::IpAddress m_src_ip;
 
@@ -29,7 +30,6 @@ private:
     std::string m_file_name;
 
     void worker();
-
 };
 
 #endif

@@ -1,25 +1,22 @@
-#include <gtest/gtest.h>
 #include <chrono>
-#include <thread>
+#include <gtest/gtest.h>
 #include <memory>
+#include <thread>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
-#include <pcapwrapper/processors/processor.h>
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/arppackage.h>
 #include <pcapwrapper/network/addresses/macaddress.h>
 #include <pcapwrapper/network/builders/builder.h>
+#include <pcapwrapper/network/packages/arppackage.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "../common.h"
 
 class ListenerSendARP : public PCAP::PackageListener<PCAP::ARPPackage>,
-                        public FinishTest
-{
-public:
-    ListenerSendARP(PCAP::ARPPackage package)
-        : m_package{package}
-    {}
+                        public FinishTest {
+  public:
+    ListenerSendARP(PCAP::ARPPackage package) : m_package{package} {}
 
     void receivedPackage(PCAP::ARPPackage package) override {
         EXPECT_EQ(m_package.getLength(), package.getLength());
@@ -27,19 +24,15 @@ public:
         EXPECT_FALSE(package != m_package);
         m_done = true;
     }
-private:
+
+  private:
     PCAP::ARPPackage m_package;
 };
 
-class TestSendARP : public ::testing::Test
-{
-protected:
-    virtual void SetUp() {
-        unlink("tmp-file.pcap");
-    }
-    virtual void TearDown() {
-        unlink("tmp-file.pcap");
-    }
+class TestSendARP : public ::testing::Test {
+  protected:
+    virtual void SetUp() { unlink("tmp-file.pcap"); }
+    virtual void TearDown() { unlink("tmp-file.pcap"); }
 };
 
 TEST_F(TestSendARP, TestSendOnePackage) {
@@ -55,7 +48,8 @@ TEST_F(TestSendARP, TestSendOnePackage) {
     send_package(package);
 
     std::string filename = std::string("tmp-file.pcap");
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerSendARP>(package);
     controller->addListener(listener);
     controller->start();

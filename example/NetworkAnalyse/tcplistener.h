@@ -7,11 +7,10 @@
 #include "listener.h"
 #include <iostream>
 
-class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage>, public Listener {
-public:
-    TCPListener(const PCAP::IpAddress& netmask)
-        : Listener{netmask}
-    {}
+class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage>,
+                    public Listener {
+  public:
+    TCPListener(const PCAP::IpAddress &netmask) : Listener{netmask} {}
 
     void receivedPackage(PCAP::TCPPackage package) override {
         if ((package.getSrcIp() & m_netmask) == m_netmask) {

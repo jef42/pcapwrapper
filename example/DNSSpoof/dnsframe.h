@@ -2,7 +2,7 @@
 #define DNSFRAME_H
 
 struct sniffdns_query {
-    unsigned char* m_query;
+    unsigned char *m_query;
     unsigned short m_type;
     unsigned short m_class;
 };

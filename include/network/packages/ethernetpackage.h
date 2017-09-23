@@ -11,8 +11,9 @@
 namespace PCAP {
 
 class EthernetPackage : public BasePackage {
-public:
-    EthernetPackage(const unsigned char* p, unsigned int l, bool modify = false);
+  public:
+    EthernetPackage(const unsigned char *p, unsigned int l,
+                    bool modify = false);
 
     MacAddress getSrcMac() const;
     MacAddress getDstMac() const;
@@ -22,13 +23,14 @@ public:
     void setDstMac(MacAddress mac);
     void setEtherType(unsigned short type);
 
-    friend bool operator==(const EthernetPackage &lhs, const EthernetPackage &rhs);
-    friend bool operator!=(const EthernetPackage &lhs, const EthernetPackage &rhs);
+    friend bool operator==(const EthernetPackage &lhs,
+                           const EthernetPackage &rhs);
+    friend bool operator!=(const EthernetPackage &lhs,
+                           const EthernetPackage &rhs);
 
-protected:
-    sniffethernet* m_ethernet;
+  protected:
+    sniffethernet *m_ethernet;
 };
-
 }
 
 #endif

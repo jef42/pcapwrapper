@@ -2,16 +2,16 @@
 
 #include <netinet/in.h>
 
-#include "../../../include/network/addresses/macaddress.h"
 #include "../../../include/network/addresses/ipaddress.h"
+#include "../../../include/network/addresses/macaddress.h"
 
 namespace PCAP {
 namespace PCAPBuilder {
 
 static unsigned char package_buffer[snap_len] = {};
 
-void set_ethernet(auto& package, std::map<Keys, Option>& options) {
-    for (auto& option : options) {
+void set_ethernet(auto &package, std::map<Keys, Option> &options) {
+    for (auto &option : options) {
         if (option.first == Keys::Key_Eth_Mac_Src) {
             package.setSrcMac(option.second.m_value_mac);
         }
@@ -21,8 +21,8 @@ void set_ethernet(auto& package, std::map<Keys, Option>& options) {
     }
 }
 
-void set_ip(auto& package, std::map<Keys, Option>& options) {
-    for (auto& option : options) {
+void set_ip(auto &package, std::map<Keys, Option> &options) {
+    for (auto &option : options) {
         if (option.first == Keys::Key_Ip_Src) {
             package.setSrcIp(option.second.m_value_ip);
         }
@@ -44,8 +44,8 @@ void set_ip(auto& package, std::map<Keys, Option>& options) {
     }
 }
 
-void set_udp(auto& package, std::map<Keys, Option>& options) {
-    for (auto& option : options) {
+void set_udp(auto &package, std::map<Keys, Option> &options) {
+    for (auto &option : options) {
         if (option.first == Keys::Key_Udp_Length) {
             package.setUDPLength(option.second.m_value_short);
         }
@@ -58,8 +58,8 @@ void set_udp(auto& package, std::map<Keys, Option>& options) {
     }
 }
 
-void set_icmp(auto& package, std::map<Keys, Option>& options) {
-    for (auto& option : options) {
+void set_icmp(auto &package, std::map<Keys, Option> &options) {
+    for (auto &option : options) {
         if (option.first == Keys::Key_Icmp_Type) {
             package.setType(option.second.m_value_char);
         }
@@ -69,8 +69,8 @@ void set_icmp(auto& package, std::map<Keys, Option>& options) {
     }
 }
 
-void set_tcp(auto& package, std::map<Keys, Option>& options) {
-    for (auto& option : options) {
+void set_tcp(auto &package, std::map<Keys, Option> &options) {
+    for (auto &option : options) {
         if (option.first == Keys::Key_Src_Port) {
             package.setSrcPort(option.second.m_value_short);
         }
@@ -89,8 +89,8 @@ void set_tcp(auto& package, std::map<Keys, Option>& options) {
     }
 }
 
-void set_arp(auto& package, std::map<Keys, Option>& options) {
-    for (auto& option : options) {
+void set_arp(auto &package, std::map<Keys, Option> &options) {
+    for (auto &option : options) {
         if (option.first == Keys::Key_Arp_Mac_Src) {
             package.setSrcArpMac(option.second.m_value_mac);
         }
@@ -206,13 +206,12 @@ TCPPackage make_tcp(std::map<Keys, Option> options) {
     package.setTcpFlags(0x02);
     package.setWindowSize(0x7210);
     package.setUrgentPtr(0x0000);
-    
+
     set_ethernet(package, options);
     set_ip(package, options);
     set_tcp(package, options);
 
     return package;
 }
-
 }
 }

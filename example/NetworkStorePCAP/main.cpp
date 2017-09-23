@@ -2,11 +2,10 @@
 #include <iostream>
 
 #include <pcapwrapper/controller.hpp>
-#include <pcapwrapper/processors/processorsave.h>
 #include <pcapwrapper/interfaces/interface.h>
+#include <pcapwrapper/processors/processorsave.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     if (argc != 4) {
         std::cout << "1. Interface\n";
         std::cout << "2. Filename\n";
@@ -18,7 +17,8 @@ int main(int argc, char* argv[])
     const std::string filename = argv[2];
     const int time = std::stoi(argv[3]);
 
-    auto controller = std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::ProcessorSave>>(interface);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::Interface, PCAP::ProcessorSave>>(interface);
     controller->start();
 
     std::cout << "Started" << std::endl;

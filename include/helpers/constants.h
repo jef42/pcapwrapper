@@ -14,7 +14,7 @@ constexpr auto ethernet_addr_len = std::size_t{6};
 
 constexpr auto ip_addr_len = std::size_t{4};
 
-#define IP_HL(ip)               (((ip)->m_ip_vhl) & 0x0f)
-#define IP_V(ip)                (((ip)->m_ip_vhl) >> 4)
+#define IP_HL(ip) (((ip)->m_ip_vhl) & 0x0f)
+#define IP_V(ip) (((ip)->m_ip_vhl) >> 4)
 
 #endif // PCAPCONSTANTS_H

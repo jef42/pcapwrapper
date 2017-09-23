@@ -6,13 +6,13 @@
 #include <pcapwrapper/listeners/packagelistener.h>
 #include <pcapwrapper/network/packages/arppackage.h>
 
-class DetectNetwork : public PCAP::PackageListener<PCAP::ARPPackage>
-{
-public:
+class DetectNetwork : public PCAP::PackageListener<PCAP::ARPPackage> {
+  public:
     DetectNetwork(PCAP::IpAddress target_ip);
     void receivedPackage(PCAP::ARPPackage package) override;
     bool isUp() const;
-private:
+
+  private:
     const PCAP::IpAddress m_target_ip;
     bool m_isUp;
 };

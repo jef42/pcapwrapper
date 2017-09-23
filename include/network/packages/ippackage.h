@@ -3,15 +3,15 @@
 
 #include <string>
 
-#include "ethernetpackage.h"
-#include "../sniff/sniffip.h"
 #include "../addresses/ipaddress.h"
+#include "../sniff/sniffip.h"
+#include "ethernetpackage.h"
 
 namespace PCAP {
 
 class IPPackage : public EthernetPackage {
-public:
-    IPPackage(const unsigned char* p, unsigned int l, bool modify = false);
+  public:
+    IPPackage(const unsigned char *p, unsigned int l, bool modify = false);
 
     IpAddress getSrcIp() const;
     IpAddress getDstIp() const;
@@ -38,10 +38,9 @@ public:
     friend bool operator==(const IPPackage &lhs, const IPPackage &rhs);
     friend bool operator!=(const IPPackage &lhs, const IPPackage &rhs);
 
-protected:
-    sniffip* m_ip;
+  protected:
+    sniffip *m_ip;
 };
-
 }
 
 #endif

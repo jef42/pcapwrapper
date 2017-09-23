@@ -1,23 +1,22 @@
-#include <gtest/gtest.h>
 #include <chrono>
-#include <thread>
+#include <gtest/gtest.h>
 #include <memory>
+#include <thread>
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
-#include <pcapwrapper/processors/processor.h>
 #include <pcapwrapper/listeners/packagelistener.h>
-#include <pcapwrapper/network/packages/udppackage.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
 #include <pcapwrapper/network/addresses/macaddress.h>
+#include <pcapwrapper/network/packages/udppackage.h>
+#include <pcapwrapper/processors/processor.h>
 
 #include "../common.h"
 
 class ListenerReceiveUDP : public PCAP::PackageListener<PCAP::UDPPackage>,
-                    public FinishTest
-{
-public:
-    //expected values are from file
+                           public FinishTest {
+  public:
+    // expected values are from file
     void receivedPackage(PCAP::UDPPackage package) override {
         EXPECT_EQ(PCAP::MacAddress("00:26:16:00:00:d2"), package.getDstMac());
         EXPECT_EQ(PCAP::MacAddress("00:0C:29:50:A9:FC"), package.getSrcMac());
@@ -41,7 +40,8 @@ public:
 
 TEST(TestReceiveUDP, TestReceiveOnePackage) {
     std::string filename = std::string("../pcapfiles/udp1package.pcap");
-    auto controller = std::make_shared<PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerReceiveUDP>();
     controller->addListener(listener);
     controller->start();

@@ -5,35 +5,32 @@
 #include <vector>
 
 #include "../../listeners/packagelistener.h"
-#include "../packages/udppackage.h"
 #include "../packages/tcppackage.h"
+#include "../packages/udppackage.h"
 #include "session.h"
 
 namespace PCAP {
 
 class SessionController : public PackageListener<TCPPackage>,
-                          public PackageListener<UDPPackage>
-{
-public:
+                          public PackageListener<UDPPackage> {
+  public:
     virtual ~SessionController() noexcept = default;
 
-private:
+  private:
     void receivedPackage(TCPPackage package) override;
     void receivedPackage(UDPPackage package) override;
 
-    virtual void newSession(const Session&, TCPPackage) {}
-    virtual void appendSession(const Session&, TCPPackage) {}
-    virtual void finishedSession(const Session&) {}
+    virtual void newSession(const Session &, TCPPackage) {}
+    virtual void appendSession(const Session &, TCPPackage) {}
+    virtual void finishedSession(const Session &) {}
 
-    virtual void newSession(const Session&, UDPPackage) {}
-    virtual void appendSession(const Session&, UDPPackage) {}
+    virtual void newSession(const Session &, UDPPackage) {}
+    virtual void appendSession(const Session &, UDPPackage) {}
 
-private:
+  private:
     std::vector<Session> m_tcp_session;
     std::vector<Session> m_udp_session;
 };
-
 }
-
 
 #endif
