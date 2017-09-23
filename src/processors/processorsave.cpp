@@ -25,7 +25,7 @@ bool ProcessorSave::save(const std::string& filename)
     pcap_close(pd);
     return true;
 }
-
+  
 void ProcessorSave::callback_impl(const unsigned char *package, const pcap_pkthdr &header)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
