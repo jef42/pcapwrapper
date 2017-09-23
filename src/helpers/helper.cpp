@@ -44,7 +44,7 @@ void setICMPChecksum(sniffip *ip, snifficmp* icmp) {
     icmp->m_checksum = checksum((char*)icmp, ntohs(ip->m_ip_len) - (IP_HL(ip) * 4));
 }
 
-void setTCPChecksum(sniffip *ip, snifftcp *tcp, snifftcpopt *tcp_opt, unsigned char* data) {
+void setTCPChecksum(sniffip *ip, snifftcp *tcp, unsigned char* data) {
     tcp->m_th_sum = 0x0000;
 
     pseudo_header pseudo_h;
@@ -58,9 +58,7 @@ void setTCPChecksum(sniffip *ip, snifftcp *tcp, snifftcpopt *tcp_opt, unsigned c
     memset(packet, '\0', 1500);
     memcpy(packet, &pseudo_h, sizeof(pseudo_h));
     memcpy(&packet[sizeof(pseudo_h)], tcp, sizeof(*tcp));
-    if (TH_OFF(tcp) > 5)
-        memcpy(&packet[sizeof(pseudo_h) + sizeof(*tcp)], tcp_opt, sizeof(*tcp_opt));
-    memcpy(&packet[sizeof(pseudo_h) + TH_OFF(tcp) * 4], data, IP_HL(ip)*4-(sizeof(*ip)-TH_OFF(tcp) * 4));
+    memcpy(&packet[sizeof(pseudo_h) + sizeof(*tcp)], data, ntohs(ip->m_ip_len) - (IP_HL(ip) * 4 - sizeof(*tcp)));
 
     tcp->m_th_sum = checksum(&packet, ntohs(ip->m_ip_len) - (IP_HL(ip) * 4) + sizeof(pseudo_h));
 }

@@ -29,4 +29,8 @@ bool operator== (const Session& lhs, const Session& rhs) noexcept {
            (rhs.m_port_host == lhs.m_port_host || rhs.m_port_host == lhs.m_port_dest);
 }
 
+bool operator!= (const Session& lhs, const Session& rhs) noexcept {
+    return !(lhs == rhs);
+}
+
 }

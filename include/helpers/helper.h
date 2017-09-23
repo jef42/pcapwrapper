@@ -17,7 +17,7 @@ namespace PCAPHelper {
 
 void setIPChecksum(sniffip* ip);
 void setICMPChecksum(sniffip *ip, snifficmp* icmp);
-void setTCPChecksum(sniffip* ip, snifftcp* tcp, snifftcpopt *tcp_opt, unsigned char* data);
+void setTCPChecksum(sniffip* ip, snifftcp* tcp, unsigned char* data);
 void setUDPChecksum(sniffip *ip, sniffudp* udp, unsigned char* data);
 
 PCAP::IpAddress getIp(const std::string& interface);

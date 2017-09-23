@@ -39,7 +39,7 @@ const unsigned char* ICMPPackage::getData() const {
 }
 
 unsigned int ICMPPackage::getDataLength() const {
-    return ntohs(m_ip->m_ip_len) - sizeof(m_icmp) - sizeof(m_ip);
+    return ntohs(m_ip->m_ip_len) - sizeof(*m_icmp) - sizeof(*m_ip);
 }
 
 void ICMPPackage::appendData(unsigned char* data, int size) {

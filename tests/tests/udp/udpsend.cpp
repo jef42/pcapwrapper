@@ -61,7 +61,7 @@ TEST_F(TestSendUDP, TestSendOnePackage) {
         {Keys::Key_Src_Port, Option{(unsigned short)0x5023}},
         {Keys::Key_Dst_Port, Option{(unsigned short)0x4241}},
         {Keys::Key_Udp_Length, Option{(unsigned short)0x15}}});
-    //package.recalculateChecksums();
+    package.recalculateChecksums();
     send_package(package);
 
     std::string filename = std::string("tmp-file.pcap");
@@ -73,4 +73,18 @@ TEST_F(TestSendUDP, TestSendOnePackage) {
     wait_test_finished(std::chrono::milliseconds(200));
     EXPECT_EQ(true, listener->is_done());
     controller->stop();
+}
+
+TEST_F(TestSendUDP, TestAppendData) {
+    using namespace PCAP::PCAPBuilder;
+    constexpr unsigned int data_size = 6;
+    auto package = PCAP::PCAPBuilder::make_udp(std::map<Keys, Option>{});
+    unsigned char data[data_size] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6};
+    unsigned char data_result[data_size * 2] = {1,2,3,4,5,6,1,2,3,4,5,6};
+    package.appendData(data, data_size);
+    EXPECT_EQ(package.getDataLength(), data_size);
+    EXPECT_TRUE(memcmp(package.getData(), data, package.getDataLength()) == 0);
+    package.appendData(data, data_size);
+    EXPECT_EQ(package.getDataLength(), data_size * 2);
+    EXPECT_TRUE(memcmp(package.getData(), data_result, package.getDataLength()) == 0);
 }

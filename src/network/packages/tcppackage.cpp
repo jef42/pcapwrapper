@@ -9,13 +9,8 @@ namespace PCAP {
 
 TCPPackage::TCPPackage(const unsigned char *p, unsigned int l, bool modify)
     : IPPackage{p, l, modify} {
-    m_tcp = (struct snifftcp*)(m_package + size_ethernet + 5*4);
-    if (TH_OFF(m_tcp) > 5) { //if there is optional data
-        m_tcp_opt = (struct snifftcpopt*)(m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp)); //tcp_opt can be also over the data, is it max 40
-        m_data = m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp) + TH_OFF(m_tcp) * 4 - 20; //
-    } else {
-        m_data = m_package + size_ethernet + 5 * 4 + sizeof(*m_tcp);
-    }
+    m_tcp = (struct snifftcp*)(m_package + size_ethernet + sizeof(sniffip));
+    m_data = m_package + size_ethernet + sizeof(sniffip) + sizeof(snifftcp);
 }
 
 unsigned short TCPPackage::getSrcPort() const {
@@ -84,10 +79,12 @@ void TCPPackage::setUrgentPtr(unsigned short ptr) {
 
 void TCPPackage::recalculateChecksums() {
     PCAPHelper::setIPChecksum(m_ip);
-    PCAPHelper::setTCPChecksum(m_ip, m_tcp, m_tcp_opt, m_data);
+    PCAPHelper::setTCPChecksum(m_ip, m_tcp, m_data);
 }
 
 const unsigned char* TCPPackage::getData() const {
+    if (TH_OFF(m_tcp) > 5)
+        return m_data + TH_OFF(m_tcp) * 4 - 20;//? what is 20
     return m_data;
 }
 
@@ -101,7 +98,7 @@ void TCPPackage::appendData(unsigned char* data, int size) {
 }
 
 unsigned int TCPPackage::getDataLength() const {
-    return ntohs(m_ip->m_ip_len) - ((IP_HL(m_ip) + TH_OFF(m_tcp)) * 4);
+    return ntohs(m_ip->m_ip_len) - sizeof(*m_tcp) - sizeof(*m_ip);
 }
 
 bool operator==(const TCPPackage &lhs, const TCPPackage &rhs) {

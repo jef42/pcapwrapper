@@ -190,7 +190,7 @@ TCPPackage make_tcp(std::map<Keys, Option> options) {
     package.setEtherType(0x0800);
     package.setVHL(0x45);
     package.setTOS(0x0);
-    package.setTotalLength(0x003c);
+    package.setTotalLength(0x0028);
     package.setID(0x1000);
     package.setIpFlags(0x0);
     package.setFragmentOffset(0x0);

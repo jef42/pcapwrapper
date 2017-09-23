@@ -11,12 +11,9 @@ class Session {
 public:
     Session(IpAddress ip_host, IpAddress ip_dest,
             const unsigned short port_host, const unsigned short port_dest);
-    Session(const Session& rhs) = default;
-    Session(Session&& rhs) noexcept = default;
-    Session& operator=(const Session& rhs) = default;
-    Session& operator=(Session&& rhs) noexcept = default;
 
     friend bool operator== (const Session& lhs, const Session& rhs) noexcept;
+    friend bool operator!= (const Session& lhs, const Session& rhs) noexcept;
 
     std::tuple<IpAddress, IpAddress> get_ips() const;
     std::tuple<unsigned short, unsigned short> get_ports() const;

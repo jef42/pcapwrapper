@@ -43,7 +43,6 @@ class TCPPackage : public IPPackage {
 
   private:
     snifftcp* m_tcp;
-    snifftcpopt* m_tcp_opt;
     unsigned char* m_data;
 };
 
