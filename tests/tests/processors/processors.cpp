@@ -61,6 +61,12 @@ TEST(Processors, removeListener) {
     controller->addListener(icmp_listener);
     controller->addListener(arp_listener);
 
+    controller->removeListener(tcp_listener);
+    controller->removeListener(udp_listener);
+    controller->removeListener(icmp_listener);
+    controller->removeListener(arp_listener);
+
+    controller->start();
     wait_test_finished(std::chrono::milliseconds(200));
     EXPECT_FALSE(tcp_listener->is_done());
     EXPECT_FALSE(udp_listener->is_done());
@@ -78,7 +84,8 @@ TEST(Processors, clearListeners) {
     auto arp_listener = std::make_shared<ARPListener>();
 
     controller->clearAllListeners();
-
+    controller->start();
+    
     wait_test_finished(std::chrono::milliseconds(200));
     EXPECT_FALSE(tcp_listener->is_done());
     EXPECT_FALSE(udp_listener->is_done());
