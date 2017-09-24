@@ -58,10 +58,6 @@ const unsigned char *InterfaceFile::read_package_impl(pcap_pkthdr &header) {
     return tmp;
 }
 
-int InterfaceFile::write_impl(const unsigned char *package, int len) {
-    if (m_handler != nullptr) {
-        return pcap_sendpacket(m_handler, package, len);
-    }
-    return -1;
-}
+int InterfaceFile::write_impl(const unsigned char *, int) { return -1; }
+
 }

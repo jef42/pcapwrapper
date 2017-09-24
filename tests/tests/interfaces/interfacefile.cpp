@@ -7,6 +7,7 @@
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interfacefile.h>
 #include <pcapwrapper/listeners/packagelistener.h>
+#include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/packages/tcppackage.h>
 #include <pcapwrapper/network/packages/udppackage.h>
 #include <pcapwrapper/processors/processor.h>
@@ -52,4 +53,13 @@ TEST(FileInterface, Filter) {
     wait_test_finished(std::chrono::milliseconds(200));
     EXPECT_TRUE(tcp_listener->is_done());
     EXPECT_FALSE(udp_listener->is_done());
+}
+
+TEST(FileInterface, Write) {
+    const std::string filename = "../pcapfiles/session.pcap";
+    auto controller = std::make_shared<
+        PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
+    using namespace PCAP::PCAPBuilder;
+    auto package = PCAP::PCAPBuilder::make_udp(std::map<Keys, Option>{});
+    EXPECT_EQ(-1, controller->write(package.getPackage(), package.getLength()));
 }
