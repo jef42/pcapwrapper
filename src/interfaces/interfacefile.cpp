@@ -30,7 +30,20 @@ bool InterfaceFile::openInterface(const std::string &filename) {
     return true;
 }
 
-bool InterfaceFile::set_filter_impl(const std::string &) { return false; }
+bool InterfaceFile::set_filter_impl(const std::string &filter) {
+    if (m_handler != nullptr) {
+        struct bpf_program fp;
+        bpf_u_int32 net;
+        if (pcap_compile(m_handler, &fp, filter.c_str(), 0, net) == -1) {
+            return false;
+        }
+        if (pcap_setfilter(m_handler, &fp) == -1) {
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
 
 const unsigned char *InterfaceFile::read_package_impl(pcap_pkthdr &header) {
     auto tmp = pcap_next(m_handler, &header);
