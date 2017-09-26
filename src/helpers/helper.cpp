@@ -26,6 +26,7 @@
 namespace PCAP {
 namespace PCAPHelper {
 
+namespace {
 struct pseudo_header {
     unsigned char s_addr[4];
     unsigned char d_addr[4];
@@ -33,6 +34,7 @@ struct pseudo_header {
     unsigned char protocol;
     unsigned short length;
 };
+}
 
 void setIPChecksum(sniffip *ip) {
     ip->m_ip_sum = 0x0000;
@@ -130,7 +132,6 @@ PCAP::IpAddress getMask(const std::string &interface) {
         }
     }
     pcap_freealldevs(all_devs);
-    ;
     return PCAP::IpAddress();
 }
 
