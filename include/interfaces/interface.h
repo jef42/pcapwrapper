@@ -28,10 +28,6 @@ class Interface : public InterfacePolicy {
     bool openInterface(const std::string &netName);
 
     char m_errbuf[PCAP_ERRBUF_SIZE];
-
-    bpf_u_int32 m_mask;
-    bpf_u_int32 m_net;
-
     pcap_t *m_handler;
 };
 }

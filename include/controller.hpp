@@ -1,37 +1,34 @@
 #ifndef PCAPCONTROLLER_H
 #define PCAPCONTROLLER_H
 
-#include <string>
-#include <memory>
+#include <algorithm>
 #include <future>
 #include <map>
+#include <memory>
 #include <mutex>
-#include <algorithm>
+#include <string>
 #include <type_traits>
 
 #include <pcap/pcap.h>
 
-#include "processors/processorpolicy.h"
 #include "interfaces/interfacepolicy.h"
+#include "processors/processorpolicy.h"
 
 namespace PCAP {
 
-template <typename I, typename P>
-class Controller : private I, public P {
+template <typename I, typename P> class Controller : private I, public P {
   public:
-    Controller(const std::string& interfaceName)
-        :  I{interfaceName},
-           m_stopThread{true}
-    {}
+    Controller(const std::string &interfaceName)
+        : I{interfaceName}, m_stopThread{true} {}
 
     using I::readPackage;
     using I::write;
     using I::setFilter;
 
-    Controller(const Controller& rhs) = delete;
-    Controller(Controller&& rhs) = delete;
-    Controller& operator=(const Controller& rhs) = delete;
-    Controller& operator=(Controller& rhs) = delete;
+    Controller(const Controller &rhs) = delete;
+    Controller(Controller &&rhs) = delete;
+    Controller &operator=(const Controller &rhs) = delete;
+    Controller &operator=(Controller &rhs) = delete;
 
     virtual ~Controller() {
         if (!m_stopThread) {
@@ -44,7 +41,7 @@ class Controller : private I, public P {
         m_f = std::async(std::launch::async, [this]() {
             while (!this->m_stopThread) {
                 pcap_pkthdr header;
-                const unsigned char* package = I::readPackage(header);
+                const unsigned char *package = I::readPackage(header);
                 if (package) {
                     P::callback(package, header);
                 }
@@ -58,11 +55,9 @@ class Controller : private I, public P {
     }
 
   private:
-
     bool m_stopThread;
     std::future<void> m_f;
 };
-
 }
 
 #endif // PCAPCONTROLLER_H
