@@ -29,7 +29,8 @@ bool Interface::openInterface(const std::string &netName) {
 bool Interface::set_filter_impl(const std::string &filter) {
     if (m_handler != nullptr) {
         struct bpf_program fp;
-        if (pcap_compile(m_handler, &fp, filter.c_str(), 0, m_net) == -1) {
+        bpf_u_int32 net;
+        if (pcap_compile(m_handler, &fp, filter.c_str(), 0, net) == -1) {
             return false;
         }
         if (pcap_setfilter(m_handler, &fp) == -1) {
