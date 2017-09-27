@@ -6,11 +6,11 @@ using namespace PCAP;
 
 DetectPorts::DetectPorts(PCAP::IpAddress desiredIp) : m_expectedip{desiredIp} {}
 
-void DetectPorts::receivedPackage(PCAP::TCPPackage package) {
-    if (package.getSrcIp() == m_expectedip) {
-        unsigned char flags = package.getTcpFlags();
+void DetectPorts::receive_package(PCAP::TCPPackage package) {
+    if (package.get_src_ip() == m_expectedip) {
+        unsigned char flags = package.get_tcp_flags();
         if (flags & 0x02) {
-            std::cout << package.getSrcPort() << std::endl;
+            std::cout << package.get_src_port() << std::endl;
         }
     }
 }

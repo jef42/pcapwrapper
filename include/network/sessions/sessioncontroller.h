@@ -17,15 +17,15 @@ class SessionController : public PackageListener<TCPPackage>,
     virtual ~SessionController() noexcept = default;
 
   private:
-    void receivedPackage(TCPPackage package) override;
-    void receivedPackage(UDPPackage package) override;
+    void receive_package(TCPPackage package) override;
+    void receive_package(UDPPackage package) override;
 
-    virtual void newSession(const Session &, TCPPackage) {}
-    virtual void appendSession(const Session &, TCPPackage) {}
-    virtual void finishedSession(const Session &) {}
+    virtual void new_session(const Session &, TCPPackage) {}
+    virtual void append_session(const Session &, TCPPackage) {}
+    virtual void finished_session(const Session &) {}
 
-    virtual void newSession(const Session &, UDPPackage) {}
-    virtual void appendSession(const Session &, UDPPackage) {}
+    virtual void new_session(const Session &, UDPPackage) {}
+    virtual void append_session(const Session &, UDPPackage) {}
 
   private:
     std::vector<Session> m_tcp_session;

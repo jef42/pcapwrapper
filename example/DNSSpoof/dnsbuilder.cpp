@@ -86,15 +86,15 @@ void DNSBuilder::operator<<(sniffdns_answer answer) {
 }
 
 void DNSBuilder::build() {
-    PCAP::PCAPHelper::setIPChecksum(m_ip);
-    PCAP::PCAPHelper::setUDPChecksum(m_ip, m_udp, (unsigned char *)m_question);
+    PCAP::PCAPHelper::set_ip_checksum(m_ip);
+    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (unsigned char *)m_question);
 }
 
-unsigned char *DNSBuilder::getPackage() const {
+unsigned char *DNSBuilder::get_package() const {
     return (unsigned char *)&m_package[0];
 }
 
-unsigned int DNSBuilder::getLength() const { return m_index; }
+unsigned int DNSBuilder::get_length() const { return m_index; }
 
 PCAP::sniffethernet create_ethernet(const std::string &src_mac,
                                     const std::string &dst_mac) {

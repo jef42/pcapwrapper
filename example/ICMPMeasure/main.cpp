@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
         std::cout << "1. Interface name";
     }
 
-    const auto local_ip = PCAP::PCAPHelper::getIp(argv[1]);
-    const auto local_mac = PCAP::PCAPHelper::getMac(argv[1]);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(argv[1]);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(argv[1]);
 
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(argv[1]);
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
             {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
         for (int i = 0; i < N; ++i) {
-            controller->write(package.getPackage(), package.getLength());
+            controller->write(package.get_package(), package.get_length());
         }
     }
 }

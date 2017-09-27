@@ -29,25 +29,25 @@ TEST(FileInterface, FileNotFound) {
 class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage>,
                     public FinishTest {
   public:
-    void receivedPackage(PCAP::TCPPackage) override { m_done = true; }
+    void receive_package(PCAP::TCPPackage) override { m_done = true; }
 };
 
 class UDPListener : public PCAP::PackageListener<PCAP::UDPPackage>,
                     public FinishTest {
   public:
-    void receivedPackage(PCAP::UDPPackage) override { m_done = true; }
+    void receive_package(PCAP::UDPPackage) override { m_done = true; }
 };
 
 TEST(FileInterface, Filter) {
     const std::string filename = "../pcapfiles/session.pcap";
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
-    EXPECT_TRUE(controller->setFilter("tcp"));
+    EXPECT_TRUE(controller->set_filter("tcp"));
     auto tcp_listener = std::make_shared<TCPListener>();
     auto udp_listener = std::make_shared<UDPListener>();
 
-    controller->addListener(tcp_listener);
-    controller->addListener(udp_listener);
+    controller->add_listener(tcp_listener);
+    controller->add_listener(udp_listener);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));
@@ -61,5 +61,6 @@ TEST(FileInterface, Write) {
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     using namespace PCAP::PCAPBuilder;
     auto package = PCAP::PCAPBuilder::make_udp(std::map<Keys, Option>{});
-    EXPECT_EQ(-1, controller->write(package.getPackage(), package.getLength()));
+    EXPECT_EQ(-1,
+              controller->write(package.get_package(), package.get_length()));
 }

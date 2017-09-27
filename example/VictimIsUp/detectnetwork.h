@@ -9,7 +9,7 @@
 class DetectNetwork : public PCAP::PackageListener<PCAP::ARPPackage> {
   public:
     DetectNetwork(PCAP::IpAddress target_ip);
-    void receivedPackage(PCAP::ARPPackage package) override;
+    void receive_package(PCAP::ARPPackage package) override;
     bool isUp() const;
 
   private:

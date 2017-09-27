@@ -15,8 +15,8 @@ class DNSParser {
     DNSParser(const unsigned char *package, int length);
 
     void build();
-    unsigned char *getPackage() const;
-    unsigned int getLength() const;
+    unsigned char *get_package() const;
+    unsigned int get_length() const;
 
   private:
     unsigned char m_package[snap_len];

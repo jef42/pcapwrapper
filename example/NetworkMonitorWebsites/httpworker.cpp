@@ -44,14 +44,14 @@ void append_to(const std::string &filename, const std::string &data) {
 HTTPWorker::HTTPWorker(PCAP::TCPPackage package) {
     m_worker_finished = false;
     m_worker = std::async(&HTTPWorker::worker, this);
-    m_src_ip = package.getSrcIp();
+    m_src_ip = package.get_src_ip();
     m_file_name = create_dir() + "/" + m_src_ip.to_string();
     this->new_package(package);
 }
 
 void HTTPWorker::new_package(PCAP::TCPPackage package) {
     std::string data =
-        std::string((char *)package.getData(), package.getDataLength());
+        std::string((char *)package.get_data(), package.get_data_length());
 
     std::unique_lock<std::mutex> lk(m_worker_mutex);
     m_payloads.emplace_back(data);

@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::string interface_name = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
     int time = std::stoi(argv[2]);
 
     std::vector<PCAP::IpAddress> ignore_ips;
@@ -33,8 +33,8 @@ int main(int argc, char *argv[]) {
             interface_name);
     auto session_controller =
         std::make_shared<DNSSessionController>(std::move(ignore_ips));
-    controller->addSessionController(session_controller);
-    controller->setFilter("udp dst port 53");
+    controller->add_session_controller(session_controller);
+    controller->set_filter("udp dst port 53");
     controller->start();
 
     std::cout << "NetworkMonitorDNS" << std::endl;

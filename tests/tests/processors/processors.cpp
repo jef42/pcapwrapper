@@ -16,25 +16,25 @@
 class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage>,
                     public FinishTest {
   public:
-    void receivedPackage(PCAP::TCPPackage) override { m_done = true; }
+    void receive_package(PCAP::TCPPackage) override { m_done = true; }
 };
 
 class UDPListener : public PCAP::PackageListener<PCAP::UDPPackage>,
                     public FinishTest {
   public:
-    void receivedPackage(PCAP::UDPPackage) override { m_done = true; }
+    void receive_package(PCAP::UDPPackage) override { m_done = true; }
 };
 
 class ICMPListener : public PCAP::PackageListener<PCAP::ICMPPackage>,
                      public FinishTest {
   public:
-    void receivedPackage(PCAP::ICMPPackage) override { m_done = true; }
+    void receive_package(PCAP::ICMPPackage) override { m_done = true; }
 };
 
 class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>,
                     public FinishTest {
   public:
-    void receivedPackage(PCAP::ARPPackage) override { m_done = true; }
+    void receive_package(PCAP::ARPPackage) override { m_done = true; }
 };
 
 TEST(ProcessorEmpty, ProcessorEmptyNoReceive) {
@@ -47,7 +47,7 @@ TEST(ProcessorEmpty, ProcessorEmptyNoReceive) {
     controller->stop();
 }
 
-TEST(Processors, removeListener) {
+TEST(Processors, remove_listener) {
     const std::string filename = std::string("../pcapfiles/tcp1package.pcap");
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
@@ -56,15 +56,15 @@ TEST(Processors, removeListener) {
     auto icmp_listener = std::make_shared<ICMPListener>();
     auto arp_listener = std::make_shared<ARPListener>();
 
-    controller->addListener(tcp_listener);
-    controller->addListener(udp_listener);
-    controller->addListener(icmp_listener);
-    controller->addListener(arp_listener);
+    controller->add_listener(tcp_listener);
+    controller->add_listener(udp_listener);
+    controller->add_listener(icmp_listener);
+    controller->add_listener(arp_listener);
 
-    controller->removeListener(tcp_listener);
-    controller->removeListener(udp_listener);
-    controller->removeListener(icmp_listener);
-    controller->removeListener(arp_listener);
+    controller->remove_listener(tcp_listener);
+    controller->remove_listener(udp_listener);
+    controller->remove_listener(icmp_listener);
+    controller->remove_listener(arp_listener);
 
     controller->start();
     wait_test_finished(std::chrono::milliseconds(200));
@@ -83,7 +83,7 @@ TEST(Processors, clearListeners) {
     auto icmp_listener = std::make_shared<ICMPListener>();
     auto arp_listener = std::make_shared<ARPListener>();
 
-    controller->clearAllListeners();
+    controller->clear_all_listeners();
     controller->start();
     
     wait_test_finished(std::chrono::milliseconds(200));

@@ -10,61 +10,63 @@ IPPackage::IPPackage(const unsigned char *p, unsigned int l, bool modify)
     m_ip = (sniffip *)(m_package + size_ethernet);
 }
 
-IpAddress IPPackage::getSrcIp() const { return IpAddress(m_ip->m_ip_src); }
+IpAddress IPPackage::get_src_ip() const { return IpAddress(m_ip->m_ip_src); }
 
-IpAddress IPPackage::getDstIp() const { return IpAddress(m_ip->m_ip_dst); }
+IpAddress IPPackage::get_dst_ip() const { return IpAddress(m_ip->m_ip_dst); }
 
-unsigned char IPPackage::getVHL() const { return m_ip->m_ip_vhl; }
+unsigned char IPPackage::get_vhl() const { return m_ip->m_ip_vhl; }
 
-unsigned char IPPackage::getTOS() const { return m_ip->m_ip_tos; }
+unsigned char IPPackage::get_tos() const { return m_ip->m_ip_tos; }
 
-unsigned short IPPackage::getTotalLength() const {
+unsigned short IPPackage::get_total_length() const {
     return ntohs(m_ip->m_ip_len);
 }
 
-unsigned short IPPackage::getID() const { return ntohs(m_ip->m_ip_id); }
+unsigned short IPPackage::get_id() const { return ntohs(m_ip->m_ip_id); }
 
-unsigned char IPPackage::getIpFlags() const {
+unsigned char IPPackage::get_ip_flags() const {
     return ntohs(m_ip->m_ip_off) >> 13;
 }
 
-unsigned short IPPackage::getFragmentOffset() const {
+unsigned short IPPackage::get_fragment_offset() const {
     return ntohs(m_ip->m_ip_off) & IP_OFFMASK;
 }
 
-unsigned char IPPackage::getTTL() const { return m_ip->m_ip_ttl; }
+unsigned char IPPackage::get_ttl() const { return m_ip->m_ip_ttl; }
 
-unsigned char IPPackage::getProtocol() const { return m_ip->m_ip_p; }
+unsigned char IPPackage::get_protocol() const { return m_ip->m_ip_p; }
 
-void IPPackage::setDstIp(IpAddress ip) {
+void IPPackage::set_dst_ip(IpAddress ip) {
     memcpy(m_ip->m_ip_dst, ip.data(), ip_addr_len);
 }
 
-void IPPackage::setSrcIp(IpAddress ip) {
+void IPPackage::set_src_ip(IpAddress ip) {
     memcpy(m_ip->m_ip_src, ip.data(), ip_addr_len);
 }
 
-void IPPackage::setVHL(unsigned char value) { m_ip->m_ip_vhl = value; }
+void IPPackage::set_vhl(unsigned char value) { m_ip->m_ip_vhl = value; }
 
-void IPPackage::setTOS(unsigned char value) { m_ip->m_ip_tos = value; }
+void IPPackage::set_tos(unsigned char value) { m_ip->m_ip_tos = value; }
 
-void IPPackage::setTotalLength(unsigned short length) {
+void IPPackage::set_total_length(unsigned short length) {
     m_ip->m_ip_len = htons(length);
 }
 
-void IPPackage::setID(unsigned short id) { m_ip->m_ip_id = htons(id); }
+void IPPackage::set_id(unsigned short id) { m_ip->m_ip_id = htons(id); }
 
-void IPPackage::setIpFlags(unsigned char flags) {
+void IPPackage::set_ip_flags(unsigned char flags) {
     m_ip->m_ip_off |= (htons(flags) << 13);
 }
 
-void IPPackage::setFragmentOffset(unsigned short fragment) {
+void IPPackage::set_fragment_offset(unsigned short fragment) {
     m_ip->m_ip_off |= (htons(fragment) & IP_OFFMASK);
 }
 
-void IPPackage::setTTL(unsigned char ttl) { m_ip->m_ip_ttl = ttl; }
+void IPPackage::set_ttl(unsigned char ttl) { m_ip->m_ip_ttl = ttl; }
 
-void IPPackage::setProtocol(unsigned char protocol) { m_ip->m_ip_p = protocol; }
+void IPPackage::set_protocol(unsigned char protocol) {
+    m_ip->m_ip_p = protocol;
+}
 
 bool operator==(const IPPackage &lhs, const IPPackage &rhs) {
     return static_cast<const EthernetPackage &>(lhs) ==

@@ -52,9 +52,9 @@ std::string DNSSessionController::is_block_website(const std::string &data) {
     return "0.0.0.0";
 }
 
-void DNSSessionController::receivedPackage(PCAP::UDPPackage package) {
+void DNSSessionController::receive_package(PCAP::UDPPackage package) {
 
-    std::string data = std::string((char *)&(package.getData()[QUERIES + 1]));
+    std::string data = std::string((char *)&(package.get_data()[QUERIES + 1]));
 
     if (m_force_all) {
         send_reply(package, m_local_ip.to_string());
@@ -75,16 +75,16 @@ void DNSSessionController::send_reply(PCAP::UDPPackage package,
         m_interface_name);
 
     DNSBuilder builder;
-    builder << create_ethernet(package.getDstMac().to_string(),
-                               package.getSrcMac().to_string());
-    builder << create_ip(package.getDstIp().to_string(),
-                         package.getSrcIp().to_string());
-    builder << create_udp(package.getDstPort(), package.getSrcPort());
-    builder << create_dns_question(1, package.getData(), QUERIES);
-    builder << create_dns_query(&package.getData()[QUERIES]);
+    builder << create_ethernet(package.get_dst_mac().to_string(),
+                               package.get_src_mac().to_string());
+    builder << create_ip(package.get_dst_ip().to_string(),
+                         package.get_src_ip().to_string());
+    builder << create_udp(package.get_dst_port(), package.get_src_port());
+    builder << create_dns_question(1, package.get_data(), QUERIES);
+    builder << create_dns_query(&package.get_data()[QUERIES]);
     builder << create_dns_answer(ip);
     builder.build();
-    controller->write(builder.getPackage(), builder.getLength());
+    controller->write(builder.get_package(), builder.get_length());
 }
 
 void DNSSessionController::forward_question(PCAP::UDPPackage package) {
@@ -92,9 +92,9 @@ void DNSSessionController::forward_question(PCAP::UDPPackage package) {
         PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(
         m_interface_name);
 
-    DNSParser parser(package.getPackage(), package.getLength());
+    DNSParser parser(package.get_package(), package.get_length());
     memcpy(parser.m_ethernet->m_ether_shost, m_local_mac.data(), 6);
     memcpy(parser.m_ethernet->m_ether_dhost, m_router_mac.data(), 6);
     parser.build();
-    controller->write(parser.getPackage(), parser.getLength());
+    controller->write(parser.get_package(), parser.get_length());
 }

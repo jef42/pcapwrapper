@@ -13,27 +13,27 @@ namespace PCAP {
 class ARPPackage : public EthernetPackage {
   public:
     ARPPackage(const unsigned char *p, unsigned int l, bool modify = false);
-    IpAddress getSrcIp() const;
-    IpAddress getDstIp() const;
-    MacAddress getSrcArpMac() const;
-    MacAddress getDstArpMac() const;
-    unsigned short getHardwareType() const;
-    unsigned short getProtocol() const;
-    unsigned char getHardwareLength() const;
-    unsigned char getProtocolLength() const;
-    unsigned short getOpcode() const;
+    IpAddress get_src_ip() const;
+    IpAddress get_dst_ip() const;
+    MacAddress get_src_arp_mac() const;
+    MacAddress get_dst_arp_mac() const;
+    unsigned short get_hardware_type() const;
+    unsigned short get_protocol() const;
+    unsigned char get_hardware_length() const;
+    unsigned char get_protocol_length() const;
+    unsigned short get_opcode() const;
 
-    void setSrcIp(IpAddress ip);
-    void setDstIp(IpAddress ip);
-    void setSrcArpMac(MacAddress mac);
-    void setDstArpMac(MacAddress mac);
-    void setHardwareType(unsigned short type);
-    void setProtocol(unsigned short proto);
-    void setHardwareLength(unsigned char l);
-    void setProtocolLength(unsigned char l);
-    void setOpcode(unsigned short code);
+    void set_src_ip(IpAddress ip);
+    void set_dst_ip(IpAddress ip);
+    void set_src_arp_mac(MacAddress mac);
+    void set_dst_arp_mac(MacAddress mac);
+    void set_hardware_type(unsigned short type);
+    void set_protocol(unsigned short proto);
+    void set_hardware_length(unsigned char l);
+    void set_protocol_length(unsigned char l);
+    void set_opcode(unsigned short code);
 
-    unsigned int getLength() const override;
+    unsigned int get_length() const override;
 
     friend bool operator==(const ARPPackage &lhs, const ARPPackage &rhs);
     friend bool operator!=(const ARPPackage &lhs, const ARPPackage &rhs);

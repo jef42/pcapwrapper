@@ -39,7 +39,7 @@ First create a TCP package listener:
 class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage>
 {
 public:
-    void receivedPackage(PCAP::TCPPackage package) override {
+    void receive_package(PCAP::TCPPackage package) override {
         //TODO
     }
 };
@@ -49,8 +49,8 @@ After that create a controller and set the filter, add the listeners and you jus
 ```
 auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(int_name);
 auto tcp_listener = std::make_shared<TCPListener>();
-controller->addListener(tcp_listener);
-controller->setFilter("tcp");
+controller->add_listener(tcp_listener);
+controller->set_filter("tcp");
 controller->start();
 ```
 
@@ -65,7 +65,7 @@ So we need a ICMP package listener:
 class ICMPListener : public PCAP::PackageListener<PCAP::ICMPPackage>
 {
 public:
-    void receivedPackage(PCAP::ICMPPackage package) override {
+    void receive_package(PCAP::ICMPPackage package) override {
         //TODO
     }
 };
@@ -75,8 +75,8 @@ And also we need to add the listener to controller and to start the controller.
 ```
 auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(int_name);
 auto icmp_listener = std::make_shared<ICMPListener>();
-controller->addListener(icmp_listener);
-controller->setFilter("icmp");
+controller->add_listener(icmp_listener);
+controller->set_filter("icmp");
 controller->start();
 ```
 
@@ -90,8 +90,8 @@ auto package = PCAP::PCAPBuilder::make_icmp(std::map<Keys, Option>{
     {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
     {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}
 });
-package.recalculateChecksums(); //Recalculate checksums
-controller->write(package.getPackage(), package.getLength()); //Sends package on network
+package.recalculate_checksums(); //Recalculate checksums
+controller->write(package.get_package(), package.get_length()); //Sends package on network
 ```
 ## Example 3.
 
@@ -106,7 +106,7 @@ class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>
 {
 public:
     ARPListener(router_ip, router_mac, local_ip, local_mac);
-    void receivedPackage(PCAP::ARPPackage package) override {
+    void receive_package(PCAP::ARPPackage package) override {
         send_arp_package(router_ip, local_mac, target_ip, target_mac);
         send_arp_package(local_ip, target_mac, router_ip, router_mac);
     }
@@ -114,8 +114,8 @@ public:
 
 auto controller = PCAP::Controller<PCAP::Interface, PCAP::Processor>::getController(int_name);
 auto arp_listener = std::make_shared<ARPListener>();
-controller->addListener(arp_listener);
-controller->setFilter("arp");
+controller->add_listener(arp_listener);
+controller->set_filter("arp");
 controller->start();
 
 for (const auto& target_ip : ips) {
@@ -127,7 +127,7 @@ for (const auto& target_ip : ips) {
         {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
         {Keys::Key_Ip_Src, Option(local_ip)},
         {Keys::Key_Ip_Dst, Option(target_ip)}});
-    controller->write(package.getPackage(), package.getLength());
+    controller->write(package.get_package(), package.get_length());
 }
 ```
 

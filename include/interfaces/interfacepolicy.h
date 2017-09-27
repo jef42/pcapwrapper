@@ -12,7 +12,7 @@ class InterfacePolicy {
     explicit InterfacePolicy(const std::string &name)
         : m_interface_name{name} {}
 
-    const unsigned char *readPackage(pcap_pkthdr &header) {
+    const unsigned char *read_package(pcap_pkthdr &header) {
         return read_package_impl(header);
     }
 
@@ -20,7 +20,7 @@ class InterfacePolicy {
         return write_impl(package, len);
     }
 
-    bool setFilter(const std::string &filter) {
+    bool set_filter(const std::string &filter) {
         return set_filter_impl(filter);
     }
 

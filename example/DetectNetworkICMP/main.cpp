@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    auto ip = PCAP::PCAPHelper::getIp(argv[1]);
-    const auto mask = PCAP::PCAPHelper::getMask(argv[1]);
-    const auto mac = PCAP::PCAPHelper::getMac(argv[1]);
-    const auto ips = PCAP::PCAPHelper::getIps(ip, mask);
+    auto ip = PCAP::PCAPHelper::get_ip(argv[1]);
+    const auto mask = PCAP::PCAPHelper::get_mask(argv[1]);
+    const auto mac = PCAP::PCAPHelper::get_mac(argv[1]);
+    const auto ips = PCAP::PCAPHelper::get_ips(ip, mask);
     std::string interface = argv[1];
     int time = std::stoi(argv[2]);
 
@@ -34,9 +34,9 @@ int main(int argc, char *argv[]) {
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface);
     auto sniffer = std::make_shared<DetectNetwork>();
-    controller->addListener(sniffer);
+    controller->add_listener(sniffer);
 
-    controller->setFilter("icmp");
+    controller->set_filter("icmp");
     controller->start();
 
     std::cout << "Started" << std::endl;
@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
                 {Keys::Key_Ip_Dst, Option{dest_ip}},
                 {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
                 {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
-            package.recalculateChecksums();
-            controller->write(package.getPackage(), package.getLength());
+            package.recalculate_checksums();
+            controller->write(package.get_package(), package.get_length());
         }
 
         using namespace std::chrono_literals;

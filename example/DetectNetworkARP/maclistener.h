@@ -11,7 +11,7 @@
 
 class MacListener : public PCAP::PackageListener<PCAP::ARPPackage> {
   public:
-    void receivedPackage(PCAP::ARPPackage package) override;
+    void receive_package(PCAP::ARPPackage package) override;
 
   private:
     std::vector<std::tuple<PCAP::IpAddress, PCAP::MacAddress>> m_packages;

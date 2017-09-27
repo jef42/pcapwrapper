@@ -15,16 +15,16 @@
 int main(int argc, char *argv[]) {
     if (argc != 4) {
         std::cout << "1. Interface\n";
-        std::cout << "2. Targetip\n";
+        std::cout << "2. Target_ip\n";
         std::cout << "3. Time(s)\n";
         return -1;
     }
 
     const std::string interface = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface);
-    const auto local_mac = PCAP::PCAPHelper::getMac(interface);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(interface);
     const auto target_ip = PCAP::IpAddress(argv[2]);
-    const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface);
+    const auto target_mac = PCAP::PCAPHelper::get_mac(target_ip, interface);
     int time = std::stoi(argv[3]);
 
     auto controller =
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     auto listener = std::make_shared<DetectPorts>(target_ip);
 
     controller->start();
-    controller->addListener(listener);
+    controller->add_listener(listener);
 
     std::cout << "Started " << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
@@ -48,8 +48,8 @@ int main(int argc, char *argv[]) {
                 {Keys::Key_Ip_Dst, Option{target_ip}},
                 {Keys::Key_Src_Port, Option{(unsigned short)45022}},
                 {Keys::Key_Dst_Port, Option{(unsigned short)port}}});
-            package.recalculateChecksums();
-            controller->write(package.getPackage(), package.getLength());
+            package.recalculate_checksums();
+            controller->write(package.get_package(), package.get_length());
         }
 
         using namespace std::chrono_literals;

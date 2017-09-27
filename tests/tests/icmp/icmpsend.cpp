@@ -22,8 +22,8 @@ class ListenerSendICMP : public PCAP::PackageListener<PCAP::ICMPPackage>,
   public:
     ListenerSendICMP(PCAP::ICMPPackage package) : m_package{package} {}
 
-    void receivedPackage(PCAP::ICMPPackage package) override {
-        EXPECT_EQ(m_package.getLength(), package.getLength());
+    void receive_package(PCAP::ICMPPackage package) override {
+        EXPECT_EQ(m_package.get_length(), package.get_length());
         EXPECT_EQ(package, m_package);
         EXPECT_FALSE(package != m_package);
         m_done = true;
@@ -53,14 +53,14 @@ TEST_F(TestSendICMP, TestSendOnePackage) {
         {Keys::Key_Ip_Length, Option{(unsigned short)0x3c}},
         {Keys::Key_Icmp_Type, Option{(unsigned char)0x01}},
         {Keys::Key_Icmp_Code, Option{(unsigned char)0x02}}});
-    package.recalculateChecksums();
+    package.recalculate_checksums();
     send_package(package);
 
     std::string filename = std::string("tmp-file.pcap");
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerSendICMP>(package);
-    controller->addListener(listener);
+    controller->add_listener(listener);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));
@@ -75,12 +75,12 @@ TEST_F(TestSendICMP, TestAppendData) {
     unsigned char data[data_size] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6};
     unsigned char data_result[data_size * 2] = {1, 2, 3, 4, 5, 6,
                                                 1, 2, 3, 4, 5, 6};
-    EXPECT_EQ(package.getDataLength(), 0);
-    package.appendData(data, data_size);
-    EXPECT_EQ(package.getDataLength(), data_size);
-    EXPECT_TRUE(memcmp(package.getData(), data, package.getDataLength()) == 0);
-    package.appendData(data, data_size);
-    EXPECT_EQ(package.getDataLength(), data_size * 2);
+    EXPECT_EQ(package.get_data_length(), 0);
+    package.append_data(data, data_size);
+    EXPECT_EQ(package.get_data_length(), data_size);
+    EXPECT_TRUE(memcmp(package.get_data(), data, package.get_data_length()) == 0);
+    package.append_data(data, data_size);
+    EXPECT_EQ(package.get_data_length(), data_size * 2);
     EXPECT_TRUE(
-        memcmp(package.getData(), data_result, package.getDataLength()) == 0);
+        memcmp(package.get_data(), data_result, package.get_data_length()) == 0);
 }

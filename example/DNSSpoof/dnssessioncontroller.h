@@ -22,7 +22,7 @@ class DNSSessionController : public PCAP::PackageListener<PCAP::UDPPackage> {
         std::string m_ip;
     };
 
-    void receivedPackage(PCAP::UDPPackage package) override;
+    void receive_package(PCAP::UDPPackage package) override;
     void send_reply(PCAP::UDPPackage package, const std::string &ip);
     void forward_question(PCAP::UDPPackage package);
     void read_websites();

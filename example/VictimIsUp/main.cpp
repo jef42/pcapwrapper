@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
     }
 
     std::string interface_name = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
-    const auto local_mac = PCAP::PCAPHelper::getMac(interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(interface_name);
     const auto target_ip = PCAP::IpAddress(argv[2]);
     int time = std::stoi(argv[3]);
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface_name);
     auto listener = std::make_shared<DetectNetwork>(target_ip);
-    controller->addListener(listener);
+    controller->add_listener(listener);
     controller->start();
 
     std::cout << "Started" << std::endl;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
              Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
             {Keys::Key_Ip_Src, Option{local_ip}},
             {Keys::Key_Ip_Dst, Option{target_ip}}});
-        controller->write(package.getPackage(), package.getLength());
+        controller->write(package.get_package(), package.get_length());
 
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(1s);

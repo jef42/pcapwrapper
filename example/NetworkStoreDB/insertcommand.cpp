@@ -7,13 +7,13 @@ InsertCommand::InsertCommand(const std::shared_ptr<DBConnection> &db,
     : m_stmt{nullptr}, m_db{db} {
     const std::string command =
         "INSERT INTO UDP VALUES(" + std::to_string(get_real_time()) + ", \"" +
-        package.getSrcIp().to_string() + "\", \"" +
-        package.getDstIp().to_string() + "\", " +
-        std::to_string(package.getSrcPort()) + ", " +
-        std::to_string(package.getDstPort()) + ", " + "?, " +
-        std::to_string(package.getLength()) + " );";
+        package.get_src_ip().to_string() + "\", \"" +
+        package.get_dst_ip().to_string() + "\", " +
+        std::to_string(package.get_src_port()) + ", " +
+        std::to_string(package.get_dst_port()) + ", " + "?, " +
+        std::to_string(package.get_length()) + " );";
     sqlite3_prepare_v2(db->m_db, command.c_str(), -1, &m_stmt, nullptr);
-    sqlite3_bind_blob(m_stmt, 1, package.getPackage(), package.getLength(),
+    sqlite3_bind_blob(m_stmt, 1, package.get_package(), package.get_length(),
                       SQLITE_STATIC);
 }
 
@@ -21,13 +21,13 @@ InsertCommand::InsertCommand(const std::shared_ptr<DBConnection> &db,
                              PCAP::TCPPackage package) {
     const std::string command =
         "INSERT INTO TCP VALUES(" + std::to_string(get_real_time()) + ", \"" +
-        package.getSrcIp().to_string() + "\", \"" +
-        package.getDstIp().to_string() + "\", " +
-        std::to_string(package.getSrcPort()) + ", " +
-        std::to_string(package.getDstPort()) + ", " + "?, " +
-        std::to_string(package.getLength()) + " );";
+        package.get_src_ip().to_string() + "\", \"" +
+        package.get_dst_ip().to_string() + "\", " +
+        std::to_string(package.get_src_port()) + ", " +
+        std::to_string(package.get_dst_port()) + ", " + "?, " +
+        std::to_string(package.get_length()) + " );";
     sqlite3_prepare_v2(db->m_db, command.c_str(), -1, &m_stmt, nullptr);
-    sqlite3_bind_blob(m_stmt, 1, package.getPackage(), package.getLength(),
+    sqlite3_bind_blob(m_stmt, 1, package.get_package(), package.get_length(),
                       SQLITE_STATIC);
 }
 
@@ -35,12 +35,12 @@ InsertCommand::InsertCommand(const std::shared_ptr<DBConnection> &db,
                              PCAP::ICMPPackage package) {
     const std::string command = "INSERT INTO ICMP VALUES(" +
                                 std::to_string(get_real_time()) + ", \"" +
-                                package.getSrcIp().to_string() + "\", \"" +
-                                package.getDstIp().to_string() + "\", "
+                                package.get_src_ip().to_string() + "\", \"" +
+                                package.get_dst_ip().to_string() + "\", "
                                                                  "?, " +
-                                std::to_string(package.getLength()) + " );";
+                                std::to_string(package.get_length()) + " );";
     sqlite3_prepare_v2(db->m_db, command.c_str(), -1, &m_stmt, nullptr);
-    sqlite3_bind_blob(m_stmt, 1, package.getPackage(), package.getLength(),
+    sqlite3_bind_blob(m_stmt, 1, package.get_package(), package.get_length(),
                       SQLITE_STATIC);
 }
 
@@ -48,12 +48,12 @@ InsertCommand::InsertCommand(const std::shared_ptr<DBConnection> &db,
                              PCAP::ARPPackage package) {
     const std::string command =
         "INSERT INTO ARP VALUES(" + std::to_string(get_real_time()) + ", \"" +
-        package.getSrcMac().to_string() + "\", \"" +
-        package.getSrcIp().to_string() + "\",  \"" +
-        package.getDstIp().to_string() + "\", " + "?, " +
-        std::to_string(package.getLength()) + " );";
+        package.get_src_mac().to_string() + "\", \"" +
+        package.get_src_ip().to_string() + "\",  \"" +
+        package.get_dst_ip().to_string() + "\", " + "?, " +
+        std::to_string(package.get_length()) + " );";
     sqlite3_prepare_v2(db->m_db, command.c_str(), -1, &m_stmt, nullptr);
-    sqlite3_bind_blob(m_stmt, 1, package.getPackage(), package.getLength(),
+    sqlite3_bind_blob(m_stmt, 1, package.get_package(), package.get_length(),
                       SQLITE_STATIC);
 }
 

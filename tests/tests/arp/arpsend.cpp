@@ -18,8 +18,8 @@ class ListenerSendARP : public PCAP::PackageListener<PCAP::ARPPackage>,
   public:
     ListenerSendARP(PCAP::ARPPackage package) : m_package{package} {}
 
-    void receivedPackage(PCAP::ARPPackage package) override {
-        EXPECT_EQ(m_package.getLength(), package.getLength());
+    void receive_package(PCAP::ARPPackage package) override {
+        EXPECT_EQ(m_package.get_length(), package.get_length());
         EXPECT_EQ(package, m_package);
         EXPECT_FALSE(package != m_package);
         m_done = true;
@@ -51,7 +51,7 @@ TEST_F(TestSendARP, TestSendOnePackage) {
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerSendARP>(package);
-    controller->addListener(listener);
+    controller->add_listener(listener);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));

@@ -21,18 +21,18 @@ int main(int argc, char *argv[]) {
     const auto target_ip = PCAP::IpAddress(argv[2]);
     bool force = std::stoi(argv[3]);
 
-    const auto router_ip = PCAP::PCAPHelper::getRouterIp(interface_name);
-    const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
-    const auto local_mac = PCAP::PCAPHelper::getMac(interface_name);
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
+    const auto router_ip = PCAP::PCAPHelper::get_router_ip(interface_name);
+    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, interface_name);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
 
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface_name);
     auto listener = std::make_shared<DNSSessionController>(
         local_mac, local_ip, router_ip, router_mac, interface_name, force);
-    controller->addListener(listener);
-    controller->setFilter("src host " + target_ip.to_string() +
+    controller->add_listener(listener);
+    controller->set_filter("src host " + target_ip.to_string() +
                           "&& udp dst port 53");
     controller->start();
 

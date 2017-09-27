@@ -69,8 +69,8 @@ int main(int argc, char *argv[]) {
     }
 
     std::string interface_name = argv[1];
-    auto netmask = PCAP::PCAPHelper::getMask(interface_name);
-    auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
+    auto netmask = PCAP::PCAPHelper::get_mask(interface_name);
+    auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
 
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
@@ -81,10 +81,10 @@ int main(int argc, char *argv[]) {
     auto arp_listener = std::make_shared<ARPListener>(netmask & local_ip);
     int time = std::stoi(argv[2]);
 
-    controller->addListener(tcp_listener);
-    controller->addListener(udp_listener);
-    controller->addListener(icmp_listener);
-    controller->addListener(arp_listener);
+    controller->add_listener(tcp_listener);
+    controller->add_listener(udp_listener);
+    controller->add_listener(icmp_listener);
+    controller->add_listener(arp_listener);
     controller->start();
 
     auto start = std::chrono::high_resolution_clock::now();

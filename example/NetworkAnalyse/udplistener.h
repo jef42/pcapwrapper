@@ -11,12 +11,12 @@ class UDPListener : public PCAP::PackageListener<PCAP::UDPPackage>,
   public:
     UDPListener(const PCAP::IpAddress &netmask) : Listener{netmask} {}
 
-    void receivedPackage(PCAP::UDPPackage package) override {
-        if ((package.getSrcIp() & m_netmask) == m_netmask) {
-            inc_count(package.getSrcIp());
+    void receive_package(PCAP::UDPPackage package) override {
+        if ((package.get_src_ip() & m_netmask) == m_netmask) {
+            inc_count(package.get_src_ip());
         }
-        if ((package.getDstIp() & m_netmask) == m_netmask) {
-            inc_count(package.getDstIp());
+        if ((package.get_dst_ip() & m_netmask) == m_netmask) {
+            inc_count(package.get_dst_ip());
         }
     }
 };

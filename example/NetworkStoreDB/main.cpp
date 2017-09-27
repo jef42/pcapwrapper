@@ -28,16 +28,16 @@ int main(int argc, char *argv[]) {
             net_interface);
     auto db_connection = std::make_shared<DBConnection>(db_name);
     auto listener = std::make_shared<NetworkListener>(db_connection);
-    controller->addListener(
+    controller->add_listener(
         static_cast<std::shared_ptr<PCAP::PackageListener<PCAP::TCPPackage>>>(
             listener));
-    controller->addListener(
+    controller->add_listener(
         static_cast<std::shared_ptr<PCAP::PackageListener<PCAP::UDPPackage>>>(
             listener));
-    controller->addListener(
+    controller->add_listener(
         static_cast<std::shared_ptr<PCAP::PackageListener<PCAP::ICMPPackage>>>(
             listener));
-    controller->addListener(
+    controller->add_listener(
         static_cast<std::shared_ptr<PCAP::PackageListener<PCAP::ARPPackage>>>(
             listener));
 

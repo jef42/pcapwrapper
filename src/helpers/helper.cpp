@@ -36,18 +36,18 @@ struct pseudo_header {
 };
 }
 
-void setIPChecksum(sniffip *ip) {
+void set_ip_checksum(sniffip *ip) {
     ip->m_ip_sum = 0x0000;
     ip->m_ip_sum = checksum<sniffip>(ip, sizeof(*ip));
 }
 
-void setICMPChecksum(sniffip *ip, snifficmp *icmp) {
+void set_icmp_checksum(sniffip *ip, snifficmp *icmp) {
     icmp->m_checksum = 0x0000;
     icmp->m_checksum =
         checksum((char *)icmp, ntohs(ip->m_ip_len) - (IP_HL(ip) * 4));
 }
 
-void setTCPChecksum(sniffip *ip, snifftcp *tcp, unsigned char *data) {
+void set_tcp_checksum(sniffip *ip, snifftcp *tcp, unsigned char *data) {
     tcp->m_th_sum = 0x0000;
 
     pseudo_header pseudo_h;
@@ -68,7 +68,7 @@ void setTCPChecksum(sniffip *ip, snifftcp *tcp, unsigned char *data) {
                                           sizeof(pseudo_h));
 }
 
-void setUDPChecksum(sniffip *ip, sniffudp *udp, unsigned char *data) {
+void set_udp_checksum(sniffip *ip, sniffudp *udp, unsigned char *data) {
     udp->m_checksum = 0x0000;
 
     pseudo_header pseudo_h;
@@ -99,7 +99,7 @@ pcap_if_t *get_all_devs() {
     return alldevs;
 }
 
-PCAP::IpAddress getIp(const std::string &interface) {
+PCAP::IpAddress get_ip(const std::string &interface) {
     pcap_if_t *all_devs = get_all_devs();
     for (pcap_if_t *dev = all_devs; dev != NULL; dev = dev->next) {
         if (dev->name == interface) {
@@ -117,7 +117,7 @@ PCAP::IpAddress getIp(const std::string &interface) {
     return PCAP::IpAddress();
 }
 
-PCAP::IpAddress getMask(const std::string &interface) {
+PCAP::IpAddress get_mask(const std::string &interface) {
     pcap_if_t *all_devs = get_all_devs();
     for (pcap_if_t *dev = all_devs; dev != NULL; dev = dev->next) {
         if (dev->name == interface) {
@@ -135,7 +135,7 @@ PCAP::IpAddress getMask(const std::string &interface) {
     return PCAP::IpAddress();
 }
 
-PCAP::MacAddress getMac(const std::string &interface) {
+PCAP::MacAddress get_mac(const std::string &interface) {
     struct ifreq s;
     int fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
 
@@ -155,8 +155,8 @@ PCAP::MacAddress getMac(const std::string &interface) {
     return PCAP::MacAddress();
 }
 
-std::vector<PCAP::IpAddress> getIps(const PCAP::IpAddress &local_ip,
-                                    const PCAP::IpAddress &net_mask) {
+std::vector<PCAP::IpAddress> get_ips(const PCAP::IpAddress &local_ip,
+                                     const PCAP::IpAddress &net_mask) {
     std::vector<PCAP::IpAddress> result;
     unsigned long ip = local_ip.to_long();
     unsigned long mask = net_mask.to_long();
@@ -167,29 +167,29 @@ std::vector<PCAP::IpAddress> getIps(const PCAP::IpAddress &local_ip,
     return result;
 }
 
-PCAP::IpAddress getRouterIp(const std::string &interface) {
-    unsigned long ip = getIp(interface).to_long();
-    unsigned long mask = getMask(interface).to_long();
+PCAP::IpAddress get_router_ip(const std::string &interface) {
+    unsigned long ip = get_ip(interface).to_long();
+    unsigned long mask = get_mask(interface).to_long();
     unsigned long tmp = ip & mask;
     return PCAP::IpAddress(tmp + 1);
 }
 
-PCAP::IpAddress getBroadcastIp(const std::string &interface) {
-    unsigned long ip = getIp(interface).to_long();
-    unsigned long mask = getMask(interface).to_long();
+PCAP::IpAddress get_broadcast_ip(const std::string &interface) {
+    unsigned long ip = get_ip(interface).to_long();
+    unsigned long mask = get_mask(interface).to_long();
     unsigned long tmp = ip | ~mask;
     return PCAP::IpAddress(tmp);
 }
 
-PCAP::MacAddress getMac(const PCAP::IpAddress &target_ip,
-                        const std::string &interface) {
-    PCAP::IpAddress local_ip = getIp(interface);
-    PCAP::MacAddress local_mac = getMac(interface);
+PCAP::MacAddress get_mac(const PCAP::IpAddress &target_ip,
+                         const std::string &interface) {
+    PCAP::IpAddress local_ip = get_ip(interface);
+    PCAP::MacAddress local_mac = get_mac(interface);
     auto mac_listener = std::make_shared<MacListener>(target_ip);
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface);
-    controller->addListener(mac_listener);
+    controller->add_listener(mac_listener);
     controller->start();
 
     bool run_flag = true;
@@ -201,30 +201,30 @@ PCAP::MacAddress getMac(const PCAP::IpAddress &target_ip,
         while (run_flag) {
             PCAP::ARPPackage package(package_buffer, (unsigned int)snap_len,
                                      true);
-            package.setSrcMac(local_mac);
-            package.setDstMac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
-            package.setEtherType(0x0806);
-            package.setHardwareType(0x01);
-            package.setProtocol(0x0800);
-            package.setHardwareLength(0x06);
-            package.setProtocolLength(0x04);
-            package.setOpcode(0x01);
-            package.setSrcArpMac(local_mac);
-            package.setSrcIp(local_ip);
-            package.setDstArpMac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
-            package.setDstIp(target_ip);
-            controller->write(package.getPackage(), package.getLength());
+            package.set_src_mac(local_mac);
+            package.set_dst_mac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
+            package.set_ether_type(0x0806);
+            package.set_hardware_type(0x01);
+            package.set_protocol(0x0800);
+            package.set_hardware_length(0x06);
+            package.set_protocol_length(0x04);
+            package.set_opcode(0x01);
+            package.set_src_arp_mac(local_mac);
+            package.set_src_ip(local_ip);
+            package.set_dst_arp_mac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
+            package.set_dst_ip(target_ip);
+            controller->write(package.get_package(), package.get_length());
 
             using namespace std::chrono_literals;
             std::this_thread::sleep_for(1s);
         }
     });
 
-    auto mac_result = mac_listener->getMac();
+    auto mac_result = mac_listener->get_mac();
     run_flag = false;
     f.get();
 
-    controller->removeListener(mac_listener);
+    controller->remove_listener(mac_listener);
     controller->stop();
 
     return mac_result;

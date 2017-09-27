@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
     }
 
     std::string interface_name = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
-    const auto mask = PCAP::PCAPHelper::getMask(interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
+    const auto mask = PCAP::PCAPHelper::get_mask(interface_name);
     const auto net = mask & local_ip;
 
     std::vector<PCAP::IpAddress> ignore_ips;
@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
             interface_name);
     auto httpsessioncontroller =
         std::make_shared<HTTPSessionController>(net, std::move(ignore_ips));
-    controller->addSessionController(httpsessioncontroller);
-    controller->setFilter("tcp dst port 80");
+    controller->add_session_controller(httpsessioncontroller);
+    controller->set_filter("tcp dst port 80");
     controller->start();
 
     std::cout << "NetworkMonitorWebsites" << std::endl;

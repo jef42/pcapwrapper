@@ -8,14 +8,14 @@ namespace PCAPHelper {
 MacListener::MacListener(const PCAP::IpAddress &ip)
     : m_ip{ip}, m_founded{false} {}
 
-void MacListener::receivedPackage(PCAP::ARPPackage package) {
-    if (package.getSrcIp() == m_ip) {
-        m_result = package.getSrcMac();
+void MacListener::receive_package(PCAP::ARPPackage package) {
+    if (package.get_src_ip() == m_ip) {
+        m_result = package.get_src_mac();
         m_founded = true;
     }
 }
 
-PCAP::MacAddress MacListener::getMac() const noexcept {
+PCAP::MacAddress MacListener::get_mac() const noexcept {
     while (!m_founded) {
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(1s);

@@ -12,19 +12,19 @@ class ICMPPackage : public IPPackage {
   public:
     ICMPPackage(const unsigned char *p, unsigned int l, bool modify = false);
 
-    unsigned char getType() const;
-    unsigned char getCode() const;
+    unsigned char get_type() const;
+    unsigned char get_code() const;
 
-    void setType(unsigned char type);
-    void setCode(unsigned char code);
+    void set_type(unsigned char type);
+    void set_code(unsigned char code);
 
-    void recalculateChecksums();
+    void recalculate_checksums();
 
-    const unsigned char *getData() const;
-    unsigned int getDataLength() const;
-    void appendData(unsigned char *data, int size);
+    const unsigned char *get_data() const;
+    unsigned int get_data_length() const;
+    void append_data(unsigned char *data, int size);
 
-    unsigned int getLength() const override;
+    unsigned int get_length() const override;
 
     friend bool operator==(const ICMPPackage &lhs, const ICMPPackage &rhs);
     friend bool operator!=(const ICMPPackage &lhs, const ICMPPackage &rhs);

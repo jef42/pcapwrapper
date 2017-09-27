@@ -16,26 +16,26 @@ int main(int argc, char *argv[]) {
     if (argc != 4) {
         std::cout << "Wrong nr of parameters\n";
         std::cout << "1. Interface\n";
-        std::cout << "2. TargetIp\n";
+        std::cout << "2. Target_ip\n";
         std::cout << "3. Time(s)\n";
         std::cout << std::endl;
         return -1;
     }
 
     std::string interface = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface);
-    const auto local_mac = PCAP::PCAPHelper::getMac(interface);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(interface);
     const auto target_ip = PCAP::IpAddress(argv[2]);
-    const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface);
+    const auto target_mac = PCAP::PCAPHelper::get_mac(target_ip, interface);
     int time = std::stoi(argv[3]);
 
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface);
     auto sniffer = std::make_shared<DetectPorts>(target_ip);
-    controller->addListener(sniffer);
+    controller->add_listener(sniffer);
 
-    controller->setFilter("tcp");
+    controller->set_filter("tcp");
     controller->start();
 
     std::cout << "DetectPortsTCP" << std::endl;
@@ -51,8 +51,8 @@ int main(int argc, char *argv[]) {
                 {Keys::Key_Src_Port, Option{(unsigned short)45022}},
                 {Keys::Key_Dst_Port, Option{(unsigned short)i}},
                 {Keys::Key_Tcp_SeqNr, Option{(unsigned int)i * 3323}}});
-            package.recalculateChecksums();
-            controller->write(package.getPackage(), package.getLength());
+            package.recalculate_checksums();
+            controller->write(package.get_package(), package.get_length());
         }
 
         using namespace std::chrono_literals;

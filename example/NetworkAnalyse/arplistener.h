@@ -12,12 +12,12 @@ class ARPListener : public PCAP::PackageListener<PCAP::ARPPackage>,
   public:
     ARPListener(PCAP::IpAddress netmask) : Listener{netmask} {}
 
-    void receivedPackage(PCAP::ARPPackage package) override {
-        if ((package.getSrcIp() & m_netmask) == m_netmask) {
-            inc_count(package.getSrcIp());
+    void receive_package(PCAP::ARPPackage package) override {
+        if ((package.get_src_ip() & m_netmask) == m_netmask) {
+            inc_count(package.get_src_ip());
         }
-        if ((package.getDstIp() & m_netmask) == m_netmask) {
-            inc_count(package.getDstIp());
+        if ((package.get_dst_ip() & m_netmask) == m_netmask) {
+            inc_count(package.get_dst_ip());
         }
     }
 };

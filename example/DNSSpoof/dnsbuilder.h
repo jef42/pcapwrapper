@@ -35,8 +35,8 @@ class DNSBuilder {
     void operator<<(sniffdns_answer answer);
 
     void build();
-    unsigned char *getPackage() const;
-    unsigned int getLength() const;
+    unsigned char *get_package() const;
+    unsigned int get_length() const;
 
   private:
     unsigned char m_package[snap_len];

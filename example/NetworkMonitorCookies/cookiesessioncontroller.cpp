@@ -9,8 +9,8 @@ CookieSessionController::CookieSessionController(
     const PCAP::IpAddress &mask, std::vector<PCAP::IpAddress> &&ignore_ips)
     : m_mask{mask}, m_ignore_ips{ignore_ips} {}
 
-void CookieSessionController::receivedPackage(PCAP::TCPPackage package) {
-    auto src_ip = package.getSrcIp();
+void CookieSessionController::receive_package(PCAP::TCPPackage package) {
+    auto src_ip = package.get_src_ip();
     if (m_mask != (m_mask & src_ip)) {
         return; // not in the same network
     }

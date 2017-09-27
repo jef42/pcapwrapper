@@ -12,27 +12,27 @@ EthernetPackage::EthernetPackage(const unsigned char *p, unsigned int l,
     m_ethernet = (struct sniffethernet *)m_package;
 }
 
-MacAddress EthernetPackage::getSrcMac() const {
+MacAddress EthernetPackage::get_src_mac() const {
     return MacAddress(m_ethernet->m_ether_shost);
 }
 
-MacAddress EthernetPackage::getDstMac() const {
+MacAddress EthernetPackage::get_dst_mac() const {
     return MacAddress(m_ethernet->m_ether_dhost);
 }
 
-unsigned short EthernetPackage::getEtherType() const {
+unsigned short EthernetPackage::get_ether_type() const {
     return ntohs(m_ethernet->m_ether_type);
 }
 
-void EthernetPackage::setSrcMac(MacAddress mac) {
+void EthernetPackage::set_src_mac(MacAddress mac) {
     memcpy(m_ethernet->m_ether_shost, mac.data(), ethernet_addr_len);
 }
 
-void EthernetPackage::setDstMac(MacAddress mac) {
+void EthernetPackage::set_dst_mac(MacAddress mac) {
     memcpy(m_ethernet->m_ether_dhost, mac.data(), ethernet_addr_len);
 }
 
-void EthernetPackage::setEtherType(unsigned short type) {
+void EthernetPackage::set_ether_type(unsigned short type) {
     m_ethernet->m_ether_type = htons(type);
 }
 

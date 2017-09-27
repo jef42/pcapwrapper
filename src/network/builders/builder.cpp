@@ -13,10 +13,10 @@ static unsigned char package_buffer[snap_len] = {};
 void set_ethernet(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {
         if (option.first == Keys::Key_Eth_Mac_Src) {
-            package.setSrcMac(option.second.m_value_mac);
+            package.set_src_mac(option.second.m_value_mac);
         }
         if (option.first == Keys::Key_Eth_Mac_Dst) {
-            package.setDstMac(option.second.m_value_mac);
+            package.set_dst_mac(option.second.m_value_mac);
         }
     }
 }
@@ -24,22 +24,22 @@ void set_ethernet(auto &package, std::map<Keys, Option> &options) {
 void set_ip(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {
         if (option.first == Keys::Key_Ip_Src) {
-            package.setSrcIp(option.second.m_value_ip);
+            package.set_src_ip(option.second.m_value_ip);
         }
         if (option.first == Keys::Key_Ip_Dst) {
-            package.setDstIp(option.second.m_value_ip);
+            package.set_dst_ip(option.second.m_value_ip);
         }
         if (option.first == Keys::Key_Ip_TTL) {
-            package.setTTL(option.second.m_value_char);
+            package.set_ttl(option.second.m_value_char);
         }
         if (option.first == Keys::Key_Ip_Flags) {
-            package.setIpFlags(option.second.m_value_char);
+            package.set_ip_flags(option.second.m_value_char);
         }
         if (option.first == Keys::Key_Ip_Id) {
-            package.setID(option.second.m_value_short);
+            package.set_id(option.second.m_value_short);
         }
         if (option.first == Keys::Key_Ip_Length) {
-            package.setTotalLength(option.second.m_value_short);
+            package.set_total_length(option.second.m_value_short);
         }
     }
 }
@@ -47,13 +47,13 @@ void set_ip(auto &package, std::map<Keys, Option> &options) {
 void set_udp(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {
         if (option.first == Keys::Key_Udp_Length) {
-            package.setUDPLength(option.second.m_value_short);
+            package.set_udp_length(option.second.m_value_short);
         }
         if (option.first == Keys::Key_Src_Port) {
-            package.setSrcPort(option.second.m_value_short);
+            package.set_src_port(option.second.m_value_short);
         }
         if (option.first == Keys::Key_Dst_Port) {
-            package.setDstPort(option.second.m_value_short);
+            package.set_dst_port(option.second.m_value_short);
         }
     }
 }
@@ -61,10 +61,10 @@ void set_udp(auto &package, std::map<Keys, Option> &options) {
 void set_icmp(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {
         if (option.first == Keys::Key_Icmp_Type) {
-            package.setType(option.second.m_value_char);
+            package.set_type(option.second.m_value_char);
         }
         if (option.first == Keys::Key_Icmp_Code) {
-            package.setCode(option.second.m_value_char);
+            package.set_code(option.second.m_value_char);
         }
     }
 }
@@ -72,19 +72,19 @@ void set_icmp(auto &package, std::map<Keys, Option> &options) {
 void set_tcp(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {
         if (option.first == Keys::Key_Src_Port) {
-            package.setSrcPort(option.second.m_value_short);
+            package.set_src_port(option.second.m_value_short);
         }
         if (option.first == Keys::Key_Dst_Port) {
-            package.setDstPort(option.second.m_value_short);
+            package.set_dst_port(option.second.m_value_short);
         }
         if (option.first == Keys::Key_Tcp_SeqNr) {
-            package.setSeqNr(option.second.m_value_int);
+            package.set_seq_nr(option.second.m_value_int);
         }
         if (option.first == Keys::Key_Tcp_AckNr) {
-            package.setAckNr(option.second.m_value_int);
+            package.set_ack_nr(option.second.m_value_int);
         }
         if (option.first == Keys::Key_Tcp_Flags) {
-            package.setTcpFlags(option.second.m_value_char);
+            package.set_tcp_flags(option.second.m_value_char);
         }
     }
 }
@@ -92,19 +92,19 @@ void set_tcp(auto &package, std::map<Keys, Option> &options) {
 void set_arp(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {
         if (option.first == Keys::Key_Arp_Mac_Src) {
-            package.setSrcArpMac(option.second.m_value_mac);
+            package.set_src_arp_mac(option.second.m_value_mac);
         }
         if (option.first == Keys::Key_Arp_Mac_Dst) {
-            package.setDstArpMac(option.second.m_value_mac);
+            package.set_dst_arp_mac(option.second.m_value_mac);
         }
         if (option.first == Keys::Key_Arp_Opcode) {
-            package.setOpcode(option.second.m_value_char);
+            package.set_opcode(option.second.m_value_char);
         }
         if (option.first == Keys::Key_Ip_Src) {
-            package.setSrcIp(option.second.m_value_ip);
+            package.set_src_ip(option.second.m_value_ip);
         }
         if (option.first == Keys::Key_Ip_Dst) {
-            package.setDstIp(option.second.m_value_ip);
+            package.set_dst_ip(option.second.m_value_ip);
         }
     }
 }
@@ -112,18 +112,18 @@ void set_arp(auto &package, std::map<Keys, Option> &options) {
 PCAP::ARPPackage make_arp(std::map<Keys, Option> options) {
 
     PCAP::ARPPackage package(package_buffer, snap_len, true);
-    package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setEtherType(0x0806);
-    package.setHardwareType(0x01);
-    package.setProtocol(0x0800);
-    package.setHardwareLength(0x06);
-    package.setProtocolLength(0x04);
-    package.setOpcode(0x01);
-    package.setSrcArpMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setSrcIp(IpAddress("255.255.255.255"));
-    package.setDstArpMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setDstIp(IpAddress("255.255.255.255"));
+    package.set_src_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_dst_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_ether_type(0x0806);
+    package.set_hardware_type(0x01);
+    package.set_protocol(0x0800);
+    package.set_hardware_length(0x06);
+    package.set_protocol_length(0x04);
+    package.set_opcode(0x01);
+    package.set_src_arp_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_src_ip(IpAddress("255.255.255.255"));
+    package.set_dst_arp_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_dst_ip(IpAddress("255.255.255.255"));
 
     set_ethernet(package, options);
     set_arp(package, options);
@@ -134,22 +134,22 @@ PCAP::ARPPackage make_arp(std::map<Keys, Option> options) {
 PCAP::UDPPackage make_udp(std::map<Keys, Option> options) {
 
     PCAP::UDPPackage package(package_buffer, snap_len, true);
-    package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setEtherType(0x0800);
-    package.setVHL(0x45);
-    package.setTOS(0x0);
-    package.setTotalLength(0x001c);
-    package.setID(0x1000);
-    package.setIpFlags(0x0);
-    package.setFragmentOffset(0x0);
-    package.setTTL(0x64);
-    package.setProtocol(0x11);
-    package.setSrcIp(IpAddress("255.255.255.255"));
-    package.setDstIp(IpAddress("255.255.255.255"));
-    package.setSrcPort(1);
-    package.setDstPort(1);
-    package.setUDPLength(0x0008);
+    package.set_src_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_dst_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_ether_type(0x0800);
+    package.set_vhl(0x45);
+    package.set_tos(0x0);
+    package.set_total_length(0x001c);
+    package.set_id(0x1000);
+    package.set_ip_flags(0x0);
+    package.set_fragment_offset(0x0);
+    package.set_ttl(0x64);
+    package.set_protocol(0x11);
+    package.set_src_ip(IpAddress("255.255.255.255"));
+    package.set_dst_ip(IpAddress("255.255.255.255"));
+    package.set_src_port(1);
+    package.set_dst_port(1);
+    package.set_udp_length(0x0008);
 
     set_ethernet(package, options);
     set_ip(package, options);
@@ -160,21 +160,21 @@ PCAP::UDPPackage make_udp(std::map<Keys, Option> options) {
 
 ICMPPackage make_icmp(std::map<Keys, Option> options) {
     PCAP::ICMPPackage package(package_buffer, snap_len, true);
-    package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setEtherType(0x0800);
-    package.setVHL(0x45);
-    package.setTOS(0x0);
-    package.setTotalLength(0x001c);
-    package.setID(0x1000);
-    package.setIpFlags(0x0);
-    package.setFragmentOffset(0x0);
-    package.setTTL(0x64);
-    package.setProtocol(0x01);
-    package.setSrcIp(IpAddress("255.255.255.255"));
-    package.setDstIp(IpAddress("255.255.255.255"));
-    package.setType(0x08);
-    package.setCode(0x00);
+    package.set_src_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_dst_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_ether_type(0x0800);
+    package.set_vhl(0x45);
+    package.set_tos(0x0);
+    package.set_total_length(0x001c);
+    package.set_id(0x1000);
+    package.set_ip_flags(0x0);
+    package.set_fragment_offset(0x0);
+    package.set_ttl(0x64);
+    package.set_protocol(0x01);
+    package.set_src_ip(IpAddress("255.255.255.255"));
+    package.set_dst_ip(IpAddress("255.255.255.255"));
+    package.set_type(0x08);
+    package.set_code(0x00);
 
     set_ethernet(package, options);
     set_ip(package, options);
@@ -185,27 +185,27 @@ ICMPPackage make_icmp(std::map<Keys, Option> options) {
 
 TCPPackage make_tcp(std::map<Keys, Option> options) {
     PCAP::TCPPackage package(package_buffer, snap_len, true);
-    package.setSrcMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setDstMac(MacAddress("FF:FF:FF:FF:FF:FF"));
-    package.setEtherType(0x0800);
-    package.setVHL(0x45);
-    package.setTOS(0x0);
-    package.setTotalLength(0x0028);
-    package.setID(0x1000);
-    package.setIpFlags(0x0);
-    package.setFragmentOffset(0x0);
-    package.setTTL(0x64);
-    package.setProtocol(0x06);
-    package.setSrcIp(IpAddress("255.255.255.255"));
-    package.setDstIp(IpAddress("255.255.255.255"));
-    package.setSrcPort(1);
-    package.setDstPort(1);
-    package.setSeqNr(0x3323);
-    package.setAckNr(0);
-    package.setDataOffset(0x50);
-    package.setTcpFlags(0x02);
-    package.setWindowSize(0x7210);
-    package.setUrgentPtr(0x0000);
+    package.set_src_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_dst_mac(MacAddress("FF:FF:FF:FF:FF:FF"));
+    package.set_ether_type(0x0800);
+    package.set_vhl(0x45);
+    package.set_tos(0x0);
+    package.set_total_length(0x0028);
+    package.set_id(0x1000);
+    package.set_ip_flags(0x0);
+    package.set_fragment_offset(0x0);
+    package.set_ttl(0x64);
+    package.set_protocol(0x06);
+    package.set_src_ip(IpAddress("255.255.255.255"));
+    package.set_dst_ip(IpAddress("255.255.255.255"));
+    package.set_src_port(1);
+    package.set_dst_port(1);
+    package.set_seq_nr(0x3323);
+    package.set_ack_nr(0);
+    package.set_data_offset(0x50);
+    package.set_tcp_flags(0x02);
+    package.set_window_size(0x7210);
+    package.set_urgent_ptr(0x0000);
 
     set_ethernet(package, options);
     set_ip(package, options);

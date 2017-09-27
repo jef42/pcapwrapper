@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
 
     std::string interface_name = argv[1];
     const auto target_ip = PCAP::IpAddress(argv[2]);
-    const auto target_mac = PCAP::PCAPHelper::getMac(target_ip, interface_name);
-    const auto broadcast_ip = PCAP::PCAPHelper::getBroadcastIp(interface_name);
+    const auto target_mac = PCAP::PCAPHelper::get_mac(target_ip, interface_name);
+    const auto broadcast_ip = PCAP::PCAPHelper::get_broadcast_ip(interface_name);
 
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(
@@ -38,8 +38,8 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Ip_Dst, Option{broadcast_ip}},
             {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
             {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
-        package.recalculateChecksums();
-        controller->write(package.getPackage(), package.getLength());
+        package.recalculate_checksums();
+        controller->write(package.get_package(), package.get_length());
 
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(2s);

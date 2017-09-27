@@ -18,10 +18,10 @@ class NetworkListener : public PCAP::PackageListener<PCAP::TCPPackage>,
   public:
     NetworkListener(const std::shared_ptr<DBConnection> &db_connection);
 
-    void receivedPackage(PCAP::TCPPackage package) override;
-    void receivedPackage(PCAP::UDPPackage package) override;
-    void receivedPackage(PCAP::ICMPPackage package) override;
-    void receivedPackage(PCAP::ARPPackage package) override;
+    void receive_package(PCAP::TCPPackage package) override;
+    void receive_package(PCAP::UDPPackage package) override;
+    void receive_package(PCAP::ICMPPackage package) override;
+    void receive_package(PCAP::ARPPackage package) override;
 
   private:
     std::shared_ptr<DBConnection> m_db_connection;

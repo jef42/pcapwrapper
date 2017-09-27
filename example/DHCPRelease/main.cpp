@@ -115,13 +115,13 @@ int main(int argc, char *argv[]) {
 
     std::string interface_name = argv[1];
     const auto target_ip = PCAP::IpAddress(argv[2]);
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
-    const auto router_ip = PCAP::PCAPHelper::getRouterIp(interface_name);
-    const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
+    const auto router_ip = PCAP::PCAPHelper::get_router_ip(interface_name);
+    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, interface_name);
     const auto target_mac =
         local_ip == target_ip
-            ? PCAP::PCAPHelper::getMac(interface_name)
-            : PCAP::PCAPHelper::getMac(target_ip, interface_name);
+            ? PCAP::PCAPHelper::get_mac(interface_name)
+            : PCAP::PCAPHelper::get_mac(target_ip, interface_name);
 
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
     builder << DHCPOption<1>(53, {7}).get_array();
     builder << create_end();
     builder.build();
-    controller->write(builder.getPackage(), builder.getLength());
+    controller->write(builder.get_package(), builder.get_length());
 
     return 0;
 }

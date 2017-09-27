@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
     }
 
     std::string interface_name = argv[1];
-    auto const local_ip = PCAP::PCAPHelper::getIp(interface_name);
-    auto const mask = PCAP::PCAPHelper::getMask(interface_name);
+    auto const local_ip = PCAP::PCAPHelper::get_ip(interface_name);
+    auto const mask = PCAP::PCAPHelper::get_mask(interface_name);
     auto const net = mask & local_ip;
 
     std::vector<PCAP::IpAddress> ignore_ips;
@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
             interface_name);
     auto cookiesessioncontroller =
         std::make_shared<CookieSessionController>(net, std::move(ignore_ips));
-    controller->addSessionController(cookiesessioncontroller);
-    controller->setFilter("tcp dst port 80");
+    controller->add_session_controller(cookiesessioncontroller);
+    controller->set_filter("tcp dst port 80");
     controller->start();
 
     std::cout << "NetworkMonitorCookies" << std::endl;

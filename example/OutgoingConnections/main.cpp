@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::string interface_name = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
 
     auto tcp_listener = std::make_shared<TcpListener>(local_ip);
     auto udp_listener = std::make_shared<UdpListener>(local_ip);
@@ -27,8 +27,8 @@ int main(int argc, char *argv[]) {
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface_name);
-    controller->addListener(tcp_listener);
-    controller->addListener(udp_listener);
+    controller->add_listener(tcp_listener);
+    controller->add_listener(udp_listener);
 
     controller->start();
     std::cout << "Started" << std::endl;

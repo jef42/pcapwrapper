@@ -8,7 +8,7 @@
 
 class DetectTCP : public PCAP::PackageListener<PCAP::TCPPackage> {
   public:
-    void receivedPackage(PCAP::TCPPackage package) override;
+    void receive_package(PCAP::TCPPackage package) override;
 
   private:
 };

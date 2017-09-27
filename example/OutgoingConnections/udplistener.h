@@ -13,7 +13,7 @@
 class UdpListener : public PCAP::PackageListener<PCAP::UDPPackage> {
   public:
     UdpListener(const PCAP::IpAddress &ip);
-    void receivedPackage(PCAP::UDPPackage package) override;
+    void receive_package(PCAP::UDPPackage package) override;
 
   private:
     PCAP::IpAddress m_local_ip;

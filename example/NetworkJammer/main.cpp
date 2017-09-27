@@ -18,12 +18,12 @@ int main(int argc, char *argv[]) {
     }
 
     std::string net_interf = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(argv[1]);
-    const auto local_mac = PCAP::PCAPHelper::getMac(argv[1]);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(argv[1]);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(argv[1]);
     int time = std::stoi(argv[2]);
 
-    const auto router_ip = PCAP::PCAPHelper::getRouterIp(net_interf);
-    const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, net_interf);
+    const auto router_ip = PCAP::PCAPHelper::get_router_ip(net_interf);
+    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, net_interf);
 
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(net_interf);
@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Ip_Dst, Option{router_ip}},
             {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
             {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
-        package.recalculateChecksums();
-        controller->write(package.getPackage(), package.getLength());
+        package.recalculate_checksums();
+        controller->write(package.get_package(), package.get_length());
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> elapsed = end - start;

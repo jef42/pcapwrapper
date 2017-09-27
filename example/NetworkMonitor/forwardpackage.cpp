@@ -117,7 +117,7 @@ void ForwardPackage::working_function() {
                         {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
                         {Keys::Key_Ip_Src, Option{client.m_ip}},
                         {Keys::Key_Ip_Dst, Option{m_router_ip}}});
-                controller->write(package_router.getPackage(), 60);
+                controller->write(package_router.get_package(), 60);
 
                 auto package_target =
                     PCAP::PCAPBuilder::make_arp(std::map<Keys, Option>{
@@ -128,7 +128,7 @@ void ForwardPackage::working_function() {
                         {Keys::Key_Arp_Opcode, Option{(unsigned char)0x02}},
                         {Keys::Key_Ip_Src, Option{m_router_ip}},
                         {Keys::Key_Ip_Dst, Option{client.m_ip}}});
-                controller->write(package_target.getPackage(), 60);
+                controller->write(package_target.get_package(), 60);
             }
 
             // remove clients that didn't reply

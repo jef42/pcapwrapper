@@ -15,8 +15,8 @@ class BasePackage {
 
     friend void swap(BasePackage &lhs, BasePackage &rhs) noexcept;
 
-    virtual const unsigned char *getPackage() const { return m_package; }
-    virtual unsigned int getLength() const;
+    virtual const unsigned char *get_package() const { return m_package; }
+    virtual unsigned int get_length() const;
 
   protected:
     virtual ~BasePackage() noexcept;

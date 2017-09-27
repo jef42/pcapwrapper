@@ -14,19 +14,19 @@
 
 class SessionControllerTest : public PCAP::SessionController {
   public:
-    virtual void newSession(const PCAP::Session &, PCAP::TCPPackage) {
+    virtual void new_session(const PCAP::Session &, PCAP::TCPPackage) {
         new_tcp_session = true;
     }
-    virtual void appendSession(const PCAP::Session &, PCAP::TCPPackage) {
+    virtual void append_session(const PCAP::Session &, PCAP::TCPPackage) {
         app_tcp_session = true;
     }
-    virtual void finishedSession(const PCAP::Session &) {
+    virtual void finished_session(const PCAP::Session &) {
         fin_tcp_session = true;
     }
-    virtual void newSession(const PCAP::Session &, PCAP::UDPPackage) {
+    virtual void new_session(const PCAP::Session &, PCAP::UDPPackage) {
         new_udp_session = true;
     }
-    virtual void appendSession(const PCAP::Session &, PCAP::UDPPackage) {
+    virtual void append_session(const PCAP::Session &, PCAP::UDPPackage) {
         app_udp_session = true;
     }
 
@@ -37,12 +37,12 @@ class SessionControllerTest : public PCAP::SessionController {
     bool app_udp_session = {false};
 };
 
-TEST(TestSendSession, NewSession) {
+TEST(TestSendSession, new_session) {
     const std::string filename = "../pcapfiles/session.pcap";
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto session_controller = std::make_shared<SessionControllerTest>();
-    controller->addSessionController(session_controller);
+    controller->add_session_controller(session_controller);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));
@@ -58,8 +58,8 @@ TEST(TestSendSession, NoSession) {
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto session_controller = std::make_shared<SessionControllerTest>();
-    controller->addSessionController(session_controller);
-    controller->removeSessionController(session_controller);
+    controller->add_session_controller(session_controller);
+    controller->remove_session_controller(session_controller);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));

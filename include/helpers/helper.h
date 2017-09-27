@@ -15,19 +15,19 @@
 namespace PCAP {
 namespace PCAPHelper {
 
-void setIPChecksum(sniffip *ip);
-void setICMPChecksum(sniffip *ip, snifficmp *icmp);
-void setTCPChecksum(sniffip *ip, snifftcp *tcp, unsigned char *data);
-void setUDPChecksum(sniffip *ip, sniffudp *udp, unsigned char *data);
+void set_ip_checksum(sniffip *ip);
+void set_icmp_checksum(sniffip *ip, snifficmp *icmp);
+void set_tcp_checksum(sniffip *ip, snifftcp *tcp, unsigned char *data);
+void set_udp_checksum(sniffip *ip, sniffudp *udp, unsigned char *data);
 
-PCAP::IpAddress getIp(const std::string &interface);
-PCAP::MacAddress getMac(const std::string &interface);
-PCAP::IpAddress getMask(const std::string &interface);
-PCAP::IpAddress getRouterIp(const std::string &inteface);
-PCAP::IpAddress getBroadcastIp(const std::string &inteface);
-std::vector<PCAP::IpAddress> getIps(const PCAP::IpAddress &local_ip,
+PCAP::IpAddress get_ip(const std::string &interface);
+PCAP::MacAddress get_mac(const std::string &interface);
+PCAP::IpAddress get_mask(const std::string &interface);
+PCAP::IpAddress get_router_ip(const std::string &inteface);
+PCAP::IpAddress get_broadcast_ip(const std::string &inteface);
+std::vector<PCAP::IpAddress> get_ips(const PCAP::IpAddress &local_ip,
                                     const PCAP::IpAddress &network_mask);
-PCAP::MacAddress getMac(const PCAP::IpAddress &target_ip,
+PCAP::MacAddress get_mac(const PCAP::IpAddress &target_ip,
                         const std::string &interface);
 
 template <typename T, int N>

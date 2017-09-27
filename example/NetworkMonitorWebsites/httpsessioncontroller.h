@@ -13,7 +13,7 @@ class HTTPSessionController : public PCAP::SessionController {
   public:
     HTTPSessionController(const PCAP::IpAddress &mask,
                           std::vector<PCAP::IpAddress> &&ignore_websites);
-    virtual void receivedPackage(PCAP::TCPPackage package) override;
+    virtual void receive_package(PCAP::TCPPackage package) override;
     void finish();
 
   private:

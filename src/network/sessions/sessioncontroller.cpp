@@ -4,34 +4,34 @@
 
 namespace PCAP {
 
-void SessionController::receivedPackage(TCPPackage package) {
-    const Session session(package.getSrcIp(), package.getDstIp(),
-                          package.getSrcPort(), package.getDstPort());
-    bool is_finished = package.getTcpFlags() & 0x01;
+void SessionController::receive_package(TCPPackage package) {
+    const Session session(package.get_src_ip(), package.get_dst_ip(),
+                          package.get_src_port(), package.get_dst_port());
+    bool is_finished = package.get_tcp_flags() & 0x01;
     if (std::find(m_tcp_session.begin(), m_tcp_session.end(), session) ==
         m_tcp_session.end()) {
         m_tcp_session.push_back(session);
-        return newSession(session, package);
+        return new_session(session, package);
     } else {
-        appendSession(session, package);
+        append_session(session, package);
     }
     if (is_finished) {
         m_tcp_session.erase(
             std::remove(m_tcp_session.begin(), m_tcp_session.end(), session),
             m_tcp_session.end());
-        finishedSession(session);
+        finished_session(session);
     }
 }
 
-void SessionController::receivedPackage(UDPPackage package) {
-    const Session session(package.getSrcIp(), package.getDstIp(),
-                          package.getSrcPort(), package.getDstPort());
+void SessionController::receive_package(UDPPackage package) {
+    const Session session(package.get_src_ip(), package.get_dst_ip(),
+                          package.get_src_port(), package.get_dst_port());
     if (std::find(m_udp_session.begin(), m_udp_session.end(), session) ==
         m_udp_session.end()) {
         m_udp_session.push_back(session);
-        return newSession(session, package);
+        return new_session(session, package);
     } else {
-        return appendSession(session, package);
+        return append_session(session, package);
     }
 }
 }

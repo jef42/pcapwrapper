@@ -52,14 +52,14 @@ void append_to(const std::string &filename, const std::string &data) {
 DNSWorker::DNSWorker(PCAP::UDPPackage package) {
     m_worker_finished = false;
     m_worker = std::async(&DNSWorker::worker, this);
-    m_src_ip = package.getSrcIp();
+    m_src_ip = package.get_src_ip();
     m_file_name = create_dir() + "/" + m_src_ip.to_string();
     this->new_session(package);
 }
 
 void DNSWorker::new_session(PCAP::UDPPackage package) {
 
-    const unsigned char *query = &(package.getData()[QUERIES + 1]);
+    const unsigned char *query = &(package.get_data()[QUERIES + 1]);
     std::string data = std::string((char *)query);
 
     std::unique_lock<std::mutex> lk(m_worker_mutex);

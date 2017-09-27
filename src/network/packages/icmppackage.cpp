@@ -15,31 +15,31 @@ ICMPPackage::ICMPPackage(const unsigned char *p, unsigned int l, bool modify)
                                sizeof(sniffip) + sizeof(snifficmp));
 }
 
-unsigned char ICMPPackage::getType() const { return m_icmp->m_type; }
+unsigned char ICMPPackage::get_type() const { return m_icmp->m_type; }
 
-void ICMPPackage::setType(unsigned char type) { m_icmp->m_type = type; }
+void ICMPPackage::set_type(unsigned char type) { m_icmp->m_type = type; }
 
-unsigned char ICMPPackage::getCode() const { return m_icmp->m_code; }
+unsigned char ICMPPackage::get_code() const { return m_icmp->m_code; }
 
-void ICMPPackage::setCode(unsigned char code) { m_icmp->m_code = code; }
+void ICMPPackage::set_code(unsigned char code) { m_icmp->m_code = code; }
 
-void ICMPPackage::recalculateChecksums() {
-    PCAPHelper::setIPChecksum(m_ip);
-    PCAPHelper::setICMPChecksum(m_ip, m_icmp);
+void ICMPPackage::recalculate_checksums() {
+    PCAPHelper::set_ip_checksum(m_ip);
+    PCAPHelper::set_icmp_checksum(m_ip, m_icmp);
 }
 
-const unsigned char *ICMPPackage::getData() const { return m_data; }
+const unsigned char *ICMPPackage::get_data() const { return m_data; }
 
-unsigned int ICMPPackage::getDataLength() const {
+unsigned int ICMPPackage::get_data_length() const {
     return ntohs(m_ip->m_ip_len) - sizeof(*m_icmp) - sizeof(*m_ip);
 }
 
-void ICMPPackage::appendData(unsigned char *data, int size) {
-    memcpy(&m_package[getLength()], (char *)data, size);
+void ICMPPackage::append_data(unsigned char *data, int size) {
+    memcpy(&m_package[get_length()], (char *)data, size);
     m_ip->m_ip_len = htons(ntohs(m_ip->m_ip_len) + size);
 }
 
-unsigned int ICMPPackage::getLength() const {
+unsigned int ICMPPackage::get_length() const {
     return sizeof(*m_ethernet) + ntohs(m_ip->m_ip_len);
 }
 

@@ -7,9 +7,9 @@ DetectNetwork::DetectNetwork(
     std::vector<PCAP::IpAddress> &&ignore_ips)
     : m_forward_package{forward_package}, m_ignore_ips{ignore_ips} {}
 
-void DetectNetwork::receivedPackage(PCAP::ARPPackage package) {
-    auto src_ip = package.getSrcIp();
-    auto src_mac = package.getSrcMac();
+void DetectNetwork::receive_package(PCAP::ARPPackage package) {
+    auto src_ip = package.get_src_ip();
+    auto src_mac = package.get_src_mac();
     if (src_ip.to_long() == 0)
         return;
     if (std::find(m_ignore_ips.begin(), m_ignore_ips.end(), src_ip) ==

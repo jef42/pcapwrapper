@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<DetectTCP>();
-    controller->addListener(listener);
+    controller->add_listener(listener);
     controller->start();
 
     std::cout << "Started" << std::endl;

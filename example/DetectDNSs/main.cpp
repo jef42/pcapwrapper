@@ -43,9 +43,9 @@ int main(int argc, char *argv[]) {
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
             interface);
     auto sessioncontroller = std::make_shared<DNSSessionController>(targets_ip);
-    controller->addSessionController(sessioncontroller);
+    controller->add_session_controller(sessioncontroller);
 
-    controller->setFilter("dns");
+    controller->set_filter("dns");
     controller->start();
 
     std::cout << "Started" << std::endl;

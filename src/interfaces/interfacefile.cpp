@@ -8,7 +8,7 @@ namespace PCAP {
 
 InterfaceFile::InterfaceFile(const std::string &filename)
     : InterfacePolicy{filename}, m_handler{nullptr}, m_cr_time{0} {
-    if (!openInterface(filename)) {
+    if (!open_interface(filename)) {
         throw std::invalid_argument("file doesn't exist");
     }
 }
@@ -19,7 +19,7 @@ InterfaceFile::~InterfaceFile() noexcept {
     }
 }
 
-bool InterfaceFile::openInterface(const std::string &filename) {
+bool InterfaceFile::open_interface(const std::string &filename) {
     const char *dev = filename.c_str();
     memset(m_errbuf, '\0', PCAP_ERRBUF_SIZE);
 
@@ -59,5 +59,4 @@ const unsigned char *InterfaceFile::read_package_impl(pcap_pkthdr &header) {
 }
 
 int InterfaceFile::write_impl(const unsigned char *, int) { return -1; }
-
 }

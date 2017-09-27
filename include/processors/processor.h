@@ -16,41 +16,41 @@ namespace PCAP {
 class Processor : public ProcessorPolicy {
   public:
     void
-    addListener(const std::shared_ptr<PackageListener<TCPPackage>> &listener);
+    add_listener(const std::shared_ptr<PackageListener<TCPPackage>> &listener);
     void
-    addListener(const std::shared_ptr<PackageListener<ICMPPackage>> &listener);
+    add_listener(const std::shared_ptr<PackageListener<ICMPPackage>> &listener);
     void
-    addListener(const std::shared_ptr<PackageListener<UDPPackage>> &listener);
+    add_listener(const std::shared_ptr<PackageListener<UDPPackage>> &listener);
     void
-    addListener(const std::shared_ptr<PackageListener<ARPPackage>> &listener);
+    add_listener(const std::shared_ptr<PackageListener<ARPPackage>> &listener);
 
-    void removeListener(
+    void remove_listener(
         const std::shared_ptr<PackageListener<TCPPackage>> &listener);
-    void removeListener(
+    void remove_listener(
         const std::shared_ptr<PackageListener<ICMPPackage>> &listener);
-    void removeListener(
+    void remove_listener(
         const std::shared_ptr<PackageListener<UDPPackage>> &listener);
-    void removeListener(
+    void remove_listener(
         const std::shared_ptr<PackageListener<ARPPackage>> &listener);
 
-    void
-    addSessionController(const std::shared_ptr<SessionController> &controller);
-    void removeSessionController(
+    void add_session_controller(
+        const std::shared_ptr<SessionController> &controller);
+    void remove_session_controller(
         const std::shared_ptr<SessionController> &controller);
 
-    void clearAllListeners();
+    void clear_all_listeners();
     virtual ~Processor() noexcept = default;
 
   private:
     template <typename T, typename IT>
-    void notifyListeners(IT begin, IT end, const unsigned char *sniff_package,
-                         unsigned int length);
+    void notify_listeners(IT begin, IT end, const unsigned char *sniff_package,
+                          unsigned int length);
 
-    template <typename T, typename IT> IT removeWeakPtr(IT begin, IT end);
+    template <typename T, typename IT> IT remove_weak_ptr(IT begin, IT end);
 
     template <typename T, typename IT>
-    IT removeWeakPtr(IT begin, IT end,
-                     const std::shared_ptr<PackageListener<T>> &listener);
+    IT remove_weak_ptr(IT begin, IT end,
+                       const std::shared_ptr<PackageListener<T>> &listener);
 
   protected:
     void callback_impl(const unsigned char *package, const pcap_pkthdr &header);

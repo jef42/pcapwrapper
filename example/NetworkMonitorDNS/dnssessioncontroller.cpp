@@ -6,9 +6,9 @@ DNSSessionController::DNSSessionController(
     std::vector<PCAP::IpAddress> &&ignore_list) noexcept
     : m_ignore_list{ignore_list} {}
 
-void DNSSessionController::newSession(const PCAP::Session &,
+void DNSSessionController::new_session(const PCAP::Session &,
                                       PCAP::UDPPackage package) {
-    auto ip = package.getSrcIp();
+    auto ip = package.get_src_ip();
     if (std::find(std::begin(m_ignore_list), std::end(m_ignore_list), ip) ==
         std::end(m_ignore_list)) {
         auto it = std::find_if(

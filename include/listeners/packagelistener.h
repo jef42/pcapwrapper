@@ -5,7 +5,7 @@ namespace PCAP {
 
 template <typename T> class PackageListener {
   public:
-    virtual void receivedPackage(T package) = 0;
+    virtual void receive_package(T package) = 0;
 };
 }
 #endif // PCAPPACKAGELISTENER_H

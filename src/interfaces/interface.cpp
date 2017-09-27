@@ -7,7 +7,7 @@ namespace PCAP {
 
 Interface::Interface(const std::string &interfaceName)
     : InterfacePolicy{interfaceName}, m_handler{nullptr} {
-    if (!openInterface(interfaceName)) {
+    if (!open_interface(interfaceName)) {
         throw std::invalid_argument("wrong interface name");
     }
 }
@@ -18,7 +18,7 @@ Interface::~Interface() noexcept {
     }
 }
 
-bool Interface::openInterface(const std::string &netName) {
+bool Interface::open_interface(const std::string &netName) {
     const char *dev = netName.c_str();
     memset(m_errbuf, '\0', PCAP_ERRBUF_SIZE);
 

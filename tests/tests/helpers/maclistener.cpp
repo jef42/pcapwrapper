@@ -38,9 +38,9 @@ TEST_F(MacListenerHelper, MacListener) {
         "tmp-file.pcap");
     auto mac_listener = std::make_shared<PCAP::PCAPHelper::MacListener>(
         PCAP::IpAddress("192.168.1.2"));
-    controller->addListener(mac_listener);
+    controller->add_listener(mac_listener);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(1200));
-    EXPECT_EQ(PCAP::MacAddress("AA:BB:CC:DD:EE:FF"), mac_listener->getMac());
+    EXPECT_EQ(PCAP::MacAddress("AA:BB:CC:DD:EE:FF"), mac_listener->get_mac());
 }

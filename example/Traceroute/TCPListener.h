@@ -8,7 +8,7 @@
 class TCPListener : public PCAP::PackageListener<PCAP::TCPPackage> {
   public:
     TCPListener(const PCAP::IpAddress &target_ip);
-    void receivedPackage(PCAP::TCPPackage package) override;
+    void receive_package(PCAP::TCPPackage package) override;
     bool isFinished() const;
 
   private:

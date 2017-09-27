@@ -21,11 +21,11 @@ int main(int argc, char *argv[]) {
 
     std::string interface_name = argv[1];
     const auto target_ip = PCAP::IpAddress(argv[2]);
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
-    const auto local_mac = PCAP::PCAPHelper::getMac(interface_name);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(interface_name);
 
-    const auto router_ip = PCAP::PCAPHelper::getRouterIp(interface_name);
-    const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
+    const auto router_ip = PCAP::PCAPHelper::get_router_ip(interface_name);
+    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, interface_name);
 
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
@@ -33,8 +33,8 @@ int main(int argc, char *argv[]) {
     auto icmp_listener = std::make_shared<ICMPListener>(local_ip);
     auto tcp_listener = std::make_shared<TCPListener>(target_ip);
 
-    controller->addListener(icmp_listener);
-    controller->addListener(tcp_listener);
+    controller->add_listener(icmp_listener);
+    controller->add_listener(tcp_listener);
 
     controller->start();
 
@@ -53,8 +53,8 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Dst_Port, Option{(unsigned short)80}},
             {Keys::Key_Tcp_SeqNr, Option{(unsigned int)i * 3323}},
             {Keys::Key_Ip_TTL, Option{(unsigned char)i++}}});
-        package.recalculateChecksums();
-        controller->write(package.getPackage(), package.getLength());
+        package.recalculate_checksums();
+        controller->write(package.get_package(), package.get_length());
 
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(1s);

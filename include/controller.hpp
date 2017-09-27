@@ -21,9 +21,9 @@ template <typename I, typename P> class Controller : private I, public P {
     Controller(const std::string &interfaceName)
         : I{interfaceName}, m_stopThread{true} {}
 
-    using I::readPackage;
+    using I::read_package;
     using I::write;
-    using I::setFilter;
+    using I::set_filter;
 
     Controller(const Controller &rhs) = delete;
     Controller(Controller &&rhs) = delete;
@@ -41,7 +41,7 @@ template <typename I, typename P> class Controller : private I, public P {
         m_f = std::async(std::launch::async, [this]() {
             while (!this->m_stopThread) {
                 pcap_pkthdr header;
-                const unsigned char *package = I::readPackage(header);
+                const unsigned char *package = I::read_package(header);
                 if (package) {
                     P::callback(package, header);
                 }

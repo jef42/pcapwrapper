@@ -11,11 +11,11 @@ int main(int argc, char *argv[]) {
     }
 
     const std::string interface_name = argv[1];
-    const auto local_ip = PCAP::PCAPHelper::getIp(interface_name);
-    const auto local_mac = PCAP::PCAPHelper::getMac(interface_name);
-    const auto router_ip = PCAP::PCAPHelper::getRouterIp(interface_name);
-    const auto router_mac = PCAP::PCAPHelper::getMac(router_ip, interface_name);
-    auto ips = PCAP::PCAPHelper::getIps(local_ip, net_mask);
+    const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
+    const auto local_mac = PCAP::PCAPHelper::get_mac(interface_name);
+    const auto router_ip = PCAP::PCAPHelper::get_router_ip(interface_name);
+    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, interface_name);
+    auto ips = PCAP::PCAPHelper::get_ips(local_ip, net_mask);
 
     ips.remove(std::remove_if(std::begin(ips), std::end(ips),
                               [&local_ip](auto ip) { return local_ip == ip; },
@@ -29,9 +29,9 @@ int main(int argc, char *argv[]) {
         std::make_shared<TCPPortListener>(controller, local_ip);
     auto udp_port_listener =
         std::make_shared<UDPPortListener>(controller, local_ip);
-    controller->addListener(network_listener);
-    controller->addListener(tcp_port_listener);
-    controller->addListener(udp_port_listener);
+    controller->add_listener(network_listener);
+    controller->add_listener(tcp_port_listener);
+    controller->add_listener(udp_port_listener);
 
     controller->start();
     while (true) {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
                 {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
                 {Keys::Key_Ip_Src, Option(local_ip)},
                 {Keys::Key_Ip_Dst, Option(target_ip)}});
-            controller->write(package.getPackage(), package.getLength());
+            controller->write(package.get_package(), package.get_length());
         }
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(10s);

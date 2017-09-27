@@ -22,8 +22,8 @@ class ListenerSendUDP : public PCAP::PackageListener<PCAP::UDPPackage>,
   public:
     ListenerSendUDP(PCAP::UDPPackage package) : m_package{package} {}
 
-    void receivedPackage(PCAP::UDPPackage package) override {
-        EXPECT_EQ(m_package.getLength(), package.getLength());
+    void receive_package(PCAP::UDPPackage package) override {
+        EXPECT_EQ(m_package.get_length(), package.get_length());
         EXPECT_EQ(package, m_package);
         EXPECT_FALSE(package != m_package);
         m_done = true;
@@ -54,14 +54,14 @@ TEST_F(TestSendUDP, TestSendOnePackage) {
         {Keys::Key_Src_Port, Option{(unsigned short)0x5023}},
         {Keys::Key_Dst_Port, Option{(unsigned short)0x4241}},
         {Keys::Key_Udp_Length, Option{(unsigned short)0x15}}});
-    package.recalculateChecksums();
+    package.recalculate_checksums();
     send_package(package);
 
     std::string filename = std::string("tmp-file.pcap");
     auto controller = std::make_shared<
         PCAP::Controller<PCAP::InterfaceFile, PCAP::Processor>>(filename);
     auto listener = std::make_shared<ListenerSendUDP>(package);
-    controller->addListener(listener);
+    controller->add_listener(listener);
     controller->start();
 
     wait_test_finished(std::chrono::milliseconds(200));
@@ -76,11 +76,11 @@ TEST_F(TestSendUDP, TestAppendData) {
     unsigned char data[data_size] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6};
     unsigned char data_result[data_size * 2] = {1, 2, 3, 4, 5, 6,
                                                 1, 2, 3, 4, 5, 6};
-    package.appendData(data, data_size);
-    EXPECT_EQ(package.getDataLength(), data_size);
-    EXPECT_TRUE(memcmp(package.getData(), data, package.getDataLength()) == 0);
-    package.appendData(data, data_size);
-    EXPECT_EQ(package.getDataLength(), data_size * 2);
+    package.append_data(data, data_size);
+    EXPECT_EQ(package.get_data_length(), data_size);
+    EXPECT_TRUE(memcmp(package.get_data(), data, package.get_data_length()) == 0);
+    package.append_data(data, data_size);
+    EXPECT_EQ(package.get_data_length(), data_size * 2);
     EXPECT_TRUE(
-        memcmp(package.getData(), data_result, package.getDataLength()) == 0);
+        memcmp(package.get_data(), data_result, package.get_data_length()) == 0);
 }

@@ -25,7 +25,7 @@ class InterfaceFile : public InterfacePolicy {
     int write_impl(const unsigned char *package, int len) override;
     bool set_filter_impl(const std::string &filter) override;
 
-    bool openInterface(const std::string &netName);
+    bool open_interface(const std::string &netName);
 
     char m_errbuf[PCAP_ERRBUF_SIZE];
 

@@ -50,5 +50,5 @@ void swap(BasePackage &lhs, BasePackage &rhs) noexcept {
     std::swap(lhs.m_modify, rhs.m_modify);
 }
 
-unsigned int BasePackage::getLength() const { return m_length; }
+unsigned int BasePackage::get_length() const { return m_length; }
 }

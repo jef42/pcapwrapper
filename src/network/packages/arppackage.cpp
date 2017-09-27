@@ -12,77 +12,77 @@ ARPPackage::ARPPackage(const unsigned char *p, unsigned int l, bool modify)
     m_arp = (struct sniffarp *)(m_package + size_ethernet);
 }
 
-IpAddress ARPPackage::getSrcIp() const {
+IpAddress ARPPackage::get_src_ip() const {
     return IpAddress(m_arp->m_sender_ip_address);
 }
 
-MacAddress ARPPackage::getSrcArpMac() const {
+MacAddress ARPPackage::get_src_arp_mac() const {
     return MacAddress(m_arp->m_sender_hardware_address);
 }
 
-IpAddress ARPPackage::getDstIp() const {
+IpAddress ARPPackage::get_dst_ip() const {
     return IpAddress(m_arp->m_target_ip_address);
 }
 
-MacAddress ARPPackage::getDstArpMac() const {
+MacAddress ARPPackage::get_dst_arp_mac() const {
     return MacAddress(m_arp->m_target_harware_address);
 }
 
-void ARPPackage::setSrcIp(IpAddress ip) {
+void ARPPackage::set_src_ip(IpAddress ip) {
     memcpy(m_arp->m_sender_ip_address, ip.data(), ip_addr_len);
 }
 
-void ARPPackage::setDstIp(IpAddress ip) {
+void ARPPackage::set_dst_ip(IpAddress ip) {
     memcpy(m_arp->m_target_ip_address, ip.data(), ip_addr_len);
 }
 
-void ARPPackage::setSrcArpMac(MacAddress mac) {
+void ARPPackage::set_src_arp_mac(MacAddress mac) {
     memcpy(m_arp->m_sender_hardware_address, mac.data(), ethernet_addr_len);
 }
 
-void ARPPackage::setDstArpMac(MacAddress mac) {
+void ARPPackage::set_dst_arp_mac(MacAddress mac) {
     memcpy(m_arp->m_target_harware_address, mac.data(), ethernet_addr_len);
 }
 
-void ARPPackage::setHardwareType(unsigned short type) {
+void ARPPackage::set_hardware_type(unsigned short type) {
     m_arp->m_hardware_type = htons(type);
 }
 
-unsigned short ARPPackage::getHardwareType() const {
+unsigned short ARPPackage::get_hardware_type() const {
     return ntohs(m_arp->m_hardware_type);
 }
 
-void ARPPackage::setProtocol(unsigned short proto) {
+void ARPPackage::set_protocol(unsigned short proto) {
     m_arp->m_protocol = htons(proto);
 }
 
-unsigned short ARPPackage::getProtocol() const {
+unsigned short ARPPackage::get_protocol() const {
     return ntohs(m_arp->m_protocol);
 }
 
-void ARPPackage::setHardwareLength(unsigned char l) {
+void ARPPackage::set_hardware_length(unsigned char l) {
     m_arp->m_hardware_address_length = l;
 }
 
-unsigned char ARPPackage::getHardwareLength() const {
+unsigned char ARPPackage::get_hardware_length() const {
     return m_arp->m_hardware_address_length;
 }
 
-void ARPPackage::setProtocolLength(unsigned char l) {
+void ARPPackage::set_protocol_length(unsigned char l) {
     m_arp->m_protocol_address_length = l;
 }
 
-unsigned char ARPPackage::getProtocolLength() const {
+unsigned char ARPPackage::get_protocol_length() const {
     return m_arp->m_protocol_address_length;
 }
 
-void ARPPackage::setOpcode(unsigned short code) {
+void ARPPackage::set_opcode(unsigned short code) {
     m_arp->m_opcode = htons(code);
 }
 
-unsigned short ARPPackage::getOpcode() const { return ntohs(m_arp->m_opcode); }
+unsigned short ARPPackage::get_opcode() const { return ntohs(m_arp->m_opcode); }
 
-unsigned int ARPPackage::getLength() const {
+unsigned int ARPPackage::get_length() const {
     return sizeof(*m_ethernet) + sizeof(*m_arp);
 }
 
