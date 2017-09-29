@@ -10,11 +10,9 @@ This is a wrapper over `C` pcap library. The purpose of the library is to enable
 
 ## Requirements
 
-Because it is a wrapper over pcap library, it requires this library to be installed. The wrapper is built using `libpcap-dev 1.7.4-2` library, `g++` and `C++17` on Unix system. It doesn't work on Windows systems.
+Because it is a wrapper over pcap library, it requires this library to be installed. The wrapper is built using `libpcap-dev 1.7.4-2` library and `g++ 6.3.0` on Unix system.
 
-To managed to build the library, it is required `cmake` version `3.5`
-
-One of the example programs requires `sqlite3`.
+To managed to build the library, it is required `cmake` version `3.2.2`
 
 ## Build
 
