@@ -28,6 +28,9 @@ struct snifftcp {
 struct snifftcpopt {
     unsigned char opt[40];
 };
+
+static_assert(sizeof(snifftcp) == 20, "Size of TCP must be 20");
+
 }
 
 #endif // SNIFFTCP_H

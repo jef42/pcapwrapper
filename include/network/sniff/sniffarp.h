@@ -16,6 +16,8 @@ struct sniffarp {
     unsigned char m_target_harware_address[ethernet_addr_len];
     unsigned char m_target_ip_address[ip_addr_len];
 };
+
+static_assert(sizeof(sniffarp) == 28, "Size of ARP must be 28");
 }
 
 #endif // SNIFFARP_H

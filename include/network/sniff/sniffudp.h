@@ -9,6 +9,9 @@ struct sniffudp {
     unsigned short m_length;
     unsigned short m_checksum;
 };
+
+static_assert(sizeof(sniffudp) == 8, "Size of UDP must be 8");
+
 }
 
 #endif // SNIFFUDP_H

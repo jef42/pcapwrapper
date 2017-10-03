@@ -19,6 +19,8 @@ struct sniffip {
     unsigned char m_ip_src[4];
     unsigned char m_ip_dst[4];
 };
+
+static_assert(sizeof(sniffip) == 20, "Size of IP must be 20");
 }
 
 #endif // IPPCAP_H
