@@ -22,9 +22,9 @@ class DHCPBuilder {
     void operator<<(PCAP::sniffudp udp);
     void operator<<(sniffdhcp dhcp);
 
-    template <long unsigned int S>
+    template <long uint S>
     friend void operator<<(DHCPBuilder &dhcpbuilder,
-                           std::array<unsigned char, S> data) {
+                           std::array<uchar, S> data) {
         memcpy(&dhcpbuilder.m_package[dhcpbuilder.m_index], data.data(), S);
         dhcpbuilder.m_index += S;
 
@@ -35,12 +35,12 @@ class DHCPBuilder {
     }
 
     void build();
-    unsigned char *get_package() const;
-    unsigned int get_length() const;
+    uchar *get_package() const;
+    uint get_length() const;
 
   private:
-    unsigned char m_package[snap_len];
-    unsigned int m_index;
+    uchar m_package[snap_len];
+    uint m_index;
     PCAP::sniffethernet *m_ethernet;
     PCAP::sniffip *m_ip;
     PCAP::sniffudp *m_udp;

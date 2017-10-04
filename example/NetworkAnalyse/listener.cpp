@@ -14,9 +14,9 @@ void Listener::inc_count(PCAP::IpAddress ip) {
     m_counts.emplace(ip, 0);
 }
 
-std::vector<std::pair<PCAP::IpAddress, unsigned int>> Listener::get_count() {
+std::vector<std::pair<PCAP::IpAddress, uint>> Listener::get_count() {
     std::lock_guard<std::mutex> lock(m_lock);
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>> result;
+    std::vector<std::pair<PCAP::IpAddress, uint>> result;
     for (auto &v : m_counts) {
         result.emplace_back(v.first, v.second.load());
     }

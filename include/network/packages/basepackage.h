@@ -7,7 +7,7 @@ namespace PCAP {
 
 class BasePackage {
   public:
-    BasePackage(const unsigned char *p, unsigned int l, bool modify = false);
+    BasePackage(const uchar *p, uint l, bool modify = false);
     BasePackage(const BasePackage &rhs);
     BasePackage &operator=(const BasePackage rhs);
     BasePackage(BasePackage &&rhs) noexcept;
@@ -15,15 +15,14 @@ class BasePackage {
 
     friend void swap(BasePackage &lhs, BasePackage &rhs) noexcept;
 
-    virtual const unsigned char *get_package() const { return m_package; }
-    virtual unsigned int get_length() const;
+    virtual const uchar *get_package() const { return m_package; }
+    virtual uint get_length() const;
 
   protected:
     virtual ~BasePackage() noexcept;
 
-    // unsigned char m_package[snap_len];
-    unsigned char *m_package;
-    unsigned int m_length;
+    uchar *m_package;
+    uint m_length;
     bool m_modify;
 };
 }

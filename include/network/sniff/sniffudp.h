@@ -4,10 +4,10 @@
 namespace PCAP {
 
 struct sniffudp {
-    unsigned short m_th_sport; /* source port */
-    unsigned short m_th_dport; /* destination port */
-    unsigned short m_length;
-    unsigned short m_checksum;
+    ushort m_th_sport; /* source port */
+    ushort m_th_dport; /* destination port */
+    ushort m_length;
+    ushort m_checksum;
 };
 
 static_assert(sizeof(sniffudp) == 8, "Size of UDP must be 8");

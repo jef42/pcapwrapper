@@ -41,11 +41,11 @@ bool Interface::set_filter_impl(const std::string &filter) {
     return false;
 }
 
-const unsigned char *Interface::read_package_impl(pcap_pkthdr &header) {
+const uchar *Interface::read_package_impl(pcap_pkthdr &header) {
     return pcap_next(m_handler, &header);
 }
 
-int Interface::write_impl(const unsigned char *package, int len) {
+int Interface::write_impl(const uchar *package, int len) {
     if (m_handler != nullptr) {
         return pcap_sendpacket(m_handler, package, len);
     }

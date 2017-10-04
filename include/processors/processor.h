@@ -43,8 +43,8 @@ class Processor : public ProcessorPolicy {
 
   private:
     template <typename T, typename IT>
-    void notify_listeners(IT begin, IT end, const unsigned char *sniff_package,
-                          unsigned int length);
+    void notify_listeners(IT begin, IT end, const uchar *sniff_package,
+                          uint length);
 
     template <typename T, typename IT> IT remove_weak_ptr(IT begin, IT end);
 
@@ -53,7 +53,7 @@ class Processor : public ProcessorPolicy {
                        const std::shared_ptr<PackageListener<T>> &listener);
 
   protected:
-    void callback_impl(const unsigned char *package, const pcap_pkthdr &header);
+    void callback_impl(const uchar *package, const pcap_pkthdr &header);
 
   private:
     std::vector<std::weak_ptr<PackageListener<TCPPackage>>> m_tcp_listeners;

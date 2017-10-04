@@ -31,7 +31,7 @@ class InsertCommand : public DBCommand {
 
     bool execute_impl();
 
-    unsigned long get_real_time() const;
+    ulong get_real_time() const;
 };
 
 #endif

@@ -59,7 +59,7 @@ DNSWorker::DNSWorker(PCAP::UDPPackage package) {
 
 void DNSWorker::new_session(PCAP::UDPPackage package) {
 
-    const unsigned char *query = &(package.get_data()[QUERIES + 1]);
+    const uchar *query = &(package.get_data()[QUERIES + 1]);
     std::string data = std::string((char *)query);
 
     std::unique_lock<std::mutex> lk(m_worker_mutex);

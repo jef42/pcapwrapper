@@ -2,6 +2,6 @@
 
 namespace PCAP {
 
-void ProcessorEmpty::callback_impl(const unsigned char *, const pcap_pkthdr &) {
+void ProcessorEmpty::callback_impl(const uchar *, const pcap_pkthdr &) {
 }
 }

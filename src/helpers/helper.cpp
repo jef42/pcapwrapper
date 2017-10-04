@@ -28,11 +28,11 @@ namespace PCAPHelper {
 
 namespace {
 struct pseudo_header {
-    unsigned char s_addr[4];
-    unsigned char d_addr[4];
-    unsigned char reserved = 0x00;
-    unsigned char protocol;
-    unsigned short length;
+    uchar s_addr[4];
+    uchar d_addr[4];
+    uchar reserved = 0x00;
+    uchar protocol;
+    ushort length;
 };
 }
 
@@ -47,7 +47,7 @@ void set_icmp_checksum(sniffip *ip, snifficmp *icmp) {
         checksum((char *)icmp, ntohs(ip->m_ip_len) - (IP_HL(ip) * 4));
 }
 
-void set_tcp_checksum(sniffip *ip, snifftcp *tcp, unsigned char *data) {
+void set_tcp_checksum(sniffip *ip, snifftcp *tcp, uchar *data) {
     tcp->m_th_sum = 0x0000;
 
     pseudo_header pseudo_h;
@@ -68,7 +68,7 @@ void set_tcp_checksum(sniffip *ip, snifftcp *tcp, unsigned char *data) {
                                           sizeof(pseudo_h));
 }
 
-void set_udp_checksum(sniffip *ip, sniffudp *udp, unsigned char *data) {
+void set_udp_checksum(sniffip *ip, sniffudp *udp, uchar *data) {
     udp->m_checksum = 0x0000;
 
     pseudo_header pseudo_h;
@@ -146,7 +146,7 @@ PCAP::MacAddress get_mac(const std::string &interface) {
             stream << std::setfill('0') << std::setw(2) << std::hex
                    << std::uppercase
                    << stoi(std::to_string(
-                          static_cast<unsigned char>(s.ifr_addr.sa_data[i])));
+                          static_cast<uchar>(s.ifr_addr.sa_data[i])));
             if (i != 5)
                 stream << ":";
         }
@@ -158,9 +158,9 @@ PCAP::MacAddress get_mac(const std::string &interface) {
 std::vector<PCAP::IpAddress> get_ips(const PCAP::IpAddress &local_ip,
                                      const PCAP::IpAddress &net_mask) {
     std::vector<PCAP::IpAddress> result;
-    unsigned long ip = local_ip.to_long();
-    unsigned long mask = net_mask.to_long();
-    unsigned long tmp = ip & mask;
+    ulong ip = local_ip.to_long();
+    ulong mask = net_mask.to_long();
+    ulong tmp = ip & mask;
     while ((tmp & mask) == (ip & mask)) {
         result.emplace_back(PCAP::IpAddress(tmp++));
     }
@@ -168,16 +168,16 @@ std::vector<PCAP::IpAddress> get_ips(const PCAP::IpAddress &local_ip,
 }
 
 PCAP::IpAddress get_router_ip(const std::string &interface) {
-    unsigned long ip = get_ip(interface).to_long();
-    unsigned long mask = get_mask(interface).to_long();
-    unsigned long tmp = ip & mask;
+    ulong ip = get_ip(interface).to_long();
+    ulong mask = get_mask(interface).to_long();
+    ulong tmp = ip & mask;
     return PCAP::IpAddress(tmp + 1);
 }
 
 PCAP::IpAddress get_broadcast_ip(const std::string &interface) {
-    unsigned long ip = get_ip(interface).to_long();
-    unsigned long mask = get_mask(interface).to_long();
-    unsigned long tmp = ip | ~mask;
+    ulong ip = get_ip(interface).to_long();
+    ulong mask = get_mask(interface).to_long();
+    ulong tmp = ip | ~mask;
     return PCAP::IpAddress(tmp);
 }
 
@@ -195,11 +195,11 @@ PCAP::MacAddress get_mac(const PCAP::IpAddress &target_ip,
     bool run_flag = true;
     auto f = std::async(std::launch::async, [&run_flag, &controller, local_ip,
                                              target_ip, local_mac]() {
-        unsigned char package_buffer[snap_len];
+        uchar package_buffer[snap_len];
         memset(package_buffer, '\0', snap_len);
 
         while (run_flag) {
-            PCAP::ARPPackage package(package_buffer, (unsigned int)snap_len,
+            PCAP::ARPPackage package(package_buffer, (uint)snap_len,
                                      true);
             package.set_src_mac(local_mac);
             package.set_dst_mac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));

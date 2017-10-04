@@ -19,14 +19,14 @@ class Listener {
   public:
     Listener(const PCAP::IpAddress &ip);
     void inc_count(PCAP::IpAddress ip);
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>> get_count();
+    std::vector<std::pair<PCAP::IpAddress, uint>> get_count();
 
   private:
     std::mutex m_lock;
 
   protected:
     PCAP::IpAddress m_netmask;
-    std::unordered_map<PCAP::IpAddress, std::atomic<unsigned int>> m_counts;
+    std::unordered_map<PCAP::IpAddress, std::atomic<uint>> m_counts;
 };
 
 #endif

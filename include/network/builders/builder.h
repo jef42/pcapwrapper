@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 
+#include "../../helpers/common.h"
 #include "../addresses/ipaddress.h"
 #include "../addresses/macaddress.h"
 #include "../packages/arppackage.h"
@@ -17,11 +18,11 @@ namespace PCAPBuilder {
 
 class Option {
   public:
-    explicit Option(unsigned int value) : m_value_int{value} {}
+    explicit Option(uint value) : m_value_int{value} {}
 
-    explicit Option(unsigned short value) : m_value_short{value} {}
+    explicit Option(ushort value) : m_value_short{value} {}
 
-    explicit Option(unsigned char value) : m_value_char{value} {}
+    explicit Option(uchar value) : m_value_char{value} {}
 
     explicit Option(PCAP::IpAddress ip) : m_value_ip{ip} {}
 
@@ -41,9 +42,9 @@ class Option {
 
   private:
     union {
-        unsigned int m_value_int;
-        unsigned short m_value_short;
-        unsigned char m_value_char;
+        uint m_value_int;
+        ushort m_value_short;
+        uchar m_value_char;
         PCAP::IpAddress m_value_ip;
         PCAP::MacAddress m_value_mac;
     };

@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Started" << std::endl;
 
-    unsigned char i = 0;
+    uchar i = 0;
     while (!tcp_listener->isFinished()) {
 
         using namespace PCAP::PCAPBuilder;
@@ -49,10 +49,10 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Eth_Mac_Dst, Option{router_mac}},
             {Keys::Key_Ip_Src, Option{local_ip}},
             {Keys::Key_Ip_Dst, Option{target_ip}},
-            {Keys::Key_Src_Port, Option{(unsigned short)45022}},
-            {Keys::Key_Dst_Port, Option{(unsigned short)80}},
-            {Keys::Key_Tcp_SeqNr, Option{(unsigned int)i * 3323}},
-            {Keys::Key_Ip_TTL, Option{(unsigned char)i++}}});
+            {Keys::Key_Src_Port, Option{(ushort)45022}},
+            {Keys::Key_Dst_Port, Option{(ushort)80}},
+            {Keys::Key_Tcp_SeqNr, Option{(uint)i * 3323}},
+            {Keys::Key_Ip_TTL, Option{(uchar)i++}}});
         package.recalculate_checksums();
         controller->write(package.get_package(), package.get_length());
 

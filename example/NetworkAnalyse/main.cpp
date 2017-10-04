@@ -19,11 +19,11 @@
 using namespace std::chrono_literals;
 
 void print_result(
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &tcp_packages,
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &udp_packages,
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &arp_packages,
-    std::vector<std::pair<PCAP::IpAddress, unsigned int>> &icmp_packages,
-    unsigned long sum) {
+    std::vector<std::pair<PCAP::IpAddress, uint>> &tcp_packages,
+    std::vector<std::pair<PCAP::IpAddress, uint>> &udp_packages,
+    std::vector<std::pair<PCAP::IpAddress, uint>> &arp_packages,
+    std::vector<std::pair<PCAP::IpAddress, uint>> &icmp_packages,
+    ulong sum) {
     for (auto &t : tcp_packages) {
         std::cout << "Ip: " << t.first << "\n";
         std::cout << "TCP: " << t.second << " " << (double)t.second * 100 / sum
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     controller->start();
 
     auto start = std::chrono::high_resolution_clock::now();
-    unsigned long total = 0;
+    ulong total = 0;
     while (true) {
         std::this_thread::sleep_for(1s);
 

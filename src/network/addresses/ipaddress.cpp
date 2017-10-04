@@ -8,16 +8,16 @@
 namespace PCAP {
 
 IpAddress::IpAddress(const std::string &ip) {
-    if (!PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(ip, '.',
+    if (!PCAP::PCAPHelper::split_string<uchar, ip_addr_len>(ip, '.',
                                                                     m_ip, 10))
         throw std::runtime_error("Wrong argument");
 }
 
-IpAddress::IpAddress(unsigned char *data) {
+IpAddress::IpAddress(uchar *data) {
     memcpy(m_ip.data(), data, ip_addr_len);
 }
 
-IpAddress::IpAddress(unsigned long ip) {
+IpAddress::IpAddress(ulong ip) {
     m_ip[0] = ip >> 24 & 0xFF;
     m_ip[1] = ip >> 16 & 0xFF;
     m_ip[2] = ip >> 8 & 0xFF;
@@ -62,9 +62,9 @@ std::string IpAddress::to_string() const {
     return result;
 }
 
-unsigned long IpAddress::to_long() const noexcept {
+ulong IpAddress::to_long() const noexcept {
     return 0 | m_ip[0] << 24 | m_ip[1] << 16 | m_ip[2] << 8 | m_ip[3];
 }
 
-const unsigned char *IpAddress::data() const noexcept { return m_ip.data(); }
+const uchar *IpAddress::data() const noexcept { return m_ip.data(); }
 }

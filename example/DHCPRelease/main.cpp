@@ -20,10 +20,10 @@
 #include "dhcpoption.h"
 
 template <typename T>
-bool setIp(unsigned char *ip, const T &ip_value, int base) {
-    std::array<unsigned char, ip_addr_len> array;
+bool setIp(uchar *ip, const T &ip_value, int base) {
+    std::array<uchar, ip_addr_len> array;
     bool successful =
-        PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(
+        PCAP::PCAPHelper::split_string<uchar, ip_addr_len>(
             ip_value, '.', array, base);
     if (successful) {
         memcpy(ip, array.data(), ip_addr_len);
@@ -32,10 +32,10 @@ bool setIp(unsigned char *ip, const T &ip_value, int base) {
 }
 
 template <typename T>
-bool setMac(unsigned char *addr, const T &ethernet_value, int base) {
-    std::array<unsigned char, ethernet_addr_len> array;
+bool setMac(uchar *addr, const T &ethernet_value, int base) {
+    std::array<uchar, ethernet_addr_len> array;
     bool sucessful =
-        PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(
+        PCAP::PCAPHelper::split_string<uchar, ethernet_addr_len>(
             ethernet_value, ':', array, base);
     if (sucessful) {
         memcpy(addr, array.data(), ethernet_addr_len);
@@ -67,7 +67,7 @@ PCAP::sniffip create_ip(const std::string &src_ip, const std::string &dst_ip) {
     return ip;
 }
 
-PCAP::sniffudp create_udp(unsigned short src_port, unsigned short dst_port) {
+PCAP::sniffudp create_udp(ushort src_port, ushort dst_port) {
     PCAP::sniffudp udp;
     udp.m_th_sport = htons(src_port);
     udp.m_th_dport = htons(dst_port);
@@ -94,16 +94,16 @@ sniffdhcp create_dhcp(const std::string &target_ip,
     return dhcp;
 }
 
-std::array<unsigned char, 4> create_magic_cookie() {
-    return std::array<unsigned char, 4>{0x63, 0x82, 0x53, 0x63};
+std::array<uchar, 4> create_magic_cookie() {
+    return std::array<uchar, 4>{0x63, 0x82, 0x53, 0x63};
 }
 
-std::array<unsigned char, 6> create_host_name() {
-    return std::array<unsigned char, 6>{0x0c, 0x04, 0x68, 0x6c, 0x69, 0x6e};
+std::array<uchar, 6> create_host_name() {
+    return std::array<uchar, 6>{0x0c, 0x04, 0x68, 0x6c, 0x69, 0x6e};
 }
 
-std::array<unsigned char, 1> create_end() {
-    return std::array<unsigned char, 1>{0xFF};
+std::array<uchar, 1> create_end() {
+    return std::array<uchar, 1>{0xFF};
 }
 
 int main(int argc, char *argv[]) {

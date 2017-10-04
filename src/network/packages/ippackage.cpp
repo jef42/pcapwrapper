@@ -5,7 +5,7 @@
 
 namespace PCAP {
 
-IPPackage::IPPackage(const unsigned char *p, unsigned int l, bool modify)
+IPPackage::IPPackage(const uchar *p, uint l, bool modify)
     : EthernetPackage{p, l, modify} {
     m_ip = (sniffip *)(m_package + size_ethernet);
 }
@@ -14,27 +14,27 @@ IpAddress IPPackage::get_src_ip() const { return IpAddress(m_ip->m_ip_src); }
 
 IpAddress IPPackage::get_dst_ip() const { return IpAddress(m_ip->m_ip_dst); }
 
-unsigned char IPPackage::get_vhl() const { return m_ip->m_ip_vhl; }
+uchar IPPackage::get_vhl() const { return m_ip->m_ip_vhl; }
 
-unsigned char IPPackage::get_tos() const { return m_ip->m_ip_tos; }
+uchar IPPackage::get_tos() const { return m_ip->m_ip_tos; }
 
-unsigned short IPPackage::get_total_length() const {
+ushort IPPackage::get_total_length() const {
     return ntohs(m_ip->m_ip_len);
 }
 
-unsigned short IPPackage::get_id() const { return ntohs(m_ip->m_ip_id); }
+ushort IPPackage::get_id() const { return ntohs(m_ip->m_ip_id); }
 
-unsigned char IPPackage::get_ip_flags() const {
+uchar IPPackage::get_ip_flags() const {
     return ntohs(m_ip->m_ip_off) >> 13;
 }
 
-unsigned short IPPackage::get_fragment_offset() const {
+ushort IPPackage::get_fragment_offset() const {
     return ntohs(m_ip->m_ip_off) & IP_OFFMASK;
 }
 
-unsigned char IPPackage::get_ttl() const { return m_ip->m_ip_ttl; }
+uchar IPPackage::get_ttl() const { return m_ip->m_ip_ttl; }
 
-unsigned char IPPackage::get_protocol() const { return m_ip->m_ip_p; }
+uchar IPPackage::get_protocol() const { return m_ip->m_ip_p; }
 
 void IPPackage::set_dst_ip(IpAddress ip) {
     memcpy(m_ip->m_ip_dst, ip.data(), ip_addr_len);
@@ -44,27 +44,27 @@ void IPPackage::set_src_ip(IpAddress ip) {
     memcpy(m_ip->m_ip_src, ip.data(), ip_addr_len);
 }
 
-void IPPackage::set_vhl(unsigned char value) { m_ip->m_ip_vhl = value; }
+void IPPackage::set_vhl(uchar value) { m_ip->m_ip_vhl = value; }
 
-void IPPackage::set_tos(unsigned char value) { m_ip->m_ip_tos = value; }
+void IPPackage::set_tos(uchar value) { m_ip->m_ip_tos = value; }
 
-void IPPackage::set_total_length(unsigned short length) {
+void IPPackage::set_total_length(ushort length) {
     m_ip->m_ip_len = htons(length);
 }
 
-void IPPackage::set_id(unsigned short id) { m_ip->m_ip_id = htons(id); }
+void IPPackage::set_id(ushort id) { m_ip->m_ip_id = htons(id); }
 
-void IPPackage::set_ip_flags(unsigned char flags) {
+void IPPackage::set_ip_flags(uchar flags) {
     m_ip->m_ip_off |= (htons(flags) << 13);
 }
 
-void IPPackage::set_fragment_offset(unsigned short fragment) {
+void IPPackage::set_fragment_offset(ushort fragment) {
     m_ip->m_ip_off |= (htons(fragment) & IP_OFFMASK);
 }
 
-void IPPackage::set_ttl(unsigned char ttl) { m_ip->m_ip_ttl = ttl; }
+void IPPackage::set_ttl(uchar ttl) { m_ip->m_ip_ttl = ttl; }
 
-void IPPackage::set_protocol(unsigned char protocol) {
+void IPPackage::set_protocol(uchar protocol) {
     m_ip->m_ip_p = protocol;
 }
 

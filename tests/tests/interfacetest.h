@@ -13,10 +13,10 @@ class InterfaceTest : public PCAP::InterfacePolicy {
         : InterfacePolicy(""), m_processor{processor} {}
 
   protected:
-    const unsigned char *read_package_impl(pcap_pkthdr &header) {}
+    const uchar *read_package_impl(pcap_pkthdr &header) {}
     bool set_filter_impl(const std::string &filter) {}
 
-    int write_impl(const unsigned char *package, int len) {
+    int write_impl(const uchar *package, int len) {
         pcap_pkthdr header;
         header.caplen = len;
         header.len = len;

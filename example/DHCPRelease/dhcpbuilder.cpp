@@ -49,11 +49,11 @@ void DHCPBuilder::build() {
     }
 
     PCAP::PCAPHelper::set_ip_checksum(m_ip);
-    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (unsigned char *)m_dhcp);
+    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (uchar *)m_dhcp);
 }
 
-unsigned char *DHCPBuilder::get_package() const {
-    return (unsigned char *)&m_package[0];
+uchar *DHCPBuilder::get_package() const {
+    return (uchar *)&m_package[0];
 }
 
-unsigned int DHCPBuilder::get_length() const { return m_index; }
+uint DHCPBuilder::get_length() const { return m_index; }

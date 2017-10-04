@@ -21,8 +21,8 @@ class Interface : public InterfacePolicy {
     Interface &operator=(Interface &&rhs) = delete;
 
   protected:
-    const unsigned char *read_package_impl(pcap_pkthdr &header) override;
-    int write_impl(const unsigned char *package, int len) override;
+    const uchar *read_package_impl(pcap_pkthdr &header) override;
+    int write_impl(const uchar *package, int len) override;
     bool set_filter_impl(const std::string &filter) override;
 
     bool open_interface(const std::string &netName);

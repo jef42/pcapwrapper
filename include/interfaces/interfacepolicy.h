@@ -12,11 +12,11 @@ class InterfacePolicy {
     explicit InterfacePolicy(const std::string &name)
         : m_interface_name{name} {}
 
-    const unsigned char *read_package(pcap_pkthdr &header) {
+    const uchar *read_package(pcap_pkthdr &header) {
         return read_package_impl(header);
     }
 
-    int write(const unsigned char *package, int len) {
+    int write(const uchar *package, int len) {
         return write_impl(package, len);
     }
 
@@ -27,8 +27,8 @@ class InterfacePolicy {
     virtual ~InterfacePolicy() noexcept = default;
 
   protected:
-    virtual const unsigned char *read_package_impl(pcap_pkthdr &header) = 0;
-    virtual int write_impl(const unsigned char *package, int len) = 0;
+    virtual const uchar *read_package_impl(pcap_pkthdr &header) = 0;
+    virtual int write_impl(const uchar *package, int len) = 0;
     virtual bool set_filter_impl(const std::string &filter) = 0;
 
   protected:

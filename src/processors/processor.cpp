@@ -10,7 +10,7 @@ enum class ETHER_TYPE { APR = 0x0806, IP = 0x0800 };
 
 namespace PCAP {
 
-void Processor::callback_impl(const unsigned char *package,
+void Processor::callback_impl(const uchar *package,
                               const pcap_pkthdr &header) {
     LOG_BLOCK_D;
 
@@ -69,8 +69,8 @@ void Processor::callback_impl(const unsigned char *package,
 
 template <typename T, typename IT>
 void Processor::notify_listeners(IT begin, IT end,
-                                const unsigned char *sniff_package,
-                                unsigned int length) {
+                                const uchar *sniff_package,
+                                uint length) {
     std::for_each(begin, end, [&sniff_package,
                                length](std::weak_ptr<PackageListener<T>> p) {
         std::shared_ptr<PackageListener<T>> listener = p.lock();

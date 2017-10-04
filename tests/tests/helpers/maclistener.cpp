@@ -30,7 +30,7 @@ TEST_F(MacListenerHelper, MacListener) {
             {Keys::Key_Arp_Mac_Src,
              Option{PCAP::MacAddress{"AA:BB:CC:DD:EE:FF"}}},
             {Keys::Key_Ip_Src, Option{PCAP::IpAddress("192.168.1.2")}},
-            {Keys::Key_Arp_Opcode, Option{(unsigned short)0x2}}}});
+            {Keys::Key_Arp_Opcode, Option{(ushort)0x2}}}});
     send_package(package); // writes to a file
 
     auto controller = std::make_shared<

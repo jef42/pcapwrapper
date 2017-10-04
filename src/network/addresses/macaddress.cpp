@@ -10,13 +10,13 @@
 namespace PCAP {
 
 MacAddress::MacAddress(const std::string &mac) {
-    if (!PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(
+    if (!PCAP::PCAPHelper::split_string<uchar, ethernet_addr_len>(
             mac, ':', m_mac, 16)) {
         throw std::runtime_error("Wrong argument");
     }
 }
 
-MacAddress::MacAddress(unsigned char *data) {
+MacAddress::MacAddress(uchar *data) {
     memcpy(m_mac.data(), data, ethernet_addr_len);
 }
 
@@ -47,5 +47,5 @@ std::string MacAddress::to_string() const {
     return stream.str();
 }
 
-const unsigned char *MacAddress::data() const noexcept { return m_mac.data(); }
+const uchar *MacAddress::data() const noexcept { return m_mac.data(); }
 }

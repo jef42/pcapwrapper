@@ -12,7 +12,7 @@ namespace PCAP {
 class MacAddress {
   public:
     explicit MacAddress(const std::string &mac);
-    explicit MacAddress(unsigned char *data);
+    explicit MacAddress(uchar *data);
     explicit MacAddress();
 
     friend bool operator==(const MacAddress &lhs,
@@ -23,10 +23,10 @@ class MacAddress {
                                     const MacAddress &rhs);
 
     std::string to_string() const;
-    const unsigned char *data() const noexcept;
+    const uchar *data() const noexcept;
 
   private:
-    std::array<unsigned char, ethernet_addr_len> m_mac;
+    std::array<uchar, ethernet_addr_len> m_mac;
 };
 }
 

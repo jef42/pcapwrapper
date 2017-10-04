@@ -17,12 +17,12 @@ class ProcessorSave : public ProcessorPolicy {
     bool save(const std::string &filename);
 
   private:
-    void callback_impl(const unsigned char *package,
+    void callback_impl(const uchar *package,
                        const pcap_pkthdr &header) override;
 
     std::mutex m_mutex;
 
-    using Package = std::pair<pcap_pkthdr, unsigned char *>;
+    using Package = std::pair<pcap_pkthdr, uchar *>;
     std::vector<Package> m_packages;
 };
 }

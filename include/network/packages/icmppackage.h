@@ -10,28 +10,28 @@ namespace PCAP {
 
 class ICMPPackage : public IPPackage {
   public:
-    ICMPPackage(const unsigned char *p, unsigned int l, bool modify = false);
+    ICMPPackage(const uchar *p, uint l, bool modify = false);
 
-    unsigned char get_type() const;
-    unsigned char get_code() const;
+    uchar get_type() const;
+    uchar get_code() const;
 
-    void set_type(unsigned char type);
-    void set_code(unsigned char code);
+    void set_type(uchar type);
+    void set_code(uchar code);
 
     void recalculate_checksums();
 
-    const unsigned char *get_data() const;
-    unsigned int get_data_length() const;
-    void append_data(unsigned char *data, int size);
+    const uchar *get_data() const;
+    uint get_data_length() const;
+    void append_data(uchar *data, int size);
 
-    unsigned int get_length() const override;
+    uint get_length() const override;
 
     friend bool operator==(const ICMPPackage &lhs, const ICMPPackage &rhs);
     friend bool operator!=(const ICMPPackage &lhs, const ICMPPackage &rhs);
 
   protected:
     snifficmp *m_icmp;
-    unsigned char *m_data;
+    uchar *m_data;
 };
 }
 

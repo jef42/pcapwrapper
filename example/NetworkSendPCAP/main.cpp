@@ -13,7 +13,7 @@ static std::string interface_name;
 
 class SendProcessor : public PCAP::ProcessorPolicy {
   private:
-    void callback_impl(const unsigned char *package,
+    void callback_impl(const uchar *package,
                        const pcap_pkthdr &header) override {
         static auto controller = std::make_shared<
             PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(

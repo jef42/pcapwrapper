@@ -45,7 +45,7 @@ bool InterfaceFile::set_filter_impl(const std::string &filter) {
     return false;
 }
 
-const unsigned char *InterfaceFile::read_package_impl(pcap_pkthdr &header) {
+const uchar *InterfaceFile::read_package_impl(pcap_pkthdr &header) {
     auto tmp = pcap_next(m_handler, &header);
     if (tmp) {
         std::chrono::milliseconds new_time{header.ts.tv_sec * 1000 +
@@ -58,5 +58,5 @@ const unsigned char *InterfaceFile::read_package_impl(pcap_pkthdr &header) {
     return tmp;
 }
 
-int InterfaceFile::write_impl(const unsigned char *, int) { return -1; }
+int InterfaceFile::write_impl(const uchar *, int) { return -1; }
 }

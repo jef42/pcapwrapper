@@ -12,14 +12,14 @@
 
 class DNSParser {
   public:
-    DNSParser(const unsigned char *package, int length);
+    DNSParser(const uchar *package, int length);
 
     void build();
-    unsigned char *get_package() const;
-    unsigned int get_length() const;
+    uchar *get_package() const;
+    uint get_length() const;
 
   private:
-    unsigned char m_package[snap_len];
+    uchar m_package[snap_len];
     int m_index;
 
   public:

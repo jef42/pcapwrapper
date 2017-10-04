@@ -12,8 +12,8 @@ namespace PCAP {
 class IpAddress {
   public:
     explicit IpAddress(const std::string &ip);
-    explicit IpAddress(unsigned char *data);
-    explicit IpAddress(unsigned long ip);
+    explicit IpAddress(uchar *data);
+    explicit IpAddress(ulong ip);
     explicit IpAddress();
 
     IpAddress(const IpAddress &rhs) noexcept = default;
@@ -30,11 +30,11 @@ class IpAddress {
                                const IpAddress &rhs) noexcept;
 
     std::string to_string() const;
-    unsigned long to_long() const noexcept;
-    const unsigned char *data() const noexcept;
+    ulong to_long() const noexcept;
+    const uchar *data() const noexcept;
 
   private:
-    std::array<unsigned char, ip_addr_len> m_ip;
+    std::array<uchar, ip_addr_len> m_ip;
 };
 }
 

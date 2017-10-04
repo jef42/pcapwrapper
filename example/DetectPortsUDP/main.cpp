@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) {
                 {Keys::Key_Eth_Mac_Dst, Option{target_mac}},
                 {Keys::Key_Ip_Src, Option{local_ip}},
                 {Keys::Key_Ip_Dst, Option{target_ip}},
-                {Keys::Key_Src_Port, Option{(unsigned short)45022}},
-                {Keys::Key_Dst_Port, Option{(unsigned short)port}}});
+                {Keys::Key_Src_Port, Option{(ushort)45022}},
+                {Keys::Key_Dst_Port, Option{(ushort)port}}});
             package.recalculate_checksums();
             controller->write(package.get_package(), package.get_length());
         }

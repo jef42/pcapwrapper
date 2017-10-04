@@ -7,7 +7,7 @@
 
 namespace PCAP {
 
-ARPPackage::ARPPackage(const unsigned char *p, unsigned int l, bool modify)
+ARPPackage::ARPPackage(const uchar *p, uint l, bool modify)
     : EthernetPackage{p, l, modify} {
     m_arp = (struct sniffarp *)(m_package + size_ethernet);
 }
@@ -44,45 +44,45 @@ void ARPPackage::set_dst_arp_mac(MacAddress mac) {
     memcpy(m_arp->m_target_harware_address, mac.data(), ethernet_addr_len);
 }
 
-void ARPPackage::set_hardware_type(unsigned short type) {
+void ARPPackage::set_hardware_type(ushort type) {
     m_arp->m_hardware_type = htons(type);
 }
 
-unsigned short ARPPackage::get_hardware_type() const {
+ushort ARPPackage::get_hardware_type() const {
     return ntohs(m_arp->m_hardware_type);
 }
 
-void ARPPackage::set_protocol(unsigned short proto) {
+void ARPPackage::set_protocol(ushort proto) {
     m_arp->m_protocol = htons(proto);
 }
 
-unsigned short ARPPackage::get_protocol() const {
+ushort ARPPackage::get_protocol() const {
     return ntohs(m_arp->m_protocol);
 }
 
-void ARPPackage::set_hardware_length(unsigned char l) {
+void ARPPackage::set_hardware_length(uchar l) {
     m_arp->m_hardware_address_length = l;
 }
 
-unsigned char ARPPackage::get_hardware_length() const {
+uchar ARPPackage::get_hardware_length() const {
     return m_arp->m_hardware_address_length;
 }
 
-void ARPPackage::set_protocol_length(unsigned char l) {
+void ARPPackage::set_protocol_length(uchar l) {
     m_arp->m_protocol_address_length = l;
 }
 
-unsigned char ARPPackage::get_protocol_length() const {
+uchar ARPPackage::get_protocol_length() const {
     return m_arp->m_protocol_address_length;
 }
 
-void ARPPackage::set_opcode(unsigned short code) {
+void ARPPackage::set_opcode(ushort code) {
     m_arp->m_opcode = htons(code);
 }
 
-unsigned short ARPPackage::get_opcode() const { return ntohs(m_arp->m_opcode); }
+ushort ARPPackage::get_opcode() const { return ntohs(m_arp->m_opcode); }
 
-unsigned int ARPPackage::get_length() const {
+uint ARPPackage::get_length() const {
     return sizeof(*m_ethernet) + sizeof(*m_arp);
 }
 

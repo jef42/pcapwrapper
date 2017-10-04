@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Ip_Src, Option{local_ip}},
             {Keys::Key_Ip_Dst,
              Option{PCAP::IpAddress(std::string("255.255.255.255"))}},
-            {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
-            {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}});
+            {Keys::Key_Icmp_Code, Option{(uchar)0x00}},
+            {Keys::Key_Icmp_Type, Option{(uchar)0x08}}});
         for (int i = 0; i < N; ++i) {
             controller->write(package.get_package(), package.get_length());
         }

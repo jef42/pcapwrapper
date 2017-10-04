@@ -12,9 +12,9 @@ DetectPorts::DetectPorts(PCAP::IpAddress desiredIp) : m_expectedip{desiredIp} {
 
 void DetectPorts::receive_package(PCAP::ICMPPackage package) {
     if (package.get_src_ip() == m_expectedip) {
-        const unsigned char *data = package.get_package();
-        unsigned short port =
-            (((unsigned short)data[64]) << 0x08) | ((unsigned short)data[65]);
+        const uchar *data = package.get_package();
+        ushort port =
+            (((ushort)data[64]) << 0x08) | ((ushort)data[65]);
         m_ports[port] = true;
     }
 }

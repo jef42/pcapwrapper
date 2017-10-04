@@ -8,7 +8,7 @@
 namespace PCAP {
 namespace PCAPBuilder {
 
-static unsigned char package_buffer[snap_len] = {};
+static uchar package_buffer[snap_len] = {};
 
 void set_ethernet(auto &package, std::map<Keys, Option> &options) {
     for (auto &option : options) {

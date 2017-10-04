@@ -17,8 +17,8 @@ namespace PCAPHelper {
 
 void set_ip_checksum(sniffip *ip);
 void set_icmp_checksum(sniffip *ip, snifficmp *icmp);
-void set_tcp_checksum(sniffip *ip, snifftcp *tcp, unsigned char *data);
-void set_udp_checksum(sniffip *ip, sniffudp *udp, unsigned char *data);
+void set_tcp_checksum(sniffip *ip, snifftcp *tcp, uchar *data);
+void set_udp_checksum(sniffip *ip, sniffudp *udp, uchar *data);
 
 PCAP::IpAddress get_ip(const std::string &interface);
 PCAP::MacAddress get_mac(const std::string &interface);
@@ -33,7 +33,7 @@ PCAP::MacAddress get_mac(const PCAP::IpAddress &target_ip,
 template <typename T, int N>
 bool split_string(const std::string &s, const char splitter,
                   std::array<T, N> &array, int base = 10) {
-    unsigned int i = 0;
+    uint i = 0;
     std::string tmp = s + splitter;
     size_t p = std::string::npos;
     while ((p = tmp.find(splitter, 0)) != std::string::npos) {
@@ -53,9 +53,9 @@ bool split_string(const std::string &s, const char splitter,
     return true;
 }
 
-template <typename T> unsigned short checksum(T *p, int count) {
-    unsigned int sum = 0;
-    unsigned short *addr = (unsigned short *)p;
+template <typename T> ushort checksum(T *p, int count) {
+    uint sum = 0;
+    ushort *addr = (ushort *)p;
 
     while (count > 1) {
         sum += *addr++;
@@ -63,7 +63,7 @@ template <typename T> unsigned short checksum(T *p, int count) {
     }
 
     if (count > 0)
-        sum += *(unsigned char *)addr;
+        sum += *(uchar *)addr;
 
     while (sum >> 16)
         sum = (sum & 0xffff) + (sum >> 16);

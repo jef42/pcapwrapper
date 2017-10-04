@@ -6,10 +6,10 @@
 
 #include <pcapwrapper/helpers/helper.h>
 
-bool setIp(unsigned char *ip, const std::string &ip_value, int base) {
-    std::array<unsigned char, ip_addr_len> array;
+bool setIp(uchar *ip, const std::string &ip_value, int base) {
+    std::array<uchar, ip_addr_len> array;
     bool successful =
-        PCAP::PCAPHelper::split_string<unsigned char, ip_addr_len>(
+        PCAP::PCAPHelper::split_string<uchar, ip_addr_len>(
             ip_value, '.', array, base);
     if (successful) {
         memcpy(ip, array.data(), ip_addr_len);
@@ -17,10 +17,10 @@ bool setIp(unsigned char *ip, const std::string &ip_value, int base) {
     return successful;
 }
 
-bool setMac(unsigned char *addr, const std::string &ethernet_value, int base) {
-    std::array<unsigned char, ethernet_addr_len> array;
+bool setMac(uchar *addr, const std::string &ethernet_value, int base) {
+    std::array<uchar, ethernet_addr_len> array;
     bool sucessful =
-        PCAP::PCAPHelper::split_string<unsigned char, ethernet_addr_len>(
+        PCAP::PCAPHelper::split_string<uchar, ethernet_addr_len>(
             ethernet_value, ':', array, base);
     if (sucessful) {
         memcpy(addr, array.data(), ethernet_addr_len);
@@ -87,14 +87,14 @@ void DNSBuilder::operator<<(sniffdns_answer answer) {
 
 void DNSBuilder::build() {
     PCAP::PCAPHelper::set_ip_checksum(m_ip);
-    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (unsigned char *)m_question);
+    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (uchar *)m_question);
 }
 
-unsigned char *DNSBuilder::get_package() const {
-    return (unsigned char *)&m_package[0];
+uchar *DNSBuilder::get_package() const {
+    return (uchar *)&m_package[0];
 }
 
-unsigned int DNSBuilder::get_length() const { return m_index; }
+uint DNSBuilder::get_length() const { return m_index; }
 
 PCAP::sniffethernet create_ethernet(const std::string &src_mac,
                                     const std::string &dst_mac) {
@@ -120,7 +120,7 @@ PCAP::sniffip create_ip(const std::string &src_ip, const std::string &dst_ip) {
     return ip;
 }
 
-PCAP::sniffudp create_udp(unsigned short src_port, unsigned short dst_port) {
+PCAP::sniffudp create_udp(ushort src_port, ushort dst_port) {
     PCAP::sniffudp udp;
     udp.m_th_sport = htons(src_port);
     udp.m_th_dport = htons(dst_port);
@@ -129,9 +129,9 @@ PCAP::sniffudp create_udp(unsigned short src_port, unsigned short dst_port) {
     return udp;
 }
 
-sniffdns_question create_dns_question(unsigned short answers,
-                                      const unsigned char *data,
-                                      unsigned short size) {
+sniffdns_question create_dns_question(ushort answers,
+                                      const uchar *data,
+                                      ushort size) {
     sniffdns_question question;
     memcpy(&question, data, size);
     question.m_flags = htons(0x8180);
@@ -139,9 +139,9 @@ sniffdns_question create_dns_question(unsigned short answers,
     return question;
 }
 
-sniffdns_query create_dns_query(const unsigned char *website) {
+sniffdns_query create_dns_query(const uchar *website) {
     sniffdns_query query;
-    query.m_query = (unsigned char *)website;
+    query.m_query = (uchar *)website;
     query.m_type = htons(0x0001);
     query.m_class = htons(0x0001);
     return query;

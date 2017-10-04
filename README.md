@@ -85,8 +85,8 @@ auto package = PCAP::PCAPBuilder::make_icmp(std::map<Keys, Option>{
     {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
     {Keys::Key_Ip_Src, Option{ip}},
     {Keys::Key_Ip_Dst, Option{dest_ip}},
-    {Keys::Key_Icmp_Code, Option{(unsigned char)0x00}},
-    {Keys::Key_Icmp_Type, Option{(unsigned char)0x08}}
+    {Keys::Key_Icmp_Code, Option{(uchar)0x00}},
+    {Keys::Key_Icmp_Type, Option{(uchar)0x08}}
 });
 package.recalculate_checksums(); //Recalculate checksums
 controller->write(package.get_package(), package.get_length()); //Sends package on network
@@ -122,7 +122,7 @@ for (const auto& target_ip : ips) {
         {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
         {Keys::Key_Arp_Mac_Src, Option(local_mac)},
         {Keys::Key_Arp_Mac_Dst, Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
-        {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
+        {Keys::Key_Arp_Opcode, Option((uchar)0x01)},
         {Keys::Key_Ip_Src, Option(local_ip)},
         {Keys::Key_Ip_Dst, Option(target_ip)}});
     controller->write(package.get_package(), package.get_length());

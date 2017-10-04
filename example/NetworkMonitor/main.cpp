@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
                 {Keys::Key_Arp_Mac_Src, Option(local_mac)},
                 {Keys::Key_Arp_Mac_Dst,
                  Option{PCAP::MacAddress(std::string("FF:FF:FF:FF:FF:FF"))}},
-                {Keys::Key_Arp_Opcode, Option((unsigned char)0x01)},
+                {Keys::Key_Arp_Opcode, Option((uchar)0x01)},
                 {Keys::Key_Ip_Src, Option(local_ip)},
                 {Keys::Key_Ip_Dst, Option(target_ip)}});
             controller->write(package.get_package(), package.get_length());

@@ -7,33 +7,33 @@
 
 namespace PCAP {
 
-UDPPackage::UDPPackage(const unsigned char *p, unsigned int l, bool modify)
+UDPPackage::UDPPackage(const uchar *p, uint l, bool modify)
     : IPPackage{p, l, modify} {
     m_udp = (struct sniffudp *)(m_package + size_ethernet + 5 * 4);
     m_data = &m_package[size_ethernet + 5 * 4 + sizeof(*m_udp)];
 }
 
-unsigned short UDPPackage::get_src_port() const {
+ushort UDPPackage::get_src_port() const {
     return ntohs(m_udp->m_th_sport);
 }
 
-unsigned short UDPPackage::get_dst_port() const {
+ushort UDPPackage::get_dst_port() const {
     return ntohs(m_udp->m_th_dport);
 }
 
-unsigned short UDPPackage::get_udp_length() const {
+ushort UDPPackage::get_udp_length() const {
     return ntohs(m_udp->m_length);
 }
 
-void UDPPackage::set_src_port(unsigned short src_port) {
+void UDPPackage::set_src_port(ushort src_port) {
     m_udp->m_th_sport = htons(src_port);
 }
 
-void UDPPackage::set_dst_port(unsigned short dst_port) {
+void UDPPackage::set_dst_port(ushort dst_port) {
     m_udp->m_th_dport = htons(dst_port);
 }
 
-void UDPPackage::set_udp_length(unsigned short length) {
+void UDPPackage::set_udp_length(ushort length) {
     m_udp->m_length = htons(length);
 }
 
@@ -42,19 +42,19 @@ void UDPPackage::recalculate_checksums() {
     PCAPHelper::set_udp_checksum(m_ip, m_udp, m_data);
 }
 
-const unsigned char *UDPPackage::get_data() const { return m_data; }
+const uchar *UDPPackage::get_data() const { return m_data; }
 
-unsigned int UDPPackage::get_data_length() const {
+uint UDPPackage::get_data_length() const {
     return ntohs(m_udp->m_length) - 8;
 }
 
-void UDPPackage::append_data(unsigned char *data, int size) {
+void UDPPackage::append_data(uchar *data, int size) {
     memcpy(&m_package[get_length()], (char *)data, size);
     m_ip->m_ip_len = htons(ntohs(m_ip->m_ip_len) + size);
     m_udp->m_length = htons(ntohs(m_udp->m_length) + size);
 }
 
-unsigned int UDPPackage::get_length() const {
+uint UDPPackage::get_length() const {
     return sizeof(*m_ethernet) + ntohs(m_ip->m_ip_len);
 }
 

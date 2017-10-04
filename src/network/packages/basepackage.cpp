@@ -5,12 +5,12 @@
 
 namespace PCAP {
 
-BasePackage::BasePackage(const unsigned char *p, unsigned int l, bool modify)
+BasePackage::BasePackage(const uchar *p, uint l, bool modify)
     : m_length{l}, m_modify{modify} {
     if (!m_modify) {
-        m_package = const_cast<unsigned char *>(p);
+        m_package = const_cast<uchar *>(p);
     } else {
-        m_package = new unsigned char[snap_len];
+        m_package = new uchar[snap_len];
         memcpy(m_package, p, m_length);
     }
 }
@@ -26,7 +26,7 @@ BasePackage::BasePackage(const BasePackage &rhs)
     if (!m_modify) {
         m_package = rhs.m_package;
     } else {
-        m_package = new unsigned char[snap_len];
+        m_package = new uchar[snap_len];
         memcpy(m_package, rhs.m_package, m_length);
     }
 }
@@ -50,5 +50,5 @@ void swap(BasePackage &lhs, BasePackage &rhs) noexcept {
     std::swap(lhs.m_modify, rhs.m_modify);
 }
 
-unsigned int BasePackage::get_length() const { return m_length; }
+uint BasePackage::get_length() const { return m_length; }
 }

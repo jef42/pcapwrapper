@@ -63,7 +63,7 @@ bool InsertCommand::execute_impl() {
     return true;
 }
 
-unsigned long InsertCommand::get_real_time() const {
+ulong InsertCommand::get_real_time() const {
     return std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::system_clock::now().time_since_epoch())
         .count();

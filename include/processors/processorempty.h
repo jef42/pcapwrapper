@@ -7,7 +7,7 @@ namespace PCAP {
 
 class ProcessorEmpty : public PCAP::ProcessorPolicy {
   private:
-    void callback_impl(const unsigned char *, const pcap_pkthdr &) override;
+    void callback_impl(const uchar *, const pcap_pkthdr &) override;
 };
 }
 

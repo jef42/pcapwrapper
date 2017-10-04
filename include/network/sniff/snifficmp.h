@@ -4,10 +4,10 @@
 namespace PCAP {
 
 struct snifficmp {
-    unsigned char m_type;
-    unsigned char m_code;
-    unsigned short m_checksum;
-    unsigned int m_rest_header;
+    uchar m_type;
+    uchar m_code;
+    ushort m_checksum;
+    uint m_rest_header;
 };
 
 static_assert(sizeof(snifficmp) == 8, "Size of ICMP must be 8");

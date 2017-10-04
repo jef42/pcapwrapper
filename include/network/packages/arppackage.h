@@ -12,28 +12,28 @@ namespace PCAP {
 
 class ARPPackage : public EthernetPackage {
   public:
-    ARPPackage(const unsigned char *p, unsigned int l, bool modify = false);
+    ARPPackage(const uchar *p, uint l, bool modify = false);
     IpAddress get_src_ip() const;
     IpAddress get_dst_ip() const;
     MacAddress get_src_arp_mac() const;
     MacAddress get_dst_arp_mac() const;
-    unsigned short get_hardware_type() const;
-    unsigned short get_protocol() const;
-    unsigned char get_hardware_length() const;
-    unsigned char get_protocol_length() const;
-    unsigned short get_opcode() const;
+    ushort get_hardware_type() const;
+    ushort get_protocol() const;
+    uchar get_hardware_length() const;
+    uchar get_protocol_length() const;
+    ushort get_opcode() const;
 
     void set_src_ip(IpAddress ip);
     void set_dst_ip(IpAddress ip);
     void set_src_arp_mac(MacAddress mac);
     void set_dst_arp_mac(MacAddress mac);
-    void set_hardware_type(unsigned short type);
-    void set_protocol(unsigned short proto);
-    void set_hardware_length(unsigned char l);
-    void set_protocol_length(unsigned char l);
-    void set_opcode(unsigned short code);
+    void set_hardware_type(ushort type);
+    void set_protocol(ushort proto);
+    void set_hardware_length(uchar l);
+    void set_protocol_length(uchar l);
+    void set_opcode(ushort code);
 
-    unsigned int get_length() const override;
+    uint get_length() const override;
 
     friend bool operator==(const ARPPackage &lhs, const ARPPackage &rhs);
     friend bool operator!=(const ARPPackage &lhs, const ARPPackage &rhs);

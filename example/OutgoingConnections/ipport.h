@@ -9,8 +9,8 @@
 #include <pcapwrapper/network/addresses/ipaddress.h>
 
 struct IPPort {
-    IPPort(const PCAP::IpAddress ip, unsigned short src_port,
-           unsigned short dst_port)
+    IPPort(const PCAP::IpAddress ip, ushort src_port,
+           ushort dst_port)
         : m_ip(ip), m_src_port(src_port), m_dst_port(dst_port) {
         m_time = std::time(nullptr);
     }
@@ -24,8 +24,8 @@ struct IPPort {
 
     std::time_t m_time;
     PCAP::IpAddress m_ip;
-    unsigned short m_src_port;
-    unsigned short m_dst_port;
+    ushort m_src_port;
+    ushort m_dst_port;
 };
 
 #endif

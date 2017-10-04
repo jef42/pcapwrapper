@@ -12,7 +12,7 @@ class InterfaceThreadSafe : public Interface {
     explicit InterfaceThreadSafe(const std::string &name);
 
   private:
-    int write_impl(const unsigned char *package, int len) override;
+    int write_impl(const uchar *package, int len) override;
 
     static std::mutex m_mutex;
 };
