@@ -33,7 +33,7 @@ bool InterfaceFile::open_interface(const std::string &filename) {
 bool InterfaceFile::set_filter_impl(const std::string &filter) {
     if (m_handler != nullptr) {
         struct bpf_program fp;
-        bpf_u_int32 net;
+        bpf_u_int32 net = 0;
         if (pcap_compile(m_handler, &fp, filter.c_str(), 0, net) == -1) {
             return false;
         }

@@ -11,8 +11,8 @@ ICMPPackage::ICMPPackage(const unsigned char *p, unsigned int l, bool modify)
     : IPPackage{p, l, modify} {
     m_icmp = (struct snifficmp *)(m_package + sizeof(sniffethernet) +
                                   sizeof(sniffip));
-    m_data = (unsigned char *)(m_package + sizeof(sniffethernet) +
-                               sizeof(sniffip) + sizeof(snifficmp));
+    m_data = (m_package + sizeof(sniffethernet) + sizeof(sniffip) +
+              sizeof(snifficmp));
 }
 
 unsigned char ICMPPackage::get_type() const { return m_icmp->m_type; }

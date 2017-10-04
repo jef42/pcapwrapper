@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     controller->start();
     controller->add_listener(listener);
 
-    std::cout << "Started " << std::endl;
+    std::cout << "DetectPortsUDP " << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
     while (1) {
 

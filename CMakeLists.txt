@@ -4,6 +4,7 @@ option(GTEST_FOUND "Make build for gtest" OFF)
 project(pcapwrapper CXX)
 set(CMAKE_BUILD_TYPE Release)
 
+set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra -Wduplicated-cond -Wlogical-op -Wnull-dereference -Wuseless-cast -Wshadow")
 if (GTEST_FOUND)
     set(CMAKE_CXX_FLAGS "-g -O0 --coverage")
 endif()

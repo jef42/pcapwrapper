@@ -36,13 +36,14 @@ void ForwardPackage::new_client(PCAP::IpAddress target_ip,
                                 PCAP::MacAddress target_mac) {
     // receive arp replies from clients
     std::lock_guard<std::mutex> lock(m_mutex);
+    if (target_mac == m_local_mac)
+        return;
     auto it =
         std::find_if(m_new_clients.begin(), m_new_clients.end(),
                      [&target_ip, &target_mac](auto &a) {
                          return target_ip == a.m_ip && target_mac == a.m_mac;
                      });
     if (it == m_new_clients.end()) {
-
         m_new_clients.emplace_back(NetworkClient(target_ip, target_mac));
     }
 }
@@ -59,7 +60,7 @@ void ForwardPackage::clients_receivers() {
                      [this](auto &client) {
                          if (!exists(m_new_clients.begin(),
                                      m_existing_clients.end(), client)) {
-                             // std::cout << "Stoping thread: " << client.m_ip
+                             // std::cout << "Client down: " << client.m_ip
                              // << " " << client.m_mac << std::endl;
                              // client.m_running = false;
                          }
@@ -69,7 +70,7 @@ void ForwardPackage::clients_receivers() {
                      [this](auto &client) {
                          if (!exists(m_existing_clients.begin(),
                                      m_existing_clients.end(), client)) {
-                             std::cout << "Starting thread: " << client.m_ip
+                             std::cout << "New client up: " << client.m_ip
                                        << " " << client.m_mac << std::endl;
                              m_existing_clients.push_back(client);
                          }

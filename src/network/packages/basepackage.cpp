@@ -39,7 +39,7 @@ BasePackage &BasePackage::operator=(BasePackage rhs) {
 BasePackage::BasePackage(BasePackage &&rhs) noexcept { swap(*this, rhs); }
 
 BasePackage &BasePackage::operator=(BasePackage &&rhs) noexcept {
-    auto tmp = BasePackage(std::move(rhs));
+    auto tmp = std::move(rhs);
     swap(*this, tmp);
     return *this;
 }
