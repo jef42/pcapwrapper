@@ -1,6 +1,8 @@
 #ifndef SNIFFICMP_H
 #define SNIFFICMP_H
 
+#include "../../helpers/common.h"
+
 namespace PCAP {
 
 struct snifficmp {

@@ -1,6 +1,7 @@
 #ifndef PCAPPROCESSORPOLICY_H
 #define PCAPPROCESSORPOLICY_H
 
+#include "../helpers/common.h"
 #include <pcap/pcap.h>
 
 namespace PCAP {

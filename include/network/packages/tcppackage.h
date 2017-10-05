@@ -1,10 +1,10 @@
 #ifndef TCPPACKAGE_H
 #define TCPPACKAGE_H
 
-#include <string>
-
+#include "../../helpers/common.h"
 #include "../sniff/snifftcp.h"
 #include "ippackage.h"
+#include <string>
 
 namespace PCAP {
 

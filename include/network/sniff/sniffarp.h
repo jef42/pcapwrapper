@@ -1,6 +1,7 @@
 #ifndef SNIFFARP_H
 #define SNIFFARP_H
 
+#include "../../helpers/common.h"
 #include "../../helpers/constants.h"
 
 namespace PCAP {

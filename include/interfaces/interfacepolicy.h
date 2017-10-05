@@ -1,9 +1,9 @@
 #ifndef PCAPINTERFACEPOLICY_H
 #define PCAPINTERFACEPOLICY_H
 
-#include <string>
-
+#include "../helpers/common.h"
 #include <pcap/pcap.h>
+#include <string>
 
 namespace PCAP {
 

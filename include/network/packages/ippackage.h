@@ -1,11 +1,11 @@
 #ifndef IPPACKAGE_H
 #define IPPACKAGE_H
 
-#include <string>
-
+#include "../../helpers/common.h"
 #include "../addresses/ipaddress.h"
 #include "../sniff/sniffip.h"
 #include "ethernetpackage.h"
+#include <string>
 
 namespace PCAP {
 

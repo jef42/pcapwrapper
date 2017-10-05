@@ -1,18 +1,16 @@
 #ifndef PCAPCONTROLLER_H
 #define PCAPCONTROLLER_H
 
+#include "interfaces/interfacepolicy.h"
+#include "processors/processorpolicy.h"
 #include <algorithm>
 #include <future>
 #include <map>
 #include <memory>
 #include <mutex>
+#include <pcap/pcap.h>
 #include <string>
 #include <type_traits>
-
-#include <pcap/pcap.h>
-
-#include "interfaces/interfacepolicy.h"
-#include "processors/processorpolicy.h"
 
 namespace PCAP {
 

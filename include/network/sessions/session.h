@@ -1,6 +1,7 @@
 #ifndef SESSION_H
 #define SESSION_H
 
+#include "../../helpers/common.h"
 #include "../addresses/ipaddress.h"
 #include <string>
 #include <tuple>
@@ -9,8 +10,8 @@ namespace PCAP {
 
 class Session {
   public:
-    Session(IpAddress ip_host, IpAddress ip_dest,
-            const ushort port_host, const ushort port_dest);
+    Session(IpAddress ip_host, IpAddress ip_dest, const ushort port_host,
+            const ushort port_dest);
 
     friend bool operator==(const Session &lhs, const Session &rhs) noexcept;
     friend bool operator!=(const Session &lhs, const Session &rhs) noexcept;

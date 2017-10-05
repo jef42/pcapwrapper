@@ -3,9 +3,8 @@
 
 #include <chrono>
 #include <string>
-
 #include <pcap/pcap.h>
-
+#include "../helpers/common.h"
 #include "interfacepolicy.h"
 
 namespace PCAP {

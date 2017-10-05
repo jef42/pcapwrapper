@@ -3,10 +3,10 @@
 
 namespace PCAP {
 
-using uchar = uchar;
-using ushort = ushort;
-using uint = uint;
-using ulong = ulong;
+using uchar = unsigned char;
+using ushort = unsigned short;
+using uint = unsigned int;
+using ulong = unsigned long;
 }
 
 #endif

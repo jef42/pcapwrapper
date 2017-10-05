@@ -1,6 +1,8 @@
 #ifndef SNIFFTCP_H
 #define SNIFFTCP_H
 
+#include "../../helpers/common.h"
+
 namespace PCAP {
 
 struct snifftcp {
@@ -30,7 +32,6 @@ struct snifftcpopt {
 };
 
 static_assert(sizeof(snifftcp) == 20, "Size of TCP must be 20");
-
 }
 
 #endif // SNIFFTCP_H

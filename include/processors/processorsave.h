@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-
+#include "../helpers/common.h"
 #include "processorpolicy.h"
 
 namespace PCAP {

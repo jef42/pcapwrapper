@@ -3,6 +3,7 @@
 
 #include <mutex>
 
+#include "../helpers/common.h"
 #include "interface.h"
 
 namespace PCAP {

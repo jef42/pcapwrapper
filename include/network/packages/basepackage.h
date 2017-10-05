@@ -1,6 +1,7 @@
 #ifndef BASEPACKAGE_H
 #define BASEPACKAGE_H
 
+#include "../../helpers/common.h"
 #include "../../helpers/constants.h"
 
 namespace PCAP {

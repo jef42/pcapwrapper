@@ -1,11 +1,11 @@
 #ifndef PCAPMACADDRESS_H
 #define PCAPMACADDRESS_H
 
+#include "../../helpers/common.h"
+#include "../../helpers/constants.h"
 #include <array>
 #include <ostream>
 #include <string>
-
-#include "../../helpers/constants.h"
 
 namespace PCAP {
 

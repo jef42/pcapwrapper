@@ -1,10 +1,10 @@
 #ifndef ICMPPACKAGE_H
 #define ICMPPACKAGE_H
 
-#include <string>
-
+#include "../../helpers/common.h"
 #include "../sniff/snifficmp.h"
 #include "ippackage.h"
+#include <string>
 
 namespace PCAP {
 

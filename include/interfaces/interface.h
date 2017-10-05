@@ -1,12 +1,11 @@
 #ifndef PCAPINTERFACE_H
 #define PCAPINTERFACE_H
 
-#include <memory>
-#include <string>
-
-#include <pcap/pcap.h>
-
+#include "../helpers/common.h"
 #include "interfacepolicy.h"
+#include <memory>
+#include <pcap/pcap.h>
+#include <string>
 
 namespace PCAP {
 

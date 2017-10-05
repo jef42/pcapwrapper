@@ -1,8 +1,6 @@
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
 
-#include <vector>
-
 #include "../listeners/packagelistener.h"
 #include "../network/packages/arppackage.h"
 #include "../network/packages/icmppackage.h"
@@ -10,6 +8,7 @@
 #include "../network/packages/udppackage.h"
 #include "../network/sessions/sessioncontroller.h"
 #include "processorpolicy.h"
+#include <vector>
 
 namespace PCAP {
 

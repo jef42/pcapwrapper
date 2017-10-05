@@ -1,6 +1,8 @@
 #ifndef SNIFFUDP_H
 #define SNIFFUDP_H
 
+#include "../../helpers/common.h"
+
 namespace PCAP {
 
 struct sniffudp {
@@ -11,7 +13,6 @@ struct sniffudp {
 };
 
 static_assert(sizeof(sniffudp) == 8, "Size of UDP must be 8");
-
 }
 
 #endif // SNIFFUDP_H

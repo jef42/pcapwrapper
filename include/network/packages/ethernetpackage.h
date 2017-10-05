@@ -1,19 +1,17 @@
 #ifndef ETHERNETPACKAGE_H
 #define ETHERNETPACKAGE_H
 
-#include <string>
-
+#include "../../helpers/common.h"
+#include "../addresses/macaddress.h"
 #include "../sniff/sniffethernet.h"
 #include "basepackage.h"
-
-#include "../addresses/macaddress.h"
+#include <string>
 
 namespace PCAP {
 
 class EthernetPackage : public BasePackage {
   public:
-    EthernetPackage(const uchar *p, uint l,
-                    bool modify = false);
+    EthernetPackage(const uchar *p, uint l, bool modify = false);
 
     MacAddress get_src_mac() const;
     MacAddress get_dst_mac() const;

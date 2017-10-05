@@ -1,10 +1,10 @@
 #ifndef UDPPACKAGE_H
 #define UDPPACKAGE_H
 
-#include <string>
-
+#include "../../helpers/common.h"
 #include "../sniff/sniffudp.h"
 #include "ippackage.h"
+#include <string>
 
 namespace PCAP {
 

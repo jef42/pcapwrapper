@@ -1,13 +1,13 @@
 #ifndef SESSIONCONTROLLER_H
 #define SESSIONCONTROLLER_H
 
-#include <memory>
-#include <vector>
-
+#include "../../helpers/common.h"
 #include "../../listeners/packagelistener.h"
 #include "../packages/tcppackage.h"
 #include "../packages/udppackage.h"
 #include "session.h"
+#include <memory>
+#include <vector>
 
 namespace PCAP {
 

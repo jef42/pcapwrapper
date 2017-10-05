@@ -4,7 +4,6 @@
 #include <array>
 #include <stdexcept>
 #include <vector>
-
 #include "../network/addresses/ipaddress.h"
 #include "../network/addresses/macaddress.h"
 #include "../network/sniff/snifficmp.h"

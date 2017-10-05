@@ -1,6 +1,7 @@
 #ifndef PCAPPROCESSOREMPTY_H
 #define PCAPPROCESSOREMPTY_H
 
+#include "../helpers/common.h"
 #include "processorpolicy.h"
 
 namespace PCAP {

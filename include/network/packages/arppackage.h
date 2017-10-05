@@ -1,12 +1,12 @@
 #ifndef ARPPACKAGE_H
 #define ARPPACKAGE_H
 
-#include <string>
-
+#include "../../helpers/common.h"
 #include "../addresses/ipaddress.h"
 #include "../addresses/macaddress.h"
 #include "../sniff/sniffarp.h"
 #include "ethernetpackage.h"
+#include <string>
 
 namespace PCAP {
 
