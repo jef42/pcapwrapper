@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <stdio.h>
 
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/helpers/constants.h>
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
@@ -22,9 +23,9 @@ class DHCPBuilder {
     void operator<<(PCAP::sniffudp udp);
     void operator<<(sniffdhcp dhcp);
 
-    template <long uint S>
+    template <long unsigned int S>
     friend void operator<<(DHCPBuilder &dhcpbuilder,
-                           std::array<uchar, S> data) {
+                           std::array<PCAP::uchar, S> data) {
         memcpy(&dhcpbuilder.m_package[dhcpbuilder.m_index], data.data(), S);
         dhcpbuilder.m_index += S;
 
@@ -35,12 +36,12 @@ class DHCPBuilder {
     }
 
     void build();
-    uchar *get_package() const;
-    uint get_length() const;
+    PCAP::uchar *get_package() const;
+    PCAP::uint get_length() const;
 
   private:
-    uchar m_package[snap_len];
-    uint m_index;
+    PCAP::uchar m_package[snap_len];
+    PCAP::uint m_index;
     PCAP::sniffethernet *m_ethernet;
     PCAP::sniffip *m_ip;
     PCAP::sniffudp *m_udp;

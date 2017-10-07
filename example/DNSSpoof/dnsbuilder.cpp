@@ -1,26 +1,26 @@
 #include "dnsbuilder.h"
 
+#include <array>
 #include <cstring>
 #include <netinet/in.h>
+#include <pcapwrapper/helpers/common.h>
+#include <pcapwrapper/helpers/helper.h>
 #include <stdio.h>
 
-#include <pcapwrapper/helpers/helper.h>
-
-bool setIp(uchar *ip, const std::string &ip_value, int base) {
-    std::array<uchar, ip_addr_len> array;
-    bool successful =
-        PCAP::PCAPHelper::split_string<uchar, ip_addr_len>(
-            ip_value, '.', array, base);
+bool setIp(PCAP::uchar *ip, const std::string &ip_value, int base) {
+    std::array<PCAP::uchar, ip_addr_len> array;
+    bool successful = PCAP::PCAPHelper::split_string<PCAP::uchar, ip_addr_len>(
+        ip_value, '.', array, base);
     if (successful) {
         memcpy(ip, array.data(), ip_addr_len);
     }
     return successful;
 }
 
-bool setMac(uchar *addr, const std::string &ethernet_value, int base) {
-    std::array<uchar, ethernet_addr_len> array;
+bool setMac(PCAP::uchar *addr, const std::string &ethernet_value, int base) {
+    std::array<PCAP::uchar, ethernet_addr_len> array;
     bool sucessful =
-        PCAP::PCAPHelper::split_string<uchar, ethernet_addr_len>(
+        PCAP::PCAPHelper::split_string<PCAP::uchar, ethernet_addr_len>(
             ethernet_value, ':', array, base);
     if (sucessful) {
         memcpy(addr, array.data(), ethernet_addr_len);
@@ -87,11 +87,11 @@ void DNSBuilder::operator<<(sniffdns_answer answer) {
 
 void DNSBuilder::build() {
     PCAP::PCAPHelper::set_ip_checksum(m_ip);
-    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (uchar *)m_question);
+    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (PCAP::uchar *)m_question);
 }
 
-uchar *DNSBuilder::get_package() const {
-    return (uchar *)&m_package[0];
+PCAP::uchar *DNSBuilder::get_package() const {
+    return (PCAP::uchar *)&m_package[0];
 }
 
 uint DNSBuilder::get_length() const { return m_index; }
@@ -129,8 +129,7 @@ PCAP::sniffudp create_udp(ushort src_port, ushort dst_port) {
     return udp;
 }
 
-sniffdns_question create_dns_question(ushort answers,
-                                      const uchar *data,
+sniffdns_question create_dns_question(ushort answers, const PCAP::uchar *data,
                                       ushort size) {
     sniffdns_question question;
     memcpy(&question, data, size);
@@ -139,9 +138,9 @@ sniffdns_question create_dns_question(ushort answers,
     return question;
 }
 
-sniffdns_query create_dns_query(const uchar *website) {
+sniffdns_query create_dns_query(const PCAP::uchar *website) {
     sniffdns_query query;
-    query.m_query = (uchar *)website;
+    query.m_query = (PCAP::uchar *)website;
     query.m_type = htons(0x0001);
     query.m_class = htons(0x0001);
     return query;

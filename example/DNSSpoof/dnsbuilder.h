@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/helpers/constants.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
 #include <pcapwrapper/network/sniff/sniffip.h>
@@ -14,14 +15,13 @@ PCAP::sniffethernet create_ethernet(const std::string &src_mac,
                                     const std::string &dst_mac);
 PCAP::sniffip create_ip(const std::string &src_ip, const std::string &dst_ip);
 PCAP::sniffudp create_udp(ushort src_port, ushort dst_port);
-sniffdns_question create_dns_question(ushort answers,
-                                      const uchar *data,
+sniffdns_question create_dns_question(ushort answers, const PCAP::uchar *data,
                                       ushort size);
-sniffdns_query create_dns_query(const uchar *website);
+sniffdns_query create_dns_query(const PCAP::uchar *website);
 sniffdns_answer create_dns_answer(const std::string &spoof_ip);
 
-bool setIp(uchar *ip, const std::string &ip_value, int base);
-bool setMac(uchar *addr, const std::string &ethernet_value, int base);
+bool setIp(PCAP::uchar *ip, const std::string &ip_value, int base);
+bool setMac(PCAP::uchar *addr, const std::string &ethernet_value, int base);
 
 class DNSBuilder {
   public:
@@ -35,12 +35,12 @@ class DNSBuilder {
     void operator<<(sniffdns_answer answer);
 
     void build();
-    uchar *get_package() const;
-    uint get_length() const;
+    PCAP::uchar *get_package() const;
+    PCAP::uint get_length() const;
 
   private:
-    uchar m_package[snap_len];
-    uint m_index;
+    PCAP::uchar m_package[snap_len];
+    PCAP::uint m_index;
     PCAP::sniffethernet *m_ethernet;
     PCAP::sniffip *m_ip;
     PCAP::sniffudp *m_udp;

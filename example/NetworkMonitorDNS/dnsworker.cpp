@@ -8,6 +8,7 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <pcapwrapper/helpers/common.h>
 
 static const int TRANSACTION_ID = 0;
 static const int FLAGS = 2;
@@ -59,7 +60,7 @@ DNSWorker::DNSWorker(PCAP::UDPPackage package) {
 
 void DNSWorker::new_session(PCAP::UDPPackage package) {
 
-    const uchar *query = &(package.get_data()[QUERIES + 1]);
+    const PCAP::uchar *query = &(package.get_data()[QUERIES + 1]);
     std::string data = std::string((char *)query);
 
     std::unique_lock<std::mutex> lk(m_worker_mutex);

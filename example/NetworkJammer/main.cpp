@@ -3,6 +3,7 @@
 #include <string>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/builders/builder.h>
@@ -38,8 +39,8 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Eth_Mac_Dst, Option{router_mac}},
             {Keys::Key_Ip_Src, Option{local_ip}},
             {Keys::Key_Ip_Dst, Option{router_ip}},
-            {Keys::Key_Icmp_Code, Option{(uchar)0x00}},
-            {Keys::Key_Icmp_Type, Option{(uchar)0x08}}});
+            {Keys::Key_Icmp_Code, Option{(PCAP::uchar)0x00}},
+            {Keys::Key_Icmp_Type, Option{(PCAP::uchar)0x08}}});
         package.recalculate_checksums();
         controller->write(package.get_package(), package.get_length());
 

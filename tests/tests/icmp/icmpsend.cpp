@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/interfaces/interfacefile.h>
 #include <pcapwrapper/listeners/packagelistener.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
@@ -47,12 +48,12 @@ TEST_F(TestSendICMP, TestSendOnePackage) {
         {Keys::Key_Eth_Mac_Dst, Option{PCAP::MacAddress{"80:80:80:AA:BB:CC"}}},
         {Keys::Key_Ip_Src, Option{PCAP::IpAddress{"128.23.21.55"}}},
         {Keys::Key_Ip_Dst, Option{PCAP::IpAddress{"123.22.33.22"}}},
-        {Keys::Key_Ip_TTL, Option{(uchar)0x60}},
-        {Keys::Key_Ip_Flags, Option{(uchar)0x02}},
-        {Keys::Key_Ip_Id, Option{(ushort)0x0102}},
-        {Keys::Key_Ip_Length, Option{(ushort)0x3c}},
-        {Keys::Key_Icmp_Type, Option{(uchar)0x01}},
-        {Keys::Key_Icmp_Code, Option{(uchar)0x02}}});
+        {Keys::Key_Ip_TTL, Option{(PCAP::uchar)0x60}},
+        {Keys::Key_Ip_Flags, Option{(PCAP::uchar)0x02}},
+        {Keys::Key_Ip_Id, Option{(PCAP::ushort)0x0102}},
+        {Keys::Key_Ip_Length, Option{(PCAP::ushort)0x3c}},
+        {Keys::Key_Icmp_Type, Option{(PCAP::uchar)0x01}},
+        {Keys::Key_Icmp_Code, Option{(PCAP::uchar)0x02}}});
     package.recalculate_checksums();
     send_package(package);
 
@@ -72,15 +73,16 @@ TEST_F(TestSendICMP, TestAppendData) {
     using namespace PCAP::PCAPBuilder;
     constexpr uint data_size = 6;
     auto package = PCAP::PCAPBuilder::make_icmp(std::map<Keys, Option>{});
-    uchar data[data_size] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6};
-    uchar data_result[data_size * 2] = {1, 2, 3, 4, 5, 6,
-                                                1, 2, 3, 4, 5, 6};
+    PCAP::uchar data[data_size] = {0x1, 0x2, 0x3, 0x4, 0x5, 0x6};
+    PCAP::uchar data_result[data_size * 2] = {1, 2, 3, 4, 5, 6,
+                                              1, 2, 3, 4, 5, 6};
     EXPECT_EQ(package.get_data_length(), 0);
     package.append_data(data, data_size);
     EXPECT_EQ(package.get_data_length(), data_size);
-    EXPECT_TRUE(memcmp(package.get_data(), data, package.get_data_length()) == 0);
+    EXPECT_TRUE(memcmp(package.get_data(), data, package.get_data_length()) ==
+                0);
     package.append_data(data, data_size);
     EXPECT_EQ(package.get_data_length(), data_size * 2);
-    EXPECT_TRUE(
-        memcmp(package.get_data(), data_result, package.get_data_length()) == 0);
+    EXPECT_TRUE(memcmp(package.get_data(), data_result,
+                       package.get_data_length()) == 0);
 }

@@ -5,6 +5,7 @@
 #include <string>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/interfaces/interfacefile.h>
 #include <pcapwrapper/listeners/packagelistener.h>
 #include <pcapwrapper/network/builders/builder.h>

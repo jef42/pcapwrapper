@@ -6,25 +6,23 @@
 #include <stdio.h>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
+#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
-#include <pcapwrapper/processors/processorempty.h>
-
-#include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
 #include <pcapwrapper/network/sniff/sniffip.h>
 #include <pcapwrapper/network/sniff/sniffudp.h>
+#include <pcapwrapper/processors/processorempty.h>
 
 #include "dhcpbuilder.h"
 #include "dhcpframe.h"
 #include "dhcpoption.h"
 
-template <typename T>
-bool setIp(uchar *ip, const T &ip_value, int base) {
-    std::array<uchar, ip_addr_len> array;
-    bool successful =
-        PCAP::PCAPHelper::split_string<uchar, ip_addr_len>(
-            ip_value, '.', array, base);
+template <typename T> bool setIp(PCAP::uchar *ip, const T &ip_value, int base) {
+    std::array<PCAP::uchar, ip_addr_len> array;
+    bool successful = PCAP::PCAPHelper::split_string<PCAP::uchar, ip_addr_len>(
+        ip_value, '.', array, base);
     if (successful) {
         memcpy(ip, array.data(), ip_addr_len);
     }
@@ -32,11 +30,10 @@ bool setIp(uchar *ip, const T &ip_value, int base) {
 }
 
 template <typename T>
-bool setMac(uchar *addr, const T &ethernet_value, int base) {
-    std::array<uchar, ethernet_addr_len> array;
-    bool sucessful =
-        PCAP::PCAPHelper::split_string<uchar, ethernet_addr_len>(
-            ethernet_value, ':', array, base);
+bool setMac(PCAP::uchar *addr, const T &ethernet_value, int base) {
+    std::array<PCAP::uchar, ethernet_addr_len> array;
+    bool sucessful = PCAP::PCAPHelper::split_string<PCAP::uchar, ethernet_addr_len>(
+        ethernet_value, ':', array, base);
     if (sucessful) {
         memcpy(addr, array.data(), ethernet_addr_len);
     }
@@ -94,17 +91,15 @@ sniffdhcp create_dhcp(const std::string &target_ip,
     return dhcp;
 }
 
-std::array<uchar, 4> create_magic_cookie() {
-    return std::array<uchar, 4>{0x63, 0x82, 0x53, 0x63};
+std::array<PCAP::uchar, 4> create_magic_cookie() {
+    return std::array<PCAP::uchar, 4>{0x63, 0x82, 0x53, 0x63};
 }
 
-std::array<uchar, 6> create_host_name() {
-    return std::array<uchar, 6>{0x0c, 0x04, 0x68, 0x6c, 0x69, 0x6e};
+std::array<PCAP::uchar, 6> create_host_name() {
+    return std::array<PCAP::uchar, 6>{0x0c, 0x04, 0x68, 0x6c, 0x69, 0x6e};
 }
 
-std::array<uchar, 1> create_end() {
-    return std::array<uchar, 1>{0xFF};
-}
+std::array<PCAP::uchar, 1> create_end() { return std::array<PCAP::uchar, 1>{0xFF}; }
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -117,7 +112,8 @@ int main(int argc, char *argv[]) {
     const auto target_ip = PCAP::IpAddress(argv[2]);
     const auto local_ip = PCAP::PCAPHelper::get_ip(interface_name);
     const auto router_ip = PCAP::PCAPHelper::get_router_ip(interface_name);
-    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, interface_name);
+    const auto router_mac =
+        PCAP::PCAPHelper::get_mac(router_ip, interface_name);
     const auto target_mac =
         local_ip == target_ip
             ? PCAP::PCAPHelper::get_mac(interface_name)

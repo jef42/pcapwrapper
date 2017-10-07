@@ -5,6 +5,7 @@
 #include <memory>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/builders/builder.h>
 #include <pcapwrapper/network/builders/keys.h>
@@ -115,7 +116,7 @@ void ForwardPackage::working_function() {
                         {Keys::Key_Eth_Mac_Dst, Option{m_router_mac}},
                         {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
                         {Keys::Key_Arp_Mac_Dst, Option{m_router_mac}},
-                        {Keys::Key_Arp_Opcode, Option{(uchar)0x02}},
+                        {Keys::Key_Arp_Opcode, Option{(PCAP::uchar)0x02}},
                         {Keys::Key_Ip_Src, Option{client.m_ip}},
                         {Keys::Key_Ip_Dst, Option{m_router_ip}}});
                 controller->write(package_router.get_package(), 60);
@@ -126,7 +127,7 @@ void ForwardPackage::working_function() {
                         {Keys::Key_Eth_Mac_Dst, Option{client.m_mac}},
                         {Keys::Key_Arp_Mac_Src, Option{m_local_mac}},
                         {Keys::Key_Arp_Mac_Dst, Option{client.m_mac}},
-                        {Keys::Key_Arp_Opcode, Option{(uchar)0x02}},
+                        {Keys::Key_Arp_Opcode, Option{(PCAP::uchar)0x02}},
                         {Keys::Key_Ip_Src, Option{m_router_ip}},
                         {Keys::Key_Ip_Dst, Option{client.m_ip}}});
                 controller->write(package_target.get_package(), 60);

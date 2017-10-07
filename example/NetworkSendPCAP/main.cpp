@@ -4,6 +4,7 @@
 #include <thread>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/interfaces/interfacefile.h>
 #include <pcapwrapper/processors/processorempty.h>
@@ -13,7 +14,7 @@ static std::string interface_name;
 
 class SendProcessor : public PCAP::ProcessorPolicy {
   private:
-    void callback_impl(const uchar *package,
+    void callback_impl(const PCAP::uchar *package,
                        const pcap_pkthdr &header) override {
         static auto controller = std::make_shared<
             PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(

@@ -2,6 +2,7 @@
 #include <memory>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/helpers/helper.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
@@ -25,7 +26,8 @@ int main(int argc, char *argv[]) {
     const auto local_mac = PCAP::PCAPHelper::get_mac(interface_name);
 
     const auto router_ip = PCAP::PCAPHelper::get_router_ip(interface_name);
-    const auto router_mac = PCAP::PCAPHelper::get_mac(router_ip, interface_name);
+    const auto router_mac =
+        PCAP::PCAPHelper::get_mac(router_ip, interface_name);
 
     auto controller =
         std::make_shared<PCAP::Controller<PCAP::Interface, PCAP::Processor>>(
@@ -40,7 +42,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Started" << std::endl;
 
-    uchar i = 0;
+    PCAP::uchar i = 0;
     while (!tcp_listener->isFinished()) {
 
         using namespace PCAP::PCAPBuilder;
@@ -52,7 +54,7 @@ int main(int argc, char *argv[]) {
             {Keys::Key_Src_Port, Option{(ushort)45022}},
             {Keys::Key_Dst_Port, Option{(ushort)80}},
             {Keys::Key_Tcp_SeqNr, Option{(uint)i * 3323}},
-            {Keys::Key_Ip_TTL, Option{(uchar)i++}}});
+            {Keys::Key_Ip_TTL, Option{(PCAP::uchar)i++}}});
         package.recalculate_checksums();
         controller->write(package.get_package(), package.get_length());
 

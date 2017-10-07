@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/helpers/constants.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
 #include <pcapwrapper/network/sniff/sniffip.h>
@@ -12,14 +13,14 @@
 
 class DNSParser {
   public:
-    DNSParser(const uchar *package, int length);
+    DNSParser(const PCAP::uchar *package, int length);
 
     void build();
-    uchar *get_package() const;
-    uint get_length() const;
+    PCAP::uchar *get_package() const;
+    PCAP::uint get_length() const;
 
   private:
-    uchar m_package[snap_len];
+    PCAP::uchar m_package[snap_len];
     int m_index;
 
   public:

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <pcapwrapper/controller.hpp>
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/interfaces/interface.h>
 #include <pcapwrapper/network/addresses/ipaddress.h>
 #include <pcapwrapper/network/sessions/sessioncontroller.h>

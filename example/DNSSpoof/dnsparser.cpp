@@ -5,9 +5,10 @@
 #include <netinet/in.h>
 #include <stdio.h>
 
+#include <pcapwrapper/helpers/common.h>
 #include <pcapwrapper/helpers/helper.h>
 
-DNSParser::DNSParser(const uchar *package, int length) {
+DNSParser::DNSParser(const PCAP::uchar *package, int length) {
     memset(m_package, '\0', snap_len);
     memcpy(m_package, package, length);
     m_ethernet = (PCAP::sniffethernet *)&m_package[0];
@@ -22,13 +23,13 @@ DNSParser::DNSParser(const uchar *package, int length) {
 
 void DNSParser::build() {
     PCAP::PCAPHelper::set_ip_checksum(m_ip);
-    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (uchar *)m_question);
+    PCAP::PCAPHelper::set_udp_checksum(m_ip, m_udp, (PCAP::uchar *)m_question);
 }
 
-uchar *DNSParser::get_package() const {
-    return (uchar *)&m_package[0];
+PCAP::uchar *DNSParser::get_package() const {
+    return (PCAP::uchar *)&m_package[0];
 }
 
-uint DNSParser::get_length() const {
+PCAP::uint DNSParser::get_length() const {
     return ntohs(m_ip->m_ip_len) + size_ethernet;
 }

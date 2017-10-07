@@ -1,6 +1,7 @@
 #include "detectports.h"
 
 #include <iostream>
+#include <pcapwrapper/helpers/common.h>
 #include <string.h>
 #include <string>
 
@@ -12,9 +13,8 @@ DetectPorts::DetectPorts(PCAP::IpAddress desiredIp) : m_expectedip{desiredIp} {
 
 void DetectPorts::receive_package(PCAP::ICMPPackage package) {
     if (package.get_src_ip() == m_expectedip) {
-        const uchar *data = package.get_package();
-        ushort port =
-            (((ushort)data[64]) << 0x08) | ((ushort)data[65]);
+        const PCAP::uchar *data = package.get_package();
+        ushort port = (((ushort)data[64]) << 0x08) | ((ushort)data[65]);
         m_ports[port] = true;
     }
 }
