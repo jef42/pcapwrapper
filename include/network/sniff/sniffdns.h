@@ -1,7 +1,9 @@
-#ifndef DNSFRAME_H
-#define DNSFRAME_H
+#ifndef SNIFFDNS_H
+#define SNIFFDNS_H
 
 #include <pcapwrapper/helpers/common.h>
+
+namespace PCAP {
 
 struct sniffdns_query {
     PCAP::uchar *m_query;
@@ -26,5 +28,6 @@ struct sniffdns_answer {
     PCAP::ushort data_length;
     PCAP::uchar m_address[4];
 };
+}
 
-#endif // DNSFRAME_H
+#endif // SNIFFDNS_H

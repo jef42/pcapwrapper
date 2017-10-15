@@ -9,13 +9,12 @@
 
 #include <pcapwrapper/controller.hpp>
 #include <pcapwrapper/interfaces/interface.h>
+#include <pcapwrapper/network/builders/dnsbuilder.h>
 #include <pcapwrapper/network/sniff/sniffethernet.h>
 #include <pcapwrapper/network/sniff/sniffip.h>
 #include <pcapwrapper/network/sniff/sniffudp.h>
 #include <pcapwrapper/processors/processorempty.h>
 
-#include "dnsbuilder.h"
-#include "dnsframe.h"
 #include "dnsparser.h"
 
 static const int QUERIES = 12;
@@ -74,15 +73,17 @@ void DNSSessionController::send_reply(PCAP::UDPPackage package,
         PCAP::Controller<PCAP::Interface, PCAP::ProcessorEmpty>>(
         m_interface_name);
 
-    DNSBuilder builder;
-    builder << create_ethernet(package.get_dst_mac().to_string(),
-                               package.get_src_mac().to_string());
-    builder << create_ip(package.get_dst_ip().to_string(),
-                         package.get_src_ip().to_string());
-    builder << create_udp(package.get_dst_port(), package.get_src_port());
-    builder << create_dns_question(1, package.get_data(), QUERIES);
-    builder << create_dns_query(&package.get_data()[QUERIES]);
-    builder << create_dns_answer(ip);
+    PCAP::PCAPBuilder::DNSBuilder builder;
+    builder << ::create_ethernet(package.get_dst_mac().to_string(),
+                                 package.get_src_mac().to_string());
+    builder << ::create_ip(package.get_dst_ip().to_string(),
+                           package.get_src_ip().to_string());
+    builder << ::create_udp(package.get_dst_port(), package.get_src_port());
+    builder << PCAP::PCAPBuilder::create_dns_question(1, package.get_data(),
+                                                      QUERIES);
+    builder << PCAP::PCAPBuilder::create_dns_query(
+        &package.get_data()[QUERIES]);
+    builder << PCAP::PCAPBuilder::create_dns_answer(ip);
     builder.build();
     controller->write(builder.get_package(), builder.get_length());
 }

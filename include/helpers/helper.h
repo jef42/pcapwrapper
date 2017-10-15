@@ -19,6 +19,9 @@ void set_icmp_checksum(sniffip *ip, snifficmp *icmp);
 void set_tcp_checksum(sniffip *ip, snifftcp *tcp, uchar *data);
 void set_udp_checksum(sniffip *ip, sniffudp *udp, uchar *data);
 
+bool setIp(PCAP::uchar *ip, const std::string &ip_value, int base);
+bool setMac(PCAP::uchar *addr, const std::string &ethernet_value, int base);
+
 PCAP::IpAddress get_ip(const std::string &interface);
 PCAP::MacAddress get_mac(const std::string &interface);
 PCAP::IpAddress get_mask(const std::string &interface);

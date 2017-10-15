@@ -90,6 +90,27 @@ void set_udp_checksum(sniffip *ip, sniffudp *udp, uchar *data) {
         checksum(&packet, ntohs(udp->m_length) + sizeof(pseudo_h));
 }
 
+bool setIp(PCAP::uchar *ip, const std::string &ip_value, int base) {
+    std::array<PCAP::uchar, ip_addr_len> array;
+    bool successful = PCAP::PCAPHelper::split_string<PCAP::uchar, ip_addr_len>(
+        ip_value, '.', array, base);
+    if (successful) {
+        memcpy(ip, array.data(), ip_addr_len);
+    }
+    return successful;
+}
+
+bool setMac(PCAP::uchar *addr, const std::string &ethernet_value, int base) {
+    std::array<PCAP::uchar, ethernet_addr_len> array;
+    bool sucessful =
+        PCAP::PCAPHelper::split_string<PCAP::uchar, ethernet_addr_len>(
+            ethernet_value, ':', array, base);
+    if (sucessful) {
+        memcpy(addr, array.data(), ethernet_addr_len);
+    }
+    return sucessful;
+}
+
 pcap_if_t *get_all_devs() {
     pcap_if_t *alldevs;
     static char errbuf[PCAP_ERRBUF_SIZE];
@@ -144,9 +165,8 @@ PCAP::MacAddress get_mac(const std::string &interface) {
         std::stringstream stream;
         for (int i = 0; i < 6; ++i) {
             stream << std::setfill('0') << std::setw(2) << std::hex
-                   << std::uppercase
-                   << stoi(std::to_string(
-                          static_cast<uchar>(s.ifr_addr.sa_data[i])));
+                   << std::uppercase << stoi(std::to_string(static_cast<uchar>(
+                                            s.ifr_addr.sa_data[i])));
             if (i != 5)
                 stream << ":";
         }
@@ -199,8 +219,7 @@ PCAP::MacAddress get_mac(const PCAP::IpAddress &target_ip,
         memset(package_buffer, '\0', snap_len);
 
         while (run_flag) {
-            PCAP::ARPPackage package(package_buffer, (uint)snap_len,
-                                     true);
+            PCAP::ARPPackage package(package_buffer, (uint)snap_len, true);
             package.set_src_mac(local_mac);
             package.set_dst_mac(PCAP::MacAddress("FF:FF:FF:FF:FF:FF"));
             package.set_ether_type(0x0806);

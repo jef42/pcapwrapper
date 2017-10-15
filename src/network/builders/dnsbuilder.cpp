@@ -1,11 +1,12 @@
-#include "dnsbuilder.h"
+#include "../../../include/network/builders/dnsbuilder.h"
 
+#include "../../../include/helpers/helper.h"
 #include <array>
 #include <cstring>
 #include <netinet/in.h>
-#include <pcapwrapper/helpers/common.h>
-#include <pcapwrapper/helpers/helper.h>
-#include <stdio.h>
+
+namespace PCAP {
+namespace PCAPBuilder {
 
 bool setIp(PCAP::uchar *ip, const std::string &ip_value, int base) {
     std::array<PCAP::uchar, ip_addr_len> array;
@@ -17,15 +18,46 @@ bool setIp(PCAP::uchar *ip, const std::string &ip_value, int base) {
     return successful;
 }
 
-bool setMac(PCAP::uchar *addr, const std::string &ethernet_value, int base) {
-    std::array<PCAP::uchar, ethernet_addr_len> array;
-    bool sucessful =
-        PCAP::PCAPHelper::split_string<PCAP::uchar, ethernet_addr_len>(
-            ethernet_value, ':', array, base);
-    if (sucessful) {
-        memcpy(addr, array.data(), ethernet_addr_len);
-    }
-    return sucessful;
+// bool setMac(PCAP::uchar *addr, const std::string &ethernet_value, int base) {
+//     std::array<PCAP::uchar, ethernet_addr_len> array;
+//     bool sucessful =
+//         PCAP::PCAPHelper::split_string<PCAP::uchar, ethernet_addr_len>(
+//             ethernet_value, ':', array, base);
+//     if (sucessful) {
+//         memcpy(addr, array.data(), ethernet_addr_len);
+//     }
+//     return sucessful;
+// }
+
+PCAP::sniffdns_question
+create_dns_question(ushort answers, const PCAP::uchar *data, ushort size) {
+    PCAP::sniffdns_question question;
+    memcpy(&question, data, size);
+    question.m_flags = htons(0x8180);
+    question.m_answers = htons(answers);
+    return question;
+}
+
+PCAP::sniffdns_query create_dns_query(const PCAP::uchar *website) {
+    PCAP::sniffdns_query query;
+    query.m_query = (PCAP::uchar *)website;
+    query.m_type = htons(0x0001);
+    query.m_class = htons(0x0001);
+    return query;
+}
+
+PCAP::sniffdns_answer create_dns_answer(const std::string &spoof_ip) {
+    PCAP::sniffdns_answer answer;
+    answer.m_name = htons(0xc00c);
+    answer.m_type = htons(0x0001);
+    answer.m_class = htons(0x0001);
+    answer.m_time_to_live[0] = 0x00;
+    answer.m_time_to_live[1] = 0x00;
+    answer.m_time_to_live[2] = 0x00;
+    answer.m_time_to_live[3] = 0x18;
+    answer.data_length = htons(0x0004);
+    setIp(answer.m_address, spoof_ip, 10);
+    return answer;
 }
 
 DNSBuilder::DNSBuilder() : m_index{0} { memset(m_package, '\0', snap_len); }
@@ -95,67 +127,5 @@ PCAP::uchar *DNSBuilder::get_package() const {
 }
 
 uint DNSBuilder::get_length() const { return m_index; }
-
-PCAP::sniffethernet create_ethernet(const std::string &src_mac,
-                                    const std::string &dst_mac) {
-    PCAP::sniffethernet ethernet;
-    setMac(ethernet.m_ether_dhost, dst_mac, 16);
-    setMac(ethernet.m_ether_shost, src_mac, 16);
-    ethernet.m_ether_type = htons(0x0800);
-    return ethernet;
 }
-
-PCAP::sniffip create_ip(const std::string &src_ip, const std::string &dst_ip) {
-    PCAP::sniffip ip;
-    ip.m_ip_vhl = 0x45;
-    ip.m_ip_tos = 0x00;
-    ip.m_ip_len = htons(0x0014); // 20
-    ip.m_ip_id = htons(0x0000);
-    ip.m_ip_off = htons(0x4000);
-    ip.m_ip_ttl = 0x40;
-    ip.m_ip_p = 0x11;
-    ip.m_ip_sum = htons(0x0000);
-    setIp(ip.m_ip_src, src_ip, 10);
-    setIp(ip.m_ip_dst, dst_ip, 10);
-    return ip;
-}
-
-PCAP::sniffudp create_udp(ushort src_port, ushort dst_port) {
-    PCAP::sniffudp udp;
-    udp.m_th_sport = htons(src_port);
-    udp.m_th_dport = htons(dst_port);
-    udp.m_length = htons(0x0008);
-    udp.m_checksum = htons(0x0000);
-    return udp;
-}
-
-sniffdns_question create_dns_question(ushort answers, const PCAP::uchar *data,
-                                      ushort size) {
-    sniffdns_question question;
-    memcpy(&question, data, size);
-    question.m_flags = htons(0x8180);
-    question.m_answers = htons(answers);
-    return question;
-}
-
-sniffdns_query create_dns_query(const PCAP::uchar *website) {
-    sniffdns_query query;
-    query.m_query = (PCAP::uchar *)website;
-    query.m_type = htons(0x0001);
-    query.m_class = htons(0x0001);
-    return query;
-}
-
-sniffdns_answer create_dns_answer(const std::string &spoof_ip) {
-    sniffdns_answer answer;
-    answer.m_name = htons(0xc00c);
-    answer.m_type = htons(0x0001);
-    answer.m_class = htons(0x0001);
-    answer.m_time_to_live[0] = 0x00;
-    answer.m_time_to_live[1] = 0x00;
-    answer.m_time_to_live[2] = 0x00;
-    answer.m_time_to_live[3] = 0x18;
-    answer.data_length = htons(0x0004);
-    setIp(answer.m_address, spoof_ip, 10);
-    return answer;
 }
