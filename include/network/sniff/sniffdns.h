@@ -1,7 +1,7 @@
 #ifndef SNIFFDNS_H
 #define SNIFFDNS_H
 
-#include <pcapwrapper/helpers/common.h>
+#include "../../helpers/common.h"
 
 namespace PCAP {
 
